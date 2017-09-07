@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 7, 2017, 1:04:14 PM
+    Author     : Vivek Tripathi
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,100,200,300);
+
+
+* {
+    margin: 0;
+    padding: 0; }
+
+a {
+    color: #666;
+    text-decoration: none !important; }
+
+a:hover {
+    color: #4FDA8C; }
+
+input {
+    font: 16px/26px "Raleway", sans-serif; }
+
+

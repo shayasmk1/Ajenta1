@@ -1,0 +1,221 @@
+/*
+   
+   Table Of Content
+   
+   1. Global Style
+   2. Preloader
+   3. Navigation Menu
+   4. Home Section
+   5. About Us
+   6. Services
+   7. CountDown Timer
+   8. Subscribe Form
+   9. Contact Us
+  10. Social Icons
+  11. Footer
+  12. Scroll To Top
+  13. Responsive
+  14. Useful Classes ( Such as : Margin, Padding, colors  "This classes will be helpful for you during designing/development time.")
+  15. UiPasta Credit
+ 
+
+*/
+
+/* Global Style */
+
+.white-color {
+    color: #ffffff !important;
+}
+
+.no-padding {
+    padding: 0
+}
+
+.section-space-padding {
+    padding: 0px 0px 150px;
+}
+
+.section-title {
+    position: relative;
+    margin-bottom: 100px;
+    padding-top: 80px;
+}
+
+.section-title:before {
+    content: "";
+    border: 1px solid #fd2034;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 90px;
+    margin-left: -0.5px;   
+}
+
+.section-title i {
+    position: relative;
+    display: block;
+    width: 100px;
+    height: 100px;
+    font-size: 42px;
+    line-height: 100px;
+    text-align: center;
+    border-radius: 50%;
+    margin: 0 auto 50px;
+    background-color: #ffffff;
+    color: #ffffff;
+    box-shadow: 7px 24px 84px 0 rgba(0, 0, 0, 0.38);
+}
+
+.section-title h3 {
+    text-align: center;
+    font-size: 30px;
+    color: #4c9cef;
+}
+
+.section-title span {
+    color: #ffffff !important;
+}
+
+.pattern-bg {
+	background: url(../images/bg/pattern-bg.png);
+	background-repeat: repeat;
+}
+
+.box-shadow-show {
+    box-shadow: 0px 16px 22px 0px rgba(90, 91, 95, 0.3);
+}
+
+
+
+
+/* Navigation Menu */
+
+.header-top-area {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    -webkit-transition: all 0.4s ease-out;
+    transition: all 0.4s ease-out;
+}
+
+.navigation-menu .navbar-nav li a {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-family: 'Nosifer', cursive;
+    font-size: 15px;
+    letter-spacing: 1px;
+    padding: 30px 15px;
+    -webkit-transition: .3s;
+    transition: .3s;
+    font-weight: 600;
+}
+
+.navigation-menu .navbar-nav li a:hover {
+    background: none;
+    color: #ffffff;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.nav li a:focus,
+.nav li a:hover {
+    background: none;
+    color: #ffffff;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.navbar {
+    margin: 0;
+}
+
+.navigation-background {
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    background: #4c9cef;
+}
+
+.navigation-background .logo {
+    padding-top: 18px;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.navigation-background .logo a {
+	color: #ffffff;
+}
+
+.navigation-background .navigation-menu .navbar-nav li a {
+    color: #fff;
+    padding: 20px 15px;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+.navigation-background .navigation-menu .navbar-nav li a:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    left: 0;
+    bottom: 8px;
+    position: absolute;
+    background: #ffffff;
+    transition: .5s;
+}
+.navigation-background .navigation-menu .navbar-nav li:hover a:after, .navigation-background .navigation-menu .navbar-nav li.active a:after {
+    width: 100%;
+}
+
+.navigation-background .navigation-menu .navbar-nav li a:hover {
+    color: #fff;
+}
+
+
+
+/* Home Section */
+
+.home-section-background {
+	padding: 95px 0px;
+    background-color: #ffffff;
+}
+
+.home-section-background h2 {
+	font-size: 60px;
+	color: #000000;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-align: center;
+    margin-top: 13%;
+}
+
+.home-section-background p {
+	font-size: 16px;
+	color: #ffffff;
+	font-weight: 500;
+	text-align: center;
+    margin-top: 25px;
+}
+
+
+
+/* About Us */
+
+.about-us {
+    background-color: #ffffff;
+    padding: 55px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 1px 2px 0px rgba(78, 78, 78, 0.45);
+}
+
+.about-us:hover {
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 8px 15px 0px rgba(90, 91, 95, 0.33);
+}
+
+.about-us p {
+    font-size: 14px;
+    text-align: center;
+}
+

@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+body{font-family:Lato}
+h1{font-family:Montserrat,"Helvetica Neue";text-transform:uppercase;font-weight:700}
+.background-colour{
+            background-color: #292b2c;
+            font-family: Montserrat;
+        }
+header .intro-text .name{font-family:Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;text-transform:uppercase}
+header{text-align:center;color:#fff}
+header .container{padding-top:50px;padding-bottom:50px}
+header img{display:block;margin:0 auto 20px;padding-top: 50px;}
+header .intro-text .name{display:block;font-weight:700;font-size:4.75em}
+header .intro-text .skills{font-size:1.25em;font-weight:300}
+header .container{padding-top:50px;padding-bottom:100px}
+input{color:#000000 !important}
+
