@@ -111,7 +111,7 @@
         }
         
         
-        function entry($listID, $column, $type = 'delete')
+        function entry($listID, $type = 'delete')
         {
             switch($type)
             {
