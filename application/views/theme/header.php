@@ -16,7 +16,7 @@
         <link href="/assets/css/sb-admin.css"
               rel="stylesheet" type="text/css">
         <link
-            href="/assets/libraries/bootstrap/css/bootstrap.min.css"
+            href="/assets/libraries/bootstrap1/css/bootstrap.min.css"
             rel="stylesheet">
 
         <!-- Custom Fonts -->

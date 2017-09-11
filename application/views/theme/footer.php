@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
 <!-- SB Admin JavaScript -->
-<script src="/sassets/js/sb-admin.min.js"></script>
+<script src="/assets/js/sb-admin.min.js"></script>
 </body>
 
 </html>

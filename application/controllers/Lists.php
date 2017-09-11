@@ -10,6 +10,8 @@
             parent::__construct();
             $this->load->dbforge(); //Loading Dbforge class of CodeIgnitor
             $this->load->model('list_model');
+            $this->load->model('listHeader_model');
+            $this->load->model('listBody_model');
         }
         /*
          * Function to add list to table 'list'
@@ -51,6 +53,22 @@
             $data = $this->list_model->getList();
             echo json_encode($data);
             return;
+            
+            
+        }
+        
+        function allHeaderList()
+        {
+            $data = $this->listHeader_model->getList();
+            echo json_encode($data);
+            exit;
+        }
+        
+        function allBodyList()
+        {
+            $data = $this->listBody_model->getList();
+            echo json_encode($data);
+            exit;
         }
 
         /*
@@ -116,13 +134,13 @@
             switch($type)
             {
                 case 'delete':
-                    $this->deleteEntry($listID,$column);
+                    $this->deleteEntry($listID);
             }
         }
         
-        private function deleteEntry($listID,$column)
+        private function deleteEntry($listID)
         {
-            $delete = $this->list_model->deleteEntry($listID,$column);
+            $delete = $this->listBody_model->deleteEntry($listID);
             if(!$delete)
             {
                 http_response_code(500);

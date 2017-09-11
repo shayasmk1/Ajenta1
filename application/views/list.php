@@ -44,97 +44,102 @@
 <script type="text/javascript">
     $(function () {
         $('#alllist').click(function () {
+            $('#listContainer').text('');
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url("lists/allList"); ?>",
+                url: "<?php echo site_url("lists/allHeaderList"); ?>",
                 dataType: 'json',
                 success: function (data) {
-                    //Create jQuery object from the response HTML.
-                    var dropDownList = [];
-                    var i = 0;
-                    retList = document.getElementById('ret_list');
-                    var table_html = "<tr>";
+                    $(data).each(function(i,value){
+                        $('#listContainer').append("<div class='each-list-item' data-id='" + value.id + "'><div class='full-width list-header'>" + value.name + "</div></div>");
+                    });
+                   getBody(); 
+//                    //Create jQuery object from the response HTML.
+//                    var dropDownList = [];
+//                    var i = 0;
+//                    retList = document.getElementById('ret_list');
+//                    var table_html = "<tr>";
 //                    for (var key in data[0]) {
 //                        table_html += "<th>" + [key] + "</th>";
-//                        option = document.createElement('option');
-//                        option.value = option.text = key;
-//                        retList.add(option);
-//                        dropDownList[i++] = key;
-//                    }
-//                    for (var key in data[0]) {
-//                        delList = document.getElementById('del_list');
-//                        option = document.createElement('option');
-//                        option.value = option.text = key;
-//                        delList.add(option);
-//                        dropDownList[i++] = key;
-//                   }
-
-                    //                    table_html += "</tr>";
-                    //                    console.log(dropDownList);
-                    //                    
-                    //                    $.each(data.list_data, function(i, item) {
-                    //                        var html_str = "";
-                    //                        for(var key in data.list_data[i]){
-                    //                            html_str += "<td><p>" + data.list_data[i][key] + "</p></td>"; 
+////                        option = document.createElement('option');
+////                        option.value = option.text = key;
+////                        retList.add(option);
+////                        dropDownList[i++] = key;
+////                    }
+////                    for (var key in data[0]) {
+////                        delList = document.getElementById('del_list');
+////                        option = document.createElement('option');
+////                        option.value = option.text = key;
+////                        delList.add(option);
+////                        dropDownList[i++] = key;
+////                   }
+//
+//                    //                    table_html += "</tr>";
+//                    //                    console.log(dropDownList);
+//                    //                    
+//                    //                    $.each(data.list_data, function(i, item) {
+//                    //                        var html_str = "";
+//                    //                        for(var key in data.list_data[i]){
+//                    //                            html_str += "<td><p>" + data.list_data[i][key] + "</p></td>"; 
                     //                        }
                     //                        table_html += "<tr><p>"+html_str+"</p></tr>";
-                    //                    });
-                    //                    
-                    //                    $('#listtable').html(table_html);
-
-//                    var tr, td, i, oneRecord;
-//                    var myDiv = document.createElement('DIV');
-//                    myTable = document.createElement('TABLE');
-//                    myTable.setAttribute("border", 1);
-//                    // node tree
-//                    //var data = node.getElementsByTagName("NewDataSet")[0];
-//                    var data = data.list_data[0];
-//                    for (i = 0; i < data.list_data.length; i++) {
-//                        // use only 1st level element nodes to skip 1st level text nodes in NN
-//                        if (data.childNodes[i].nodeType === 1) {
-//                            oneRecord = data.childNodes[i];
-//                            tr = myTable.insertRow(myTable.rows.length);
-//                            td = tr.insertCell(tr.cells.length);
-//                            td.innerHTML = oneRecord.getElementsByTagName("Name")[0].firstChild.nodeValue;
-//                            td = tr.insertCell(tr.cells.length);
-//                            td.innerHTML = oneRecord.getElementsByTagName("Age")[0].firstChild.nodeValue;
-//                            td = tr.insertCell(tr.cells.length);
-//                            td.innerHTML = oneRecord.getElementsByTagName("Org")[0].firstChild.nodeValue;
+//                    //                    });
+//                    //                    
+//                    //                    $('#listtable').html(table_html);
+//
+////                    var tr, td, i, oneRecord;
+////                    var myDiv = document.createElement('DIV');
+////                    myTable = document.createElement('TABLE');
+////                    myTable.setAttribute("border", 1);
+////                    // node tree
+////                    //var data = node.getElementsByTagName("NewDataSet")[0];
+////                    var data = data.list_data[0];
+////                    for (i = 0; i < data.list_data.length; i++) {
+////                        // use only 1st level element nodes to skip 1st level text nodes in NN
+////                        if (data.childNodes[i].nodeType === 1) {
+////                            oneRecord = data.childNodes[i];
+////                            tr = myTable.insertRow(myTable.rows.length);
+////                            td = tr.insertCell(tr.cells.length);
+////                            td.innerHTML = oneRecord.getElementsByTagName("Name")[0].firstChild.nodeValue;
+////                            td = tr.insertCell(tr.cells.length);
+////                            td.innerHTML = oneRecord.getElementsByTagName("Age")[0].firstChild.nodeValue;
+////                            td = tr.insertCell(tr.cells.length);
+////                            td.innerHTML = oneRecord.getElementsByTagName("Org")[0].firstChild.nodeValue;
+////                        }
+////                    }
+////                    myDiv.appendChild(myTable);
+////                    return myDiv.innerHTML;
+////                    }
+//                    
+//                    var table_html = "<tr>";
+//                   // console.log(data.list_data[0]);
+//                    for (var key in data[0]) {
+//                        if(key != 'id')
+//                        {
+//                            table_html += "<th>" + [key] + "</th>";
+//                            $('#ret_list').append('<option>' + key + '</option>');
+//                            $('#del_list').append('<option>' + key + '</option>');
 //                        }
 //                    }
-//                    myDiv.appendChild(myTable);
-//                    return myDiv.innerHTML;
-//                    }
-                    
-                    var table_html = "<tr>";
-                   // console.log(data.list_data[0]);
-                    for (var key in data[0]) {
-                        if(key != 'id')
-                        {
-                            table_html += "<th>" + [key] + "</th>";
-                            $('#ret_list').append('<option>' + key + '</option>');
-                            $('#del_list').append('<option>' + key + '</option>');
-                        }
-                    }
-                    
-                    
-                    
-                    table_html += "</tr>";
-
-                    var i = 0;
-                    //var button = document.createElement("button");
-                    $.each(data, function (i, item) {
-                        var html_str = "";
-                        $.each(item, function(i1,item1){
-                            if(i1 != 'id')
-                            {
-                                html_str += "<td data-container='all_period'><input value='" + item1 + "' />";
-                                html_str += deleteButton(item.id); + '</td>';
-                            }
-                        });
-                        
-                        
-//                        html_str += "<td data-container='all_patron'><input value='" + item.all_patron + "' />";
+//                    
+//                    
+//                    
+//                    table_html += "</tr>";
+//
+//                    var i = 0;
+//                    //var button = document.createElement("button");
+//                    $.each(data, function (i, item) {
+//                        var html_str = "";
+//                        $.each(item, function(i1,item1){
+//                            if(i1 != 'id')
+//                            {
+//                                html_str += "<td data-container='all_period'><input value='" + item1 + "' />";
+//                                html_str += deleteButton(item.id); + '</td>';
+//                            }
+//                        });
+//                        
+//                        
+////                        html_str += "<td data-container='all_patron'><input value='" + item.all_patron + "' />";
 //                        html_str += deleteButton(item.id); + '</td>';
 //                        
 //                        html_str += "<td data-container='all_type'><input value='" + item.all_type + "' />";
@@ -145,19 +150,19 @@
 //                            {
 //                                id = key;
 //                                html_str += "<td><p><input name='post_data[" + i + "][" + key + "]' value='" + data.list_data[i][key] + "' /></p>";
-//                                html_str += "<button type='button' data-id='" + id + "' data-count='" + count + "' class='delete_list'>Delete</button>";
-//                            }
-//                            else
-//                            {
-//                                console.log(item)
-//                            }
-//                            count++;
-//                        }
-                        i = i + 1;
-                        table_html += "<tr><p>" + html_str + "</p></tr>";
-                    });
-                    
-                    $('#edittable').html(table_html);
+////                                html_str += "<button type='button' data-id='" + id + "' data-count='" + count + "' class='delete_list'>Delete</button>";
+////                            }
+////                            else
+////                            {
+////                                console.log(item)
+////                            }
+////                            count++;
+////                        }
+//                        i = i + 1;
+//                        table_html += "<tr><p>" + html_str + "</p></tr>";
+//                    });
+//                    
+//                    $('#edittable').html(table_html);
                 }//Ends data-success function 
             });//Ends Ajax
         });//Ends Click Function
@@ -166,7 +171,7 @@
     
     $(document).on('click', '.delete_list', function(res){
         
-        var parent = $(this).parents('tr').first();
+        var parent = $(this).parents('div').first();
         //var list = $(parent).attr('data-container');
         var conf = confirm("Are you sure you want to delete this entire row?");
         if(!conf)
@@ -174,7 +179,7 @@
             return;
         }
         $(this).attr('disabled', 'disabled');
-        var id = $(this).attr('data-id');
+        var id = $(this).attr('data-list-id');
         $.get('/lists/entry/' + id + '/delete', function(){
             alert('Deleted Successfully');
             $(parent).remove();
@@ -186,7 +191,21 @@
     
     function deleteButton(id)
     {
-        return "<button type='button' data-id='" + id + "' class='delete_list'>Delete</button>";
+        return "<button type='button' data-list-id='" + id + "' class='delete_list'>Delete</button>";
+    }
+    
+    function getBody()
+    {
+        $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("lists/allBodyList"); ?>",
+                dataType: 'json',
+                success: function (data) {
+                    $(data).each(function(i,value){
+                        $('#listContainer').find('[data-id="' + value.list_header_id + '"]').append("<div class='full-width' >" + value.name + deleteButton(value.id) + "</div>");
+                    });
+               }
+           });
     }
 </script>
 
@@ -243,8 +262,14 @@
         <h3>Show and Edit List</h3>
         <input type="button" value="Show All List" id="alllist"/>
         <br><br>
-        <table id="listtable" style="border: 3px solid black;">  
-        </table><br>
+<!--        <table id="listtable" style="border: 3px solid black;">  
+        </table>-->
+        <div class="col-xs-12" >
+            <div class="col-xs-12 well1" id="listContainer">
+                
+            </div>
+        </div>
+        <br>
         <?php echo form_close(); ?>
 
 
