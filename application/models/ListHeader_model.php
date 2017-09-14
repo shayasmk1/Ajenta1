@@ -12,6 +12,15 @@
             function getList() {
                 return $this->db->get($this->table)->result_array();
             }
-
+            
+            function insertData($data)
+            {
+                return $this->db->set($data)->insert($this->table);
+            }
+            
+            function deleteList($column)
+            {
+                return $this->db->where('id', $column)->delete($this->table);
+            }
         }
         ?>

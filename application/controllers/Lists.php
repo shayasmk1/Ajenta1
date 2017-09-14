@@ -18,12 +18,14 @@
          */
         function createList1(){
             $column_name = $this->input->post('columnname');
-            $fields = array(
-            $column_name => array(
-                    'type' => 'VARCHAR',
-                    'constraint' => '255',
-            ));
-            $result= $this->dbforge->add_column('all_list', $fields);
+            $data['name']  = $column_name;
+//            $fields = array(
+//            $column_name => array(
+//                    'type' => 'VARCHAR',
+//                    'constraint' => '255',
+//            ));
+            //$result= $this->dbforge->add_column('all_list', $fields);
+            $result = $this->listHeader_model->insertData($data);
             if(!$result){
                 echo "Unable to Create List!";
             }else{
@@ -35,16 +37,27 @@
          * Function to add entry to list
          */
         function addToList(){
-            $entry = $this->input->post('entryAdd');
-            $listname = $this->input->post('ret_list');
-            $this->list_model->addToListM($listname,$entry);
+            $data['name'] = $this->input->post('entryAdd');
+            $data['list_header_id'] = $this->input->post('ret_list');
+            
+            $insert = $this->listBody_model->insertData($data);
+            if(!$insert){
+                echo "Unable to Add to List!";
+            }else{
+                echo "Successfully Added to List !";
+            }
         }
         /*
          * Delete List
          */
         function deleteList(){
             $column_name = $this->input->post('del_list');
-            $this->list_model->deleteListM($column_name);
+            $delete = $this->listHeader_model->deleteList($column_name);
+            if(!$delete){
+                echo "Unable to Delete List!";
+            }else{
+                echo "Successfully Deleted List !";
+            }
         }
         /*
          * Function to Show columns availble in List

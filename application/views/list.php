@@ -218,7 +218,12 @@
     
     $(function () {
         $("#del_list_button").click(function () {
-            window.alert("Caution ! You are going to DELETE entire list !!");
+            var conf = confirm("Are you sure you want to delete this entire list?");
+            if(!conf)
+            {
+                return;
+            }
+            $('#deleteListForm').submit();
         });
     });
 </script>
@@ -283,6 +288,15 @@
         <?php echo form_open('Lists/addToList'); ?>
         <select id="ret_list" name="ret_list">
             <option value="">Select List Name</option>
+            <?php
+                if(!empty($list))
+                foreach($list AS $each)
+                {
+                    ?>
+                    <option value="<?php echo $each['id'] ?>"><?php echo $each['name'] ?></option>
+                <?php
+                }
+            ?>
         </select>
         <br>
         <?php echo form_label('Value to be Added:'); ?>
@@ -293,13 +307,22 @@
         <hr>
         <br>
 
-        <?php echo form_open('Lists/deleteList'); ?>
+        <?php echo form_open('Lists/deleteList', array('id' => 'deleteListForm')); ?>
         <h3>Delete List</h3>
         <?php echo form_label('Select List to Delete:'); ?>
         <select id="del_list" name="del_list">
             <option>Select List Name</option>
+            <?php
+                if(!empty($list))
+                foreach($list AS $each)
+                {
+                    ?>
+                    <option value="<?php echo $each['id'] ?>"><?php echo $each['name'] ?></option>
+                <?php
+                }
+            ?>
         </select>
-        <input type="submit" value="Delete List" id="del_list_button" />
+        <input type="button" value="Delete List" id="del_list_button" />
         <?php echo form_close(); ?>
         <hr>
         <br><br><br><br>

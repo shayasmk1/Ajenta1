@@ -18,5 +18,10 @@
             {
                 return $this->db->where('id', $listID)->delete($this->table);
             }
+            
+            function insertData($data)
+            {
+                return $this->db->set($data)->insert($this->table);
+            }
         }
         ?>

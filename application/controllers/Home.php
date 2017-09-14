@@ -10,6 +10,7 @@ class Home extends CI_Controller {
 		$this->load->library ( 'session' );
 		$this->lang->load('public_lang', 'english');
                 $this->load->model('cave_model');
+                $this->load->model('listHeader_model');
 	}
 	
 	/*
@@ -27,6 +28,11 @@ class Home extends CI_Controller {
                         $data['cave_list'] = $this->cave_model->get_dropdown_list();
                         //To get Patron(p), Type(t), Period(p) for Autocomplete
                         $data['cave_ptp'] = $this->cave_model->getCaveM(); 
+                        $data['list'] = array();
+                        if($page == 'list')
+                        {
+                            $data['list'] = $this->listHeader_model->getList();
+                        }
                         $this->load->view($page, $data);
                         
 			$this->load->view ('theme/footer');
