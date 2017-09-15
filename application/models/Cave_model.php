@@ -87,6 +87,19 @@ class Cave_model extends CI_Model {
             echo "Update Successfull";
         }
     }
+    
+    
+    function updateCave($data) {
+       
+        $this->db->where('cave_numb', $data['cave_num']);
+        unset($data['cave_num']);
+        $result = $this->db->set($data)->update('caves');
+        if (!$result) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 
     /*
      * Function to Delete User Selected Cave
@@ -98,6 +111,16 @@ class Cave_model extends CI_Model {
             echo "Unable to Delete. Inform Administrator !";
         } else {
             echo "Delete Successfull";
+        }
+    }
+    
+    function deleteCave($data) {
+        $this->db->where('cave_numb', $data);
+        $result = $this->db->delete('caves');
+        if (!$result) {
+            return 0;
+        } else {
+            return 1;
         }
     }
 
