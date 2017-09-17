@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <div id="body">
         <div class='each-api'>
-            /api/v1/cave/register - POST
+            /api/v1/register - POST
             <br/>
             required fields : data[email], data[password], data[name]
             <br/>
@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         
         <div class='each-api'>
-            /api/v1/cave/login - POST
+            /api/v1/login - POST
             <br/>
             required fields : data[email], data[password]
             <br/>
