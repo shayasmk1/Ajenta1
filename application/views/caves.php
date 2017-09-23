@@ -46,11 +46,12 @@
                 var data = eval("(" + data + ")");
                 //console.log(data.one_cave_data[0].cave_description);
 
-                $("#one").html(data.one_cave_data[0].cave_numb);
-                $("#two").html(data.one_cave_data[0].cave_description);
-                $("#three").html(data.one_cave_data[0].cave_patron);
-                $("#four").html(data.one_cave_data[0].cave_period);
-                $("#five").html(data.one_cave_data[0].cave_type);
+                $('#one-header').html('Cave Number: ' + data.one_cave_data[0].cave_numb);
+//               $("#one").html(data.one_cave_data[0].cave_numb);
+//                $("#two").html(data.one_cave_data[0].cave_description);
+//                $("#three").html(data.one_cave_data[0].cave_patron);
+//                $("#four").html(data.one_cave_data[0].cave_period);
+//                $("#five").html(data.one_cave_data[0].cave_type);
             }
         });
     });
@@ -588,6 +589,43 @@
     });
 </script>
 
+<script type="text/javascript">
+         function dragStart(ev) {
+             var id =  ev.target.getAttribute('id');
+             
+            ev.dataTransfer.effectAllowed='move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            ev.dataTransfer.setDragImage(ev.target,0,0);
+            
+            return true;
+         }
+         
+         function dragEnter(ev) {
+            event.preventDefault();
+            return true;
+         }
+         
+         function dragOver(ev) {
+             
+            return false;
+         }
+         
+         function dragDrop(ev) {
+            var src = ev.dataTransfer.getData("Text");
+            console.log(src);
+            var clone = $('#' + src).clone();
+            $(clone).removeAttr('id');
+            $(clone).attr('contenteditable', true);
+            $(clone).attr('style', 'border : 1px solid');
+            $('.cave-property-right').append(clone);
+            ev.stopPropagation();
+            return false;
+            //ev.target.appendChild(document.getElementById(src));
+            //
+            
+         }
+      </script>
+
 <!-- End File Upload -->
 
 <!-- Gallery -->
@@ -630,14 +668,14 @@
                                 <table border="2" class="table">  
                                     <tbody>  
                                         <tr>  
-                                            <th>Cave Number</td>  
-                                            <th>Description</td>
+                                            <th id="one-header" style="text-align:center;background-color: gray;color:white">Cave Number</th>  
+<!--                                            <th>Description</td>
                                             <th>Patron</td>
                                             <th>Period</td>
-                                            <th>Type</td>
+                                            <th>Type</td>-->
                                         </tr>
 
-                                        <tr>
+<!--                                        <tr>
                                             <td><div id="one"></div></td>
                                             <td>
                                                 <div id="two"></div>
@@ -648,9 +686,45 @@
                                             <td><div id="three"></div></td>
                                             <td><div id="four"></div></td>
                                             <td><div id="five"></div></td>
-                                        </tr>  
+                                        </tr>  -->
                                     </tbody>  
                                 </table>
+                                <div class="col-xs-12 property-control-container">
+                                    <div class="col-xs-12 col-sm-3 pull-left cave-property-left " style="">
+                                        <div class='col-xs-12 new_category' draggable="true"
+                ondragstart="return dragStart(event)" id='new_category'>
+                                            <button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>
+                                            
+                                            <div class='col-xs-12 '>
+                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable="true">Title</div>
+                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable="true">Body</div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                            $count = 0;
+                                            if(!empty($column_headers))
+                                            {
+                                                foreach($column_headers AS $each)
+                                                {
+                                                    ?>
+                                        <div class='col-xs-12 new_category' draggable="true"
+                ondragstart="return dragStart(event)" id='new_category<?php echo $count ?>'>
+                                                    <button type="button" class="col-xs-12 btn btn-danger top-margin add-existing-category" id="abcd_<?php echo $count++ ?>"><?php echo $each['name'] ?></button>
+                                                    <div class='col-xs-12 '>
+                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable="true"><?php echo $each['name'] ?></div>
+                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable="true"><?php echo $each['body'] ?></div>
+                                            </div>
+                                        </div>
+                                                <?php
+                                                }
+                                            }
+                                            ?>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8 pull-right cave-property-right" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)"  ondragover="return dragOver(event)">
+                                        
+                                    </div>
+                                    <button type="button" class="col-xs-12 btn btn-danger" id="save-columns">Save columns</button>
+                                </div>
 
                                 <div style="text-align:center;">
                                     <button class="btn btn-primary" onclick="makeEdit()" id="editBtn">Edit Cave</button>
@@ -786,3 +860,42 @@
         });
     });
 </script>-->
+
+<script>
+    
+        $(document).on('click','.add-new-category-details',function(){
+            if($(this).text() == 'Title')
+            {
+                $(this).text('');
+            }
+        });
+        
+        $(document).on('click','.add-new-category-details-body',function(){
+            if($(this).text() == 'Body')
+            {
+                $(this).text('');
+            }
+        });
+        
+        $(document).on('click', '#save-columns', function(){
+            var data = new Object();
+            var count = 0;
+            $('.cave-property-right .new_category').each(function(){
+                data[count] = new Object();
+                data[count]['title'] = $(this).find('.add-new-category-details').text();
+                data[count]['body'] = $(this).find('.add-new-category-details-body').text();
+                count++;
+            });
+            
+            saveColumns(data);
+        });
+        
+        
+        function saveColumns(data)
+        {
+            $.post('/home/caves/save', {data:data}, function(){
+                alert('Columns Saved Succefully');
+                location.reload();
+            });
+        }
+</script>

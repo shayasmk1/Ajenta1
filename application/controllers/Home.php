@@ -11,6 +11,7 @@ class Home extends CI_Controller {
 		$this->lang->load('public_lang', 'english');
                 $this->load->model('cave_model');
                 $this->load->model('listHeader_model');
+                $this->load->model('CaveHeader_model');
 	}
 	
 	/*
@@ -32,6 +33,10 @@ class Home extends CI_Controller {
                         if($page == 'list')
                         {
                             $data['list'] = $this->listHeader_model->getList();
+                        }
+                        if($page == 'caves')
+                        {
+                            $data['column_headers'] = $this->CaveHeader_model->getAllDistinctHeaders();
                         }
                         $this->load->view($page, $data);
                         
@@ -87,4 +92,33 @@ class Home extends CI_Controller {
 		$this->session->sess_destroy();
 		$this->load->view('login');
 	}
+        
+        
+        function caves($action)
+        {
+            
+            switch($action)
+            {
+                case 'save':
+                    if($this->input->method() == 'post')
+                    {
+                        $data = $this->input->post();
+                        $data = $data['data'];
+                        if(empty($data))
+                        {
+                            return 0;
+                        }
+                        $insertArray = array();
+                        foreach($data AS $each)
+                        {
+                            $insertArray['name'] = $each['title'];
+                            $insertArray['body'] = $each['body'];
+                            $this->CaveHeader_model->insertData($insertArray); 
+                        }
+                    }
+                    
+                    return 1;
+            }
+                
+        }
 }
