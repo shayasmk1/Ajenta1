@@ -65,6 +65,7 @@ class Caves extends CI_Controller {
     function getOneCave() {
         $search = $this->input->post('cave_numb');
         $data['one_cave_data'] = $this->cave_model->getOneCaveM($search);
+        $data['header'] = $this->cave_model->getHeaders($search);
         echo json_encode($data);
     }
     

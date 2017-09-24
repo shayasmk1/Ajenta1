@@ -47,6 +47,18 @@
                 //console.log(data.one_cave_data[0].cave_description);
 
                 $('#one-header').html('Cave Number: ' + data.one_cave_data[0].cave_numb);
+                var html = '';
+                $(data.header).each(function(i, value){
+                    html+= '<div class="col-xs-12 new_category" style="border:1px solid" draggable="true" ondragstart="return dragStart(event)" id="new_category"><button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>';
+                                            
+                    html+= "<div class='col-xs-12 '><div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable='true'>" + value.name + "</div>";
+                    html+= "<div class='col-xs-12 add-new-category-details-show-container col-xs-12'>Show column for other users? <input class='add-new-category-details-show hcenter' type='checkbox' checked='checked'/></div>";
+                    html+= "<div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable='true'>" + value.body + "</div>";
+                    html+= "<button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type='button' >Delete</button>";       
+                    html+= "</div></div>";
+                });
+                
+                $('.cave-property-right').html(html);
 //               $("#one").html(data.one_cave_data[0].cave_numb);
 //                $("#two").html(data.one_cave_data[0].cave_description);
 //                $("#three").html(data.one_cave_data[0].cave_patron);
@@ -267,9 +279,9 @@
     /* Section 1 **/
     .form-wrap .tabs {
         overflow: hidden;
-        z-index: 100;
+      //  z-index: 100;
         top: 80px;
-        height: 500px;
+       // height: 500px;
         position: relative;
         padding-left: 50px;
         padding-right: 50px;
@@ -331,7 +343,7 @@
         background: #fff;
         /*border-bottom: 1px solid #ccc;
         height: 500px;*/
-        height: 600px;
+       // height: 600px;
         margin-top: 20px; 
         z-index: -1;
         text-align: center;
@@ -347,8 +359,11 @@
     }
 
     footer {
-        height: 500px;
+       // height: 500px;
         background: #34495e;
+        position: fixed;
+        bottom : 0px;
+        width:  100%;
     }
 </style>
 <script>
@@ -615,7 +630,7 @@
             console.log(src);
             var clone = $('#' + src).clone();
             $(clone).removeAttr('id');
-            $(clone).attr('contenteditable', true);
+            //$(clone).attr('contenteditable', true);
             $(clone).attr('style', 'border : 1px solid');
             $('.cave-property-right').append(clone);
             ev.stopPropagation();
@@ -632,9 +647,9 @@
 
 <!-- End of Gallery -->
 
-<div class="container submenu">
-    <div class="sections">
-        <section id="1">
+<div class="container submenu col-xs-12">
+    <div class="sections col-xs-12">
+        <section id="1" class='col-xs-12'>
             <div class="form-wrap">
                 <div class="tabs">
                     <?php
@@ -697,7 +712,9 @@
                                             
                                             <div class='col-xs-12 '>
                                                 <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable="true">Title</div>
+                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
                                                  <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable="true">Body</div>
+                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type="button" >Delete</button>
                                             </div>
                                         </div>
                                         <?php
@@ -708,11 +725,14 @@
                                                 {
                                                     ?>
                                         <div class='col-xs-12 new_category' draggable="true"
-                ondragstart="return dragStart(event)" id='new_category<?php echo $count ?>'>
+                                             ondragstart="return dragStart(event)" id='new_category<?php echo $count ?>' >
                                                     <button type="button" class="col-xs-12 btn btn-danger top-margin add-existing-category" id="abcd_<?php echo $count++ ?>"><?php echo $each['name'] ?></button>
                                                     <div class='col-xs-12 '>
                                                 <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable="true"><?php echo $each['name'] ?></div>
+                                                
+                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
                                                  <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable="true"><?php echo $each['body'] ?></div>
+                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type="button" >Delete</button>
                                             </div>
                                         </div>
                                                 <?php
@@ -758,7 +778,7 @@
             </div>
         </section>
 
-        <section id="2">          
+        <section id="2" style="display:none">          
             <ul class="desc-menu">
                 <li title="facade"><a href="#2" class="facade" onclick="toggle('facade');">Facade</a></li>
                 <li title="hall"><a href="#2" class="hall" onclick="toggle('hall');">Hall</a></li>
@@ -822,13 +842,13 @@
             </div>
         </section>
         
-        <section id="3">
+        <section id="3" style="display:none">
             <h1>Image Gallery</h1>
             
                 <!-- https://tympanus.net/codrops/2011/09/20/responsive-image-gallery/ -->
         </section>
         
-        <section id="4">
+        <section id="4" style="display:none">
             <h1> Story Section</h1>   
         </section>
         
@@ -879,11 +899,20 @@
         
         $(document).on('click', '#save-columns', function(){
             var data = new Object();
-            var count = 0;
+            var count = 1;
             $('.cave-property-right .new_category').each(function(){
                 data[count] = new Object();
                 data[count]['title'] = $(this).find('.add-new-category-details').text();
                 data[count]['body'] = $(this).find('.add-new-category-details-body').text();
+                data[count]['column_order'] = count;
+                if($(this).find('.add-new-category-details-show').is(':checked'))
+                {
+                    data[count]['column_show'] = 1;
+                }
+                else
+                {
+                    data[count]['column_show'] = 0;
+                }
                 count++;
             });
             
@@ -893,7 +922,8 @@
         
         function saveColumns(data)
         {
-            $.post('/home/caves/save', {data:data}, function(){
+            var caveNum = $('#cave_numb').val();
+            $.post('/home/caves/save', {data:data, caveNum:caveNum}, function(){
                 alert('Columns Saved Succefully');
                 location.reload();
             });

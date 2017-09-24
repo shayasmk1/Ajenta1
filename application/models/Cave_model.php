@@ -4,6 +4,7 @@ class Cave_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        $this->model = 'caves';
     }
     /*
      * Model for Managing AutoFill in Inputs 
@@ -36,7 +37,11 @@ class Cave_model extends CI_Model {
         $query = $this->db->query('SELECT * FROM `caves` WHERE cave_numb =' . $search . '');
         return $query->result();
     }
-
+    
+    function getHeaders($caveID)
+    {
+        return $this->db->join('cave_header', 'caves.cave_id = cave_header.cave_id')->where('caves.cave_numb', $caveID)->get($this->model)->result_array();
+    }
     
     /*
      * Model to Insert Data into Database

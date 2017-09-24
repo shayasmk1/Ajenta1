@@ -104,20 +104,36 @@ class Home extends CI_Controller {
                     {
                         $data = $this->input->post();
                         $data = $data['data'];
-                        if(empty($data))
+                        $caveNum = $this->input->post('caveNum');
+                        if(empty($data) || $caveNum == null)
                         {
-                            return 0;
+                            header('HTTP/1.1 400 Created');
+                            echo json_encode($data);
+                            exit;
                         }
+                        $cave = $this->db->where('cave_numb', $caveNum)->get('caves')->row();
+                        if(!$cave)
+                        {
+                            header('HTTP/1.1 400 Created');
+                            echo json_encode($data);
+                            exit;
+                        }
+                        $this->db->where('cave_id', $cave->cave_id)->delete('cave_header');
                         $insertArray = array();
                         foreach($data AS $each)
                         {
                             $insertArray['name'] = $each['title'];
                             $insertArray['body'] = $each['body'];
+                            $insertArray['column_order'] = $each['column_order'];
+                            $insertArray['cave_id'] = $cave->cave_id;
+                            $insertArray['column_show'] = $each['column_show'];
                             $this->CaveHeader_model->insertData($insertArray); 
                         }
                     }
                     
-                    return 1;
+                    header('HTTP/1.1 200 Created');
+                            echo json_encode($data);
+                            exit;
             }
                 
         }
