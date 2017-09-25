@@ -920,6 +920,18 @@
         });
         
         
+        $(document).on('click', '.add-new-category-details-delete', function(){
+           var conf  = confirm("Are you sure you want to delete this?"); 
+           if(!conf)
+           {
+               return;
+           }
+           
+           var parent = $(this).parents('.new_category').first();
+           $(parent).remove();
+        });
+        
+        
         function saveColumns(data)
         {
             var caveNum = $('#cave_numb').val();
