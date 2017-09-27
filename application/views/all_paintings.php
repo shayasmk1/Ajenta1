@@ -11,7 +11,7 @@
 </head>
 <body>
 
-	<section>
+	<section class="col-xs-12 col-sm-9 pull-right">
 		<div class="container">
 
 

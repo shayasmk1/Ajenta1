@@ -254,7 +254,7 @@
     });
 </script>
 <body>
-    <div id="container center">
+    <div id="container center" class="col-xs-12 col-sm-9 pull-right" style="margin-top :50px">
         <?php echo form_open('Lists/createList1'); ?>
         <h3 align="center">Create 1 Dimensional List</h3>
         <?php echo form_label('Enter New List Name :'); ?>

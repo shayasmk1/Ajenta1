@@ -4,12 +4,13 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 body {
-  padding-top: 54px;
-  padding-left: 0; }
+ // padding-top: 54px;
+  //padding-left: 0;
+}
   @media (min-width: 992px) {
     body {
-      padding-top: 56px;
-      padding-left: 250px; } }
+     // padding-top: 56px;
+     // padding-left: 250px; } }
 
 .card-block-icon {
   font-size: 5rem;
@@ -84,17 +85,19 @@ body {
       width: auto; }
     #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown > .nav-link .new-indicator {
       position: absolute;
-      top: 0;
-      right: 25px;
+      //top: 6px;
+     // right: 10px;
       font-size: 1.1rem; }
       #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown > .nav-link .new-indicator .number {
         position: absolute;
         color: white;
-        width: 22.625px;
+        //width: 22.625px;
         text-align: center;
-        left: 0;
-        top: 6px;
-        font-size: .5rem; }
+      
+        font-size: 10px;
+          top: -1px;
+    left: 5px;
+      }
   #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown.show > .nav-link:after {
     content: "\f107"; }
   #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown .dropdown-menu > .dropdown-item > .dropdown-message {
@@ -119,8 +122,8 @@ body {
       -ms-flex-direction: column;
       flex-direction: column; }
       #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item {
-        padding: 0;
-        width: 250px; }
+       // padding: 0;
+      //  width: 250px; }
         #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item > .nav-link {
           padding: 1em; }
         #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item .sidebar-second-level,
@@ -130,7 +133,7 @@ body {
           padding-left: 0; }
           #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item .sidebar-second-level > li,
           #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item .sidebar-third-level > li {
-            width: 250px; }
+         //   width: 250px; }
             #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item .sidebar-second-level > li > a,
             #mainNav .navbar-collapse .navbar-nav.sidebar-nav > .nav-item .sidebar-third-level > li > a {
               padding: 1em; }
@@ -217,8 +220,8 @@ body {
 
 .col-xs-12
 {
-    width : 100%;
-    float : left;
+    //width : 100%;
+    //float : left;
 }
 
 .top-margin
@@ -267,7 +270,14 @@ body {
 .add-new-category-details-body
 {
     background-color : white;
-    height : 23px;
+    min-height : 150px;
+    cursor : pointer;
+    overflow: auto;
+}
+
+.brown-field
+{
+    background-color: saddlebrown !important;
 }
 
 
@@ -278,11 +288,104 @@ footer
     bottom : 0px;
     color : white;
     text-align : center;
-    z-index: 20;
-    
+    z-index: 100000;
+    padding : 10px;
 }
 
 .cave_options
 {
     margin-bottom: 50px;
+}
+
+.custom-sidebar
+{
+    position : fixed;
+    //width : 250px;
+}
+
+.custom-sidebar li
+{
+   padding : 15px;
+}
+
+
+.custom-sidebar
+{
+    background-color: gray;
+    margin-top : 0px !important;
+    height : 100vh;
+    list-style-type: none;
+}
+
+.custom-sidebar li a {
+    color : white;
+}
+
+#mainNav
+{
+    margin-bottom : 0px !important;
+    position : fixed;
+    width : 100% !important;
+}
+
+.dropdown-item, .dropdown-message
+{
+    padding : 10px;
+    width : 100% !important;
+    float : left !important;
+}
+
+.view-all-messages
+{
+    width  :100%;
+    text-align: center;
+    background-color : gray;
+    color : white;
+    padding : 10px;
+}
+
+#navbarExample ul
+{
+    margin-top :14px;
+}
+
+.form-menu-container
+{
+    margin-top : 7px !important;
+}
+
+.no-padding
+{
+    padding-left : 0px !important;
+    padding-right: 0px !important;
+}
+
+.count-container
+{
+    background-color: brown;
+    color : white;
+    padding : 9px;
+    border-radius : 15px;
+        top: 0px;
+    left: -10px;
+}
+
+.gray-bg
+{
+    background-color : gray;
+    color : white;
+    padding : 10px;
+    border-radius:12px;
+    margin-top:5px;
+}
+
+.gray-field
+{
+    border-right: 1px solid lightgray;
+    text-align: center;
+}
+
+.white-bg
+{
+    background-color : white;
 }

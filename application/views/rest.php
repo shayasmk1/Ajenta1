@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
-<div id="container">
+<div id="container" class="col-xs-12 col-sm-9 pull-right">
     <h1>REST Server Tests</h1>
 
     <div id="body">

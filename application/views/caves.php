@@ -2,9 +2,15 @@
 
 <!-- Script for Auto complete 3 -->
 <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
-<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<!--<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 <link href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel = "stylesheet">
+
+<link rel="stylesheet" type="text/css" href="/assets/libraries/formBuilder/demo/assets/css/demo.css">
+
+<!--<script src="/assets/libraries/formBuilder/demo/assets/js/vendor.js"></script>-->
+  <script src="/assets/libraries/formBuilder/demo/assets/js/form-builder.min.js"></script>
+  <script src="/assets/libraries/formBuilder/demo/assets/js/form-render.min.js"></script>
 
 <style>
     .hide{
@@ -49,12 +55,18 @@
                 $('#one-header').html('Cave Number: ' + data.one_cave_data[0].cave_numb);
                 var html = '';
                 $(data.header).each(function(i, value){
-                    html+= '<div class="col-xs-12 new_category" style="border:1px solid" draggable="true" ondragstart="return dragStart(event)" id="new_category"><button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>';
+                    html+= '<div class="col-xs-12 new_category no-padding" style="border:1px solid" draggable="true" ondragstart="return dragStart(event)" id="new_category"><button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>';
                                             
-                    html+= "<div class='col-xs-12 '><div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable='true'>" + value.name + "</div>";
-                    html+= "<div class='col-xs-12 add-new-category-details-show-container col-xs-12'>Show column for other users? <input class='add-new-category-details-show hcenter' type='checkbox' checked='checked'/></div>";
-                    html+= "<div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable='true'>" + value.body + "</div>";
-                    html+= "<button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type='button' >Delete</button>";       
+                    html+= "<div class='col-xs-12 no-padding'><div class='col-xs-12 no-padding add-new-category-details editable-text-border col-xs-12' contenteditable='true'>" + value.name + "</div>";
+                    html+= "<div class='col-xs-12 no-padding add-new-category-details-show-container col-xs-12'>Show column for other users? <input class='add-new-category-details-show hcenter' type='checkbox' checked='checked'/></div>";
+                    html+= "<div class='col-xs-12 no-padding add-new-category-details-body editable-text-border col-xs-12' data-body='" + value.body + "'><div class='col-xs-12'><div class='col-xs-12 gray-bg'>";
+                    html+= "<div class='col-xs-12 col-sm-4 gray-field brown-field textfield'>Textfield</div>";
+                    html+= "<div class='col-xs-12 col-sm-4 gray-field textarea'>TextArea</div>";
+                    html+= "<div class='col-xs-12 col-sm-4 gray-field select'>Select Box</div>";
+                    html+= "<div class='col-xs-12 top-margin'><div class='col-xs-12 no-padding'><input type='text' class='form-control text-field input-area' data-type='textfield' /><textarea class='form-control text-field input-area' data-type='textarea' style='display:none'></textarea><div class='col-xs-12 select-area input-area' data-type='select' style='display:none'><div class='col-xs-9 white-bg editable-text-border'></div><button type='button' class='col-xs-3 btn btn-danger btn-add-option'><i class='glyphicon glyphicon-plus'></i></button></div></div></div>";
+                    html+= "</div></div></div>";
+              
+                    html+= "<button class='col-xs-12 no-padding add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type='button' >Delete</button>";       
                     html+= "</div></div>";
                 });
                 
@@ -229,9 +241,9 @@
             return array.indexOf(value) === index;
         });
 
-        $("#three").autocomplete({
-            source: uniquePatron
-        });
+//        $("#three").autocomplete({
+//            source: uniquePatron
+//        });
 
 
         var availablePeriod = [];
@@ -245,9 +257,9 @@
         uniquePeriod = noNullPeriod.filter(function (value, index, array) {
             return array.indexOf(value) === index;
         });
-        $("#four").autocomplete({
-            source: uniquePeriod
-        });
+//        $("#four").autocomplete({
+//            source: uniquePeriod
+//        });
 
 
         var availableType = [];
@@ -261,9 +273,9 @@
         uniqueType = noNullType.filter(function (value, index, array) {
             return array.indexOf(value) === index;
         });
-        $("#five").autocomplete({
-            source: uniqueType
-        });
+//        $("#five").autocomplete({
+//            source: uniqueType
+//        });
     });
 </script>
 <script>
@@ -647,11 +659,11 @@
 
 <!-- End of Gallery -->
 
-<div class="container submenu col-xs-12">
-    <div class="sections col-xs-12">
-        <section id="1" class='col-xs-12'>
-            <div class="form-wrap">
-                <div class="tabs">
+<div class="container submenu col-xs-12 col-md-9 no-padding pull-right" >
+    <div class="sections col-xs-12 no-padding" style="z-index:10000;margin-top :50px">
+        <section id="1" class='col-xs-12 no-padding'>
+            <div class="form-wrap ">
+                <div class="tabs ">
                     <?php
                     if (isset($cave_list) && !empty($cave_list)) {
                         ?>
@@ -675,10 +687,10 @@
                     }
                     ?>
                     <br><br>
-                    <div class="switch_data">
+                    <div class="switch_data col-xs-12 no-padding">
 
                         <!-- CAVE OPTIONS --->
-                        <div class="cave_options hide">
+                        <div class="cave_options hide col-xs-12 no-padding">
                             <section>
                                 <table border="2" class="table">  
                                     <tbody>  
@@ -704,17 +716,17 @@
                                         </tr>  -->
                                     </tbody>  
                                 </table>
-                                <div class="col-xs-12 property-control-container">
-                                    <div class="col-xs-12 col-sm-3 pull-left cave-property-left " style="">
-                                        <div class='col-xs-12 new_category' draggable="true"
+                                <div class="col-xs-12 property-control-container no-padding">
+                                    <div class="col-xs-12 col-sm-3 pull-left cave-property-left no-padding" style="">
+                                        <div class='col-xs-12 new_category ' draggable="true"
                 ondragstart="return dragStart(event)" id='new_category'>
                                             <button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>
                                             
-                                            <div class='col-xs-12 '>
-                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable="true">Title</div>
-                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
-                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable="true">Body</div>
-                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type="button" >Delete</button>
+                                            <div class='col-xs-12 no-padding'>
+                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12 no-padding' contenteditable="true">Title</div>
+                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12 no-padding'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
+                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12 no-padding' contenteditable="true">Body</div>
+                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger no-padding' type="button" >Delete</button>
                                             </div>
                                         </div>
                                         <?php
@@ -724,15 +736,15 @@
                                                 foreach($column_headers AS $each)
                                                 {
                                                     ?>
-                                        <div class='col-xs-12 new_category' draggable="true"
+                                        <div class='col-xs-12 new_category ' draggable="true"
                                              ondragstart="return dragStart(event)" id='new_category<?php echo $count ?>' >
                                                     <button type="button" class="col-xs-12 btn btn-danger top-margin add-existing-category" id="abcd_<?php echo $count++ ?>"><?php echo $each['name'] ?></button>
                                                     <div class='col-xs-12 '>
-                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12' contenteditable="true"><?php echo $each['name'] ?></div>
+                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12 no-padding' contenteditable="true"><?php echo $each['name'] ?></div>
                                                 
-                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
-                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12' contenteditable="true"><?php echo $each['body'] ?></div>
-                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type="button" >Delete</button>
+                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12 no-padding'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
+                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12 no-padding' contenteditable="true"><?php echo $each['body'] ?></div>
+                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger no-padding' type="button" >Delete</button>
                                             </div>
                                         </div>
                                                 <?php
@@ -778,7 +790,7 @@
             </div>
         </section>
 
-        <section id="2" style="display:none">          
+<!--        <section id="2" class="col-xs-12" style="display:none">          
             <ul class="desc-menu">
                 <li title="facade"><a href="#2" class="facade" onclick="toggle('facade');">Facade</a></li>
                 <li title="hall"><a href="#2" class="hall" onclick="toggle('hall');">Hall</a></li>
@@ -842,18 +854,52 @@
             </div>
         </section>
         
-        <section id="3" style="display:none">
+        <section id="3" class="col-xs-12" style="display:none">
             <h1>Image Gallery</h1>
             
-                <!-- https://tympanus.net/codrops/2011/09/20/responsive-image-gallery/ -->
+                 https://tympanus.net/codrops/2011/09/20/responsive-image-gallery/ 
         </section>
         
-        <section id="4" style="display:none">
+        <section id="4" class="col-xs-12" style="display:none">
             <h1> Story Section</h1>   
-        </section>
+        </section>-->
         
     </div> <!-- Section Tag Ends Here -->
 </div> <!--Ending Container -->
+
+
+<div class="modal fade col-xs-12" id="editBodyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000000">
+  <div class="modal-dialog col-xs-12" role="document" style="width:100%">
+    <div class="modal-content col-xs-12">
+      <div class="modal-header col-xs-12">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Body</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body col-xs-12">
+          <div class="col-xs-12">
+              <div class="col-xs-12 gray-bg">
+                  <div class="col-xs-12 col-sm-4 gray-field">
+                      Textfield
+                  </div>
+                  <div class="col-xs-12 col-sm-4 gray-field">
+                      TextArea
+                  </div>
+                  <div class="col-xs-12 col-sm-4 gray-field">
+                      Select Box
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer col-xs-12">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--<script>
     $(document).ready(function () {
         // Add smooth scrolling to all links
@@ -931,6 +977,39 @@
            $(parent).remove();
         });
         
+        $(document).on('click', '.add-new-category-details-body', function(){
+           //jQuery('#editBodyModal').modal('show'); 
+        });
+        
+        $(document).on('click', '.gray-field', function(){
+            var parent = $(this).parents('.gray-bg').first();
+            $(parent).find('.brown-field').removeClass('brown-field'); 
+            $(this).addClass('brown-field'); 
+        });
+        
+        $(document).on('click', '.textfield', function(){
+            var parent = $(this).parents('.gray-bg').first();
+            $(parent).find('.input-area').hide();
+            $(parent).find('[data-type="textfield"]').show(); 
+        });
+        
+        $(document).on('click', '.textarea', function(){
+            var parent = $(this).parents('.gray-bg').first();
+            $(parent).find('.input-area').hide();
+            $(parent).find('[data-type="textarea"]').show(); 
+        });
+        
+        $(document).on('click', '.select', function(){
+            var parent = $(this).parents('.gray-bg').first();
+            $(parent).find('.input-area').hide();
+            $(parent).find('[data-type="select"]').show(); 
+        });
+        
+        $(document).on('click', '.btn-add-option', function(){
+            var parent = $(this).parents('.select-area').first();
+            var html = "<div class='col-xs-9 white-bg editable-text-border'></div><button type='button' class='col-xs-3 btn btn-danger btn-add-option'><i class='glyphicon glyphicon-plus'></i></button>";
+            $('.select-area').append(html);
+        });
         
         function saveColumns(data)
         {
@@ -940,4 +1019,11 @@
                 location.reload();
             });
         }
+        
+        
+        
+        jQuery(function($) {
+  var fbTemplate = document.getElementById('build-wrap');
+  $(fbTemplate).formBuilder();
+});
 </script>
