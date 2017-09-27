@@ -1007,8 +1007,19 @@
         
         $(document).on('click', '.btn-add-option', function(){
             var parent = $(this).parents('.select-area').first();
-            var html = "<div class='col-xs-9 white-bg editable-text-border'></div><button type='button' class='col-xs-3 btn btn-danger btn-add-option'><i class='glyphicon glyphicon-plus'></i></button>";
+            var html = "<div class='col-xs-12 option-container no-padding'><div class='col-xs-8 white-bg editable-text-border' contenteditable='true' style='color:gray;text-align:left'></div><button type='button' class='col-xs-2 btn btn-success btn-add-option'><i class='glyphicon glyphicon-plus'></i></button><button type='button' class='col-xs-2 btn btn-danger btn-delete-option'><i class='glyphicon glyphicon-remove'></i></button></div>";
             $('.select-area').append(html);
+        });
+        
+        $(document).on('click', '.btn-delete-option', function(){
+            var parent = $(this).parents('.option-container').first();
+            var conf = confirm("Are you sure you want to delete this option?");
+            if(!conf)
+            {
+                return 0;
+            }
+            
+            $(parent).remove();
         });
         
         function saveColumns(data)
