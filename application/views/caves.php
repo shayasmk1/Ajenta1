@@ -6,11 +6,15 @@
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 <link href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel = "stylesheet">
 
-<link rel="stylesheet" type="text/css" href="/assets/libraries/formBuilder/demo/assets/css/demo.css">
+<!--<link rel="stylesheet" type="text/css" href="/assets/libraries/formBuilder/demo/assets/css/demo.css">-->
+<!--<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.css">-->
 
 <!--<script src="/assets/libraries/formBuilder/demo/assets/js/vendor.js"></script>-->
-  <script src="/assets/libraries/formBuilder/demo/assets/js/form-builder.min.js"></script>
-  <script src="/assets/libraries/formBuilder/demo/assets/js/form-render.min.js"></script>
+<!--  <script src="/assets/libraries/formBuilder/dist/form-builder.min.js"></script>
+  <script src="/assets/libraries/formBuilder/dist/form-render.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>
 
 <style>
     .hide{
@@ -24,6 +28,14 @@
         text-align: center;
         padding: 10px;
     }
+    
+    .cave-section {
+  padding: 0;
+  margin: 10px 0;
+  background: #f2f2f2 url('http://formbuilder.readthedocs.io/en/latest/img/noise.png');
+}
+
+
 
 
 </style>
@@ -35,7 +47,9 @@
         var show = $("option:selected", this).data('show'); //get data from HTML elment option:selected of 'this' whose name is 'show'
         $(target).children().addClass('hide'); //hide  other options if they are shown previously by choosing their dropdown
         $(show).removeClass('hide');
-
+        
+        var height = $('.cb-wrap').height();
+        $('.frmb').attr('style', 'min-height:' + height + 'px')
         //Access Cave Number and send AJAX to controller
         var e = document.getElementById("cave_numb");
         var cave_numb = e.options[e.selectedIndex].value;
@@ -81,7 +95,7 @@
     });
 
     $(document).ready(function () {
-        $('.switch_data').trigger('change');
+       // $('.switch_data').trigger('change');
     });
 </script>
 
@@ -225,58 +239,58 @@
 
 
 <script>
-    $(function () {
-        var obj = <?php echo $cave_ptp ?>;
-        var availablePatron = [];
-        var noNullPatron = [];
-        var uniquePatron = [];
-        var i = 0;
-        for (i in obj) {
-            availablePatron[i] = obj[i]['cave_patron'];
-        }
-        noNullPatron = availablePatron.filter(function (val) {
-            return val !== null;
-        });
-        uniquePatron = noNullPatron.filter(function (value, index, array) {
-            return array.indexOf(value) === index;
-        });
-
-//        $("#three").autocomplete({
-//            source: uniquePatron
+//    $(function () {
+//        var obj = <?php echo $cave_ptp ?>;
+//        var availablePatron = [];
+//        var noNullPatron = [];
+//        var uniquePatron = [];
+//        var i = 0;
+//        for (i in obj) {
+//            availablePatron[i] = obj[i]['cave_patron'];
+//        }
+//        noNullPatron = availablePatron.filter(function (val) {
+//            return val !== null;
 //        });
-
-
-        var availablePeriod = [];
-        var j = 0;
-        for (j in obj) {
-            availablePeriod[j] = obj[j]['cave_period'];
-        }
-        noNullPeriod = availablePeriod.filter(function (val) {
-            return val !== null;
-        });
-        uniquePeriod = noNullPeriod.filter(function (value, index, array) {
-            return array.indexOf(value) === index;
-        });
-//        $("#four").autocomplete({
-//            source: uniquePeriod
+//        uniquePatron = noNullPatron.filter(function (value, index, array) {
+//            return array.indexOf(value) === index;
 //        });
-
-
-        var availableType = [];
-        var k = 0;
-        for (k in obj) {
-            availableType[k] = obj[k]['cave_type'];
-        }
-        noNullType = availableType.filter(function (val) {
-            return val !== null;
-        });
-        uniqueType = noNullType.filter(function (value, index, array) {
-            return array.indexOf(value) === index;
-        });
-//        $("#five").autocomplete({
-//            source: uniqueType
+//
+////        $("#three").autocomplete({
+////            source: uniquePatron
+////        });
+//
+//
+//        var availablePeriod = [];
+//        var j = 0;
+//        for (j in obj) {
+//            availablePeriod[j] = obj[j]['cave_period'];
+//        }
+//        noNullPeriod = availablePeriod.filter(function (val) {
+//            return val !== null;
 //        });
-    });
+//        uniquePeriod = noNullPeriod.filter(function (value, index, array) {
+//            return array.indexOf(value) === index;
+//        });
+////        $("#four").autocomplete({
+////            source: uniquePeriod
+////        });
+//
+//
+//        var availableType = [];
+//        var k = 0;
+//        for (k in obj) {
+//            availableType[k] = obj[k]['cave_type'];
+//        }
+//        noNullType = availableType.filter(function (val) {
+//            return val !== null;
+//        });
+//        uniqueType = noNullType.filter(function (value, index, array) {
+//            return array.indexOf(value) === index;
+//        });
+////        $("#five").autocomplete({
+////            source: uniqueType
+////        });
+//    });
 </script>
 <script>
     $(document).on("click", function (e) {
@@ -379,34 +393,34 @@
     }
 </style>
 <script>
-    var sections = $('section'), nav = $('nav'), nav_height = nav.outerHeight();
-
-    $(window).on('scroll', function () {
-        var cur_pos = $(this).scrollTop();
-
-        sections.each(function () {
-            var top = $(this).offset().top - nav_height,
-                    bottom = top + $(this).outerHeight();
-
-            if (cur_pos >= top && cur_pos <= bottom) {
-                nav.find('a').removeClass('active');
-                sections.removeClass('active');
-
-                $(this).addClass('active');
-                nav.find('a[href="#' + $(this).attr('id') + '"]').addClass('active');
-            }
-        });
-    });
-
-    nav.find('a').on('click', function () {
-        var $el = $(this), id = $el.attr('href');
-
-        $('html, body').animate({
-            scrollTop: $(id).offset().top - nav_height
-        }, 500);
-
-        return false;
-    });
+//    var sections = $('section'), nav = $('nav'), nav_height = nav.outerHeight();
+//
+//    $(window).on('scroll', function () {
+//        var cur_pos = $(this).scrollTop();
+//
+//        sections.each(function () {
+//            var top = $(this).offset().top - nav_height,
+//                    bottom = top + $(this).outerHeight();
+//
+//            if (cur_pos >= top && cur_pos <= bottom) {
+//                nav.find('a').removeClass('active');
+//                sections.removeClass('active');
+//
+//                $(this).addClass('active');
+//                nav.find('a[href="#' + $(this).attr('id') + '"]').addClass('active');
+//            }
+//        });
+//    });
+//
+//    nav.find('a').on('click', function () {
+//        var $el = $(this), id = $el.attr('href');
+//
+//        $('html, body').animate({
+//            scrollTop: $(id).offset().top - nav_height
+//        }, 500);
+//
+//        return false;
+//    });
 </script>
 
 <!-- Description Panel -->
@@ -570,6 +584,11 @@
     .image-preview-input-title {
         margin-left:2px;
     }
+    
+    .input-control-0, .input-control-2
+    {
+        display : none;
+    }
 </style>
 
 <script>
@@ -578,79 +597,79 @@
         // Hover befor close the preview    
     });
 
-    $(function () {
-        // Create the close button
-        var closebtn = $('<button/>', {
-            type: "button",
-            text: 'x',
-            id: 'close-preview',
-            style: 'font-size: initial;'
-        });
-        closebtn.attr("class", "close pull-right");
-
-        // Clear event
-        $('.image-preview-clear').click(function () {
-            $('.image-preview').attr("data-content", "").popover('hide');
-            $('.image-preview-filename').val("");
-            $('.image-preview-clear').hide();
-            $('.image-preview-input input:file').val("");
-            $(".image-preview-input-title").text("Browse");
-        });
-        // Create the preview image
-        $(".image-preview-input input:file").change(function () {
-            var img = $('<img/>', {
-                id: 'dynamic',
-                width: 250,
-                height: 200
-            });
-            var file = this.files[0];
-            var reader = new FileReader();
-            // Set preview image into the popover data-content
-            reader.onload = function (e) {
-                $(".image-preview-input-title").text("Change");
-                $(".image-preview-clear").show();
-                $(".image-preview-filename").val(file.name);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
+//    $(function () {
+//        // Create the close button
+//        var closebtn = $('<button/>', {
+//            type: "button",
+//            text: 'x',
+//            id: 'close-preview',
+//            style: 'font-size: initial;'
+//        });
+//        closebtn.attr("class", "close pull-right");
+//
+//        // Clear event
+//        $('.image-preview-clear').click(function () {
+//            $('.image-preview').attr("data-content", "").popover('hide');
+//            $('.image-preview-filename').val("");
+//            $('.image-preview-clear').hide();
+//            $('.image-preview-input input:file').val("");
+//            $(".image-preview-input-title").text("Browse");
+//        });
+//        // Create the preview image
+//        $(".image-preview-input input:file").change(function () {
+//            var img = $('<img/>', {
+//                id: 'dynamic',
+//                width: 250,
+//                height: 200
+//            });
+//            var file = this.files[0];
+//            var reader = new FileReader();
+//            // Set preview image into the popover data-content
+//            reader.onload = function (e) {
+//                $(".image-preview-input-title").text("Change");
+//                $(".image-preview-clear").show();
+//                $(".image-preview-filename").val(file.name);
+//            };
+//            reader.readAsDataURL(file);
+//        });
+//    });
 </script>
 
 <script type="text/javascript">
-         function dragStart(ev) {
-             var id =  ev.target.getAttribute('id');
-             
-            ev.dataTransfer.effectAllowed='move';
-            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-            ev.dataTransfer.setDragImage(ev.target,0,0);
-            
-            return true;
-         }
-         
-         function dragEnter(ev) {
-            event.preventDefault();
-            return true;
-         }
-         
-         function dragOver(ev) {
-             
-            return false;
-         }
-         
-         function dragDrop(ev) {
-            var src = ev.dataTransfer.getData("Text");
-            console.log(src);
-            var clone = $('#' + src).clone();
-            $(clone).removeAttr('id');
-            //$(clone).attr('contenteditable', true);
-            $(clone).attr('style', 'border : 1px solid');
-            $('.cave-property-right').append(clone);
-            ev.stopPropagation();
-            return false;
-            //ev.target.appendChild(document.getElementById(src));
-            //
-            
-         }
+//         function dragStart(ev) {
+//             var id =  ev.target.getAttribute('id');
+//             
+//            ev.dataTransfer.effectAllowed='move';
+//            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+//            ev.dataTransfer.setDragImage(ev.target,0,0);
+//            
+//            return true;
+//         }
+//         
+//         function dragEnter(ev) {
+//            event.preventDefault();
+//            return true;
+//         }
+//         
+//         function dragOver(ev) {
+//             
+//            return false;
+//         }
+//         
+//         function dragDrop(ev) {
+//            var src = ev.dataTransfer.getData("Text");
+//            console.log(src);
+//            var clone = $('#' + src).clone();
+//            $(clone).removeAttr('id');
+//            //$(clone).attr('contenteditable', true);
+//            $(clone).attr('style', 'border : 1px solid');
+//            $('.cave-property-right').append(clone);
+//            ev.stopPropagation();
+//            return false;
+//            //ev.target.appendChild(document.getElementById(src));
+//            //
+//            
+//         }
       </script>
 
 <!-- End File Upload -->
@@ -660,8 +679,8 @@
 <!-- End of Gallery -->
 
 <div class="container submenu col-xs-12 col-md-9 no-padding pull-right" >
-    <div class="sections col-xs-12 no-padding" style="z-index:10000;margin-top :50px">
-        <section id="1" class='col-xs-12 no-padding'>
+    <div class="sections col-xs-12 no-padding" style="z-index:10;margin-top :50px">
+        <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue">
             <div class="form-wrap ">
                 <div class="tabs ">
                     <?php
@@ -690,19 +709,19 @@
                     <div class="switch_data col-xs-12 no-padding">
 
                         <!-- CAVE OPTIONS --->
-                        <div class="cave_options hide col-xs-12 no-padding">
-                            <section>
+                        <div class="cave_options  col-xs-12 no-padding" style="z-index:1">
+<!--                            <section>
                                 <table border="2" class="table">  
                                     <tbody>  
                                         <tr>  
                                             <th id="one-header" style="text-align:center;background-color: gray;color:white">Cave Number</th>  
-<!--                                            <th>Description</td>
+                                            <th>Description</td>
                                             <th>Patron</td>
                                             <th>Period</td>
-                                            <th>Type</td>-->
+                                            <th>Type</td>
                                         </tr>
 
-<!--                                        <tr>
+                                        <tr>
                                             <td><div id="one"></div></td>
                                             <td>
                                                 <div id="two"></div>
@@ -713,7 +732,7 @@
                                             <td><div id="three"></div></td>
                                             <td><div id="four"></div></td>
                                             <td><div id="five"></div></td>
-                                        </tr>  -->
+                                        </tr>  
                                     </tbody>  
                                 </table>
                                 <div class="col-xs-12 property-control-container no-padding">
@@ -773,6 +792,11 @@
                                 </div>
 
 
+                            </section>-->
+                            <section class="cave-section col-xs-12" style="background:transparent">
+                                <button id="getJSON1" type="button" class="btn btn-success col-xs-12 getJSON">Save Form</button>
+                                <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
+                                <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
                             </section>
                         </div> <!-- CLOSE CAVE OPTIONS -->
 
@@ -868,37 +892,7 @@
 </div> <!--Ending Container -->
 
 
-<div class="modal fade col-xs-12" id="editBodyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000000">
-  <div class="modal-dialog col-xs-12" role="document" style="width:100%">
-    <div class="modal-content col-xs-12">
-      <div class="modal-header col-xs-12">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Body</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body col-xs-12">
-          <div class="col-xs-12">
-              <div class="col-xs-12 gray-bg">
-                  <div class="col-xs-12 col-sm-4 gray-field">
-                      Textfield
-                  </div>
-                  <div class="col-xs-12 col-sm-4 gray-field">
-                      TextArea
-                  </div>
-                  <div class="col-xs-12 col-sm-4 gray-field">
-                      Select Box
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="modal-footer col-xs-12">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!--<script>
     $(document).ready(function () {
@@ -929,112 +923,131 @@
 
 <script>
     
-        $(document).on('click','.add-new-category-details',function(){
-            if($(this).text() == 'Title')
-            {
-                $(this).text('');
-            }
+//        $(document).on('click','.add-new-category-details',function(){
+//            if($(this).text() == 'Title')
+//            {
+//                $(this).text('');
+//            }
+//        });
+//        
+//        $(document).on('click','.add-new-category-details-body',function(){
+//            if($(this).text() == 'Body')
+//            {
+//                $(this).text('');
+//            }
+//        });
+//        
+//        $(document).on('click', '#save-columns', function(){
+//            var data = new Object();
+//            var count = 1;
+//            $('.cave-property-right .new_category').each(function(){
+//                data[count] = new Object();
+//                data[count]['title'] = $(this).find('.add-new-category-details').text();
+//                data[count]['body'] = $(this).find('.add-new-category-details-body').text();
+//                data[count]['column_order'] = count;
+//                if($(this).find('.add-new-category-details-show').is(':checked'))
+//                {
+//                    data[count]['column_show'] = 1;
+//                }
+//                else
+//                {
+//                    data[count]['column_show'] = 0;
+//                }
+//                count++;
+//            });
+//            
+//            saveColumns(data);
+//        });
+//        
+//        
+//        $(document).on('click', '.add-new-category-details-delete', function(){
+//           var conf  = confirm("Are you sure you want to delete this?"); 
+//           if(!conf)
+//           {
+//               return;
+//           }
+//           
+//           var parent = $(this).parents('.new_category').first();
+//           $(parent).remove();
+//        });
+//        
+//        $(document).on('click', '.add-new-category-details-body', function(){
+//           //jQuery('#editBodyModal').modal('show'); 
+//        });
+//        
+//        $(document).on('click', '.gray-field', function(){
+//            var parent = $(this).parents('.gray-bg').first();
+//            $(parent).find('.brown-field').removeClass('brown-field'); 
+//            $(this).addClass('brown-field'); 
+//        });
+//        
+//        $(document).on('click', '.textfield', function(){
+//            var parent = $(this).parents('.gray-bg').first();
+//            $(parent).find('.input-area').hide();
+//            $(parent).find('[data-type="textfield"]').show(); 
+//        });
+//        
+//        $(document).on('click', '.textarea', function(){
+//            var parent = $(this).parents('.gray-bg').first();
+//            $(parent).find('.input-area').hide();
+//            $(parent).find('[data-type="textarea"]').show(); 
+//        });
+//        
+//        $(document).on('click', '.select', function(){
+//            var parent = $(this).parents('.gray-bg').first();
+//            $(parent).find('.input-area').hide();
+//            $(parent).find('[data-type="select"]').show(); 
+//        });
+//        
+//        $(document).on('click', '.btn-add-option', function(){
+//            var parent = $(this).parents('.select-area').first();
+//            var html = "<div class='col-xs-12 option-container no-padding'><div class='col-xs-8 white-bg editable-text-border' contenteditable='true' style='color:gray;text-align:left'></div><button type='button' class='col-xs-2 btn btn-success btn-add-option'><i class='glyphicon glyphicon-plus'></i></button><button type='button' class='col-xs-2 btn btn-danger btn-delete-option'><i class='glyphicon glyphicon-remove'></i></button></div>";
+//            $('.select-area').append(html);
+//        });
+//        
+//        $(document).on('click', '.btn-delete-option', function(){
+//            var parent = $(this).parents('.option-container').first();
+//            var conf = confirm("Are you sure you want to delete this option?");
+//            if(!conf)
+//            {
+//                return 0;
+//            }
+//            
+//            $(parent).remove();
+//        });
+//        
+//        function saveColumns(data)
+//        {
+//            var caveNum = $('#cave_numb').val();
+//            $.post('/home/caves/save', {data:data, caveNum:caveNum}, function(){
+//                alert('Columns Saved Succefully');
+//                location.reload();
+//            });
+//        }
+//        
+        
+        
+jQuery(function($) {
+    var formBuilder = $(document.getElementById('build-wrap')).formBuilder();
+     $('.cave_options').addClass('hide');
+    document.getElementById('getJSON1').addEventListener('click', function() {
+        var data = formBuilder.actions.getData('json');
+        $.post('/caves/forms',{'data':data}, function(res){
+            alert(res);
+        }).fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseText);
         });
-        
-        $(document).on('click','.add-new-category-details-body',function(){
-            if($(this).text() == 'Body')
-            {
-                $(this).text('');
-            }
+    });
+    
+    document.getElementById('getJSON2').addEventListener('click', function() {
+        var data = formBuilder.actions.getData('json');
+        $.post('/caves/forms',{'data':data}, function(res){
+            alert(res);
+        }).fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseText);
         });
-        
-        $(document).on('click', '#save-columns', function(){
-            var data = new Object();
-            var count = 1;
-            $('.cave-property-right .new_category').each(function(){
-                data[count] = new Object();
-                data[count]['title'] = $(this).find('.add-new-category-details').text();
-                data[count]['body'] = $(this).find('.add-new-category-details-body').text();
-                data[count]['column_order'] = count;
-                if($(this).find('.add-new-category-details-show').is(':checked'))
-                {
-                    data[count]['column_show'] = 1;
-                }
-                else
-                {
-                    data[count]['column_show'] = 0;
-                }
-                count++;
-            });
-            
-            saveColumns(data);
-        });
-        
-        
-        $(document).on('click', '.add-new-category-details-delete', function(){
-           var conf  = confirm("Are you sure you want to delete this?"); 
-           if(!conf)
-           {
-               return;
-           }
-           
-           var parent = $(this).parents('.new_category').first();
-           $(parent).remove();
-        });
-        
-        $(document).on('click', '.add-new-category-details-body', function(){
-           //jQuery('#editBodyModal').modal('show'); 
-        });
-        
-        $(document).on('click', '.gray-field', function(){
-            var parent = $(this).parents('.gray-bg').first();
-            $(parent).find('.brown-field').removeClass('brown-field'); 
-            $(this).addClass('brown-field'); 
-        });
-        
-        $(document).on('click', '.textfield', function(){
-            var parent = $(this).parents('.gray-bg').first();
-            $(parent).find('.input-area').hide();
-            $(parent).find('[data-type="textfield"]').show(); 
-        });
-        
-        $(document).on('click', '.textarea', function(){
-            var parent = $(this).parents('.gray-bg').first();
-            $(parent).find('.input-area').hide();
-            $(parent).find('[data-type="textarea"]').show(); 
-        });
-        
-        $(document).on('click', '.select', function(){
-            var parent = $(this).parents('.gray-bg').first();
-            $(parent).find('.input-area').hide();
-            $(parent).find('[data-type="select"]').show(); 
-        });
-        
-        $(document).on('click', '.btn-add-option', function(){
-            var parent = $(this).parents('.select-area').first();
-            var html = "<div class='col-xs-12 option-container no-padding'><div class='col-xs-8 white-bg editable-text-border' contenteditable='true' style='color:gray;text-align:left'></div><button type='button' class='col-xs-2 btn btn-success btn-add-option'><i class='glyphicon glyphicon-plus'></i></button><button type='button' class='col-xs-2 btn btn-danger btn-delete-option'><i class='glyphicon glyphicon-remove'></i></button></div>";
-            $('.select-area').append(html);
-        });
-        
-        $(document).on('click', '.btn-delete-option', function(){
-            var parent = $(this).parents('.option-container').first();
-            var conf = confirm("Are you sure you want to delete this option?");
-            if(!conf)
-            {
-                return 0;
-            }
-            
-            $(parent).remove();
-        });
-        
-        function saveColumns(data)
-        {
-            var caveNum = $('#cave_numb').val();
-            $.post('/home/caves/save', {data:data, caveNum:caveNum}, function(){
-                alert('Columns Saved Succefully');
-                location.reload();
-            });
-        }
-        
-        
-        
-        jQuery(function($) {
-  var fbTemplate = document.getElementById('build-wrap');
-  $(fbTemplate).formBuilder();
+    });
 });
+  
+  
 </script>

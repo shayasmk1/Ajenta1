@@ -11,6 +11,7 @@ class Caves extends CI_Controller {
         $this->load->helper(array('url', 'form'));
         $this->load->database();
         $this->load->model('cave_model');
+        $this->load->model('form_model');
         $this->load->model('painting_model');
         $this->load->library('session');
         $this->lang->load('public_lang', 'english');
@@ -109,5 +110,97 @@ class Caves extends CI_Controller {
     
     function index() {
         echo "index check 1 2 3 ";
+    }
+    
+    function forms()
+    {
+        if($this->input->method() == 'post')
+        {
+            $data = $this->input->post('data');
+            
+            $data = json_decode($data);
+            $eachArray = array();
+            $count = 0;
+            
+            if(empty($data))
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode(array('message' => 'No input found'));
+                exit;
+            }
+            
+            foreach($data AS $each)
+            {
+                $count1 = 0;
+                if($each->type == 'checkbox-group' || $each->type == 'radio-group' || $each->type= 'select')
+                {
+                    $eachArray[$count]['type'] = $each->type;
+                    if(isset($each->name))
+                    {
+                        $eachArray[$count]['name'] = $each->name;
+                    }
+                    if(isset($each->label))
+                    {
+                        $eachArray[$count]['label'] = $each->label;
+                    }
+                    if(isset($each->placeholder))
+                    {
+                        $eachArray[$count]['placeholder'] = $each->placeholder;
+                    }
+                    
+                    if(isset($each->className))
+                    {
+                        $eachArray[$count]['className'] = $each->className;
+                    }
+                    
+                    if(!empty($each->values))
+                    foreach($each->values AS $value){
+                        
+                        $eachArray[$count]['sub'][$count1]['label'] = $value->label;
+                        if(isset($value->selected))
+                        {
+                            $eachArray[$count]['sub'][$count1]['selected'] = $value->selected;
+                        }
+                        $eachArray[$count]['sub'][$count1]['value'] = $value->value;
+                                
+                        $count1++;
+                    }
+                }
+                else if($each->type == 'button' || $each->type == 'date' || $each->type == 'file' || $each->type == 'header'
+                            || $each->type == 'paragraph' || $each->type == 'number' || $each->type == 'text' || $each->type == 'textarea')
+                {
+                    $eachArray[$count]['type'] = $each->type;
+                    $eachArray[$count]['label'] = $each->label;
+                    $eachArray[$count]['placeholder'] = $each->placeholder;
+                    if(isset($each->name))
+                    {
+                        $eachArray[$count]['name'] = $each->name;
+                    }
+                    if(isset($each->className))
+                    {
+                        $eachArray[$count]['className'] = $each->className;
+                    }
+                    if(isset($each->style))
+                    {
+                        $eachArray[$count]['style'] = $each->style;
+                    }
+                }
+                $count++;
+            }
+            
+            $res = $this->form_model->insertData($eachArray);
+            if(!$res)
+            {
+                header('HTTP/1.1 500 Created');
+                echo json_encode('Something went wrong');
+                exit;
+            }
+            else
+            {
+                header('HTTP/1.1 200 Created');
+                echo json_encode('Successfully Saved');
+                exit;
+            }
+        }
     }
 }
