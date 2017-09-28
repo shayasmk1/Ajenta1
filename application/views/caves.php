@@ -41,6 +41,7 @@
 </style>
 
 <script type="text/javascript">
+    var formBuilder = '';
     $(document).on('change', '.div-toggle', function () {
         //changing <div> according to the selected dropdown option
         var target = $(this).data('target'); //get data whose name is'target'
@@ -59,37 +60,29 @@
         };
         $.ajax({
             type: "POST",
-            url: "<?php echo site_url("caves/getOneCave"); ?>",
+            url: "<?php echo site_url("caves/getFormData"); ?>",
             data: cave_number,
-            success: function (data) {
-                //Create jQuery object from the response HTML.
-                var data = eval("(" + data + ")");
-                //console.log(data.one_cave_data[0].cave_description);
-
-                $('#one-header').html('Cave Number: ' + data.one_cave_data[0].cave_numb);
-                var html = '';
-                $(data.header).each(function(i, value){
-                    html+= '<div class="col-xs-12 new_category no-padding" style="border:1px solid" draggable="true" ondragstart="return dragStart(event)" id="new_category"><button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>';
-                                            
-                    html+= "<div class='col-xs-12 no-padding'><div class='col-xs-12 no-padding add-new-category-details editable-text-border col-xs-12' contenteditable='true'>" + value.name + "</div>";
-                    html+= "<div class='col-xs-12 no-padding add-new-category-details-show-container col-xs-12'>Show column for other users? <input class='add-new-category-details-show hcenter' type='checkbox' checked='checked'/></div>";
-                    html+= "<div class='col-xs-12 no-padding add-new-category-details-body editable-text-border col-xs-12' data-body='" + value.body + "'><div class='col-xs-12'><div class='col-xs-12 gray-bg'>";
-                    html+= "<div class='col-xs-12 col-sm-4 gray-field brown-field textfield'>Textfield</div>";
-                    html+= "<div class='col-xs-12 col-sm-4 gray-field textarea'>TextArea</div>";
-                    html+= "<div class='col-xs-12 col-sm-4 gray-field select'>Select Box</div>";
-                    html+= "<div class='col-xs-12 top-margin'><div class='col-xs-12 no-padding'><input type='text' class='form-control text-field input-area' data-type='textfield' /><textarea class='form-control text-field input-area' data-type='textarea' style='display:none'></textarea><div class='col-xs-12 select-area input-area' data-type='select' style='display:none'><div class='col-xs-9 white-bg editable-text-border'></div><button type='button' class='col-xs-3 btn btn-danger btn-add-option'><i class='glyphicon glyphicon-plus'></i></button></div></div></div>";
-                    html+= "</div></div></div>";
-              
-                    html+= "<button class='col-xs-12 no-padding add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger' type='button' >Delete</button>";       
-                    html+= "</div></div>";
-                });
+            dataType: 'json',
+            success: function (res) {
+             
+                $('#build-wrap').html('');
+                var fbEditor = document.getElementById('build-wrap');
+                formBuilder = $(fbEditor).formBuilder();
+                var formData = res.data;
+              //  document.getElementById('setData').addEventListener('click', function() {
+                setTimeout(
+                    function() 
+                    {
+                        formBuilder.actions.setData(formData);
+                    },1000);
+                    
+//                    setTimeout(
+//                    function() 
+//                    {
+    //                    $('#setData').trigger('click');
+               //     },1000);
+               // });
                 
-                $('.cave-property-right').html(html);
-//               $("#one").html(data.one_cave_data[0].cave_numb);
-//                $("#two").html(data.one_cave_data[0].cave_description);
-//                $("#three").html(data.one_cave_data[0].cave_patron);
-//                $("#four").html(data.one_cave_data[0].cave_period);
-//                $("#five").html(data.one_cave_data[0].cave_type);
             }
         });
     });
@@ -795,6 +788,9 @@
                             </section>-->
                             <section class="cave-section col-xs-12" style="background:transparent">
                                 <button id="getJSON1" type="button" class="btn btn-success col-xs-12 getJSON">Save Form</button>
+                                <div class="setDataWrap" style="display:none">
+                                    <button id="setData" type="button">Set Data</button>
+                                  </div>
                                 <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
                                 <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
                             </section>
@@ -1028,20 +1024,22 @@
         
         
 jQuery(function($) {
-    var formBuilder = $(document.getElementById('build-wrap')).formBuilder();
+    //var formBuilder = $(document.getElementById('build-wrap')).formBuilder();
      $('.cave_options').addClass('hide');
-    document.getElementById('getJSON1').addEventListener('click', function() {
+    //document.getElementById('getJSON1').addEventListener('click', function() {
+    $(document).on('click', '#getJSON1', function(){
         var data = formBuilder.actions.getData('json');
-        $.post('/caves/forms',{'data':data}, function(res){
+        $.post('/caves/forms',{'data':data, 'cave_id': $('#cave_numb').val()}, function(res){
             alert(res);
         }).fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseText);
         });
     });
     
-    document.getElementById('getJSON2').addEventListener('click', function() {
+   // document.getElementById('getJSON2').addEventListener('click', function() {
+    $(document).on('click', '#getJSON2', function(){
         var data = formBuilder.actions.getData('json');
-        $.post('/caves/forms',{'data':data}, function(res){
+        $.post('/caves/forms',{'data':data, 'cave_id': $('#cave_numb').val()}, function(res){
             alert(res);
         }).fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseText);

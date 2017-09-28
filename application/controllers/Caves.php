@@ -129,11 +129,20 @@ class Caves extends CI_Controller {
                 exit;
             }
             
+            $cave_id = $this->input->post('cave_id');
+            if($cave_id == 0)
+            {
+                header('HTTP/1.1 500 Created');
+                echo json_encode(array('message' => 'Something went wrong'));
+                exit;
+            }
+            
             foreach($data AS $each)
             {
                 $count1 = 0;
-                if($each->type == 'checkbox-group' || $each->type == 'radio-group' || $each->type= 'select')
+                if($each->type == 'checkbox-group' || $each->type == 'radio-group' || $each->type == 'select')
                 {
+                    $eachArray[$count]['cave_id'] = $cave_id;
                     $eachArray[$count]['type'] = $each->type;
                     if(isset($each->name))
                     {
@@ -152,6 +161,25 @@ class Caves extends CI_Controller {
                     {
                         $eachArray[$count]['className'] = $each->className;
                     }
+                    if(isset($each->value))
+                    {
+                        $eachArray[$count]['value'] = $each->value;
+                    }
+                    
+                    if(isset($each->subtype))
+                    {
+                        $eachArray[$count]['subtype'] = $each->subtype;
+                    }
+                    
+                    if(isset($each->required))
+                    {
+                        $eachArray[$count]['required'] = 1;
+                    }
+                    
+                    if(isset($each->maxlength))
+                    {
+                        $eachArray[$count]['maxlength'] = $each->maxlength;
+                    }
                     
                     if(!empty($each->values))
                     foreach($each->values AS $value){
@@ -169,9 +197,14 @@ class Caves extends CI_Controller {
                 else if($each->type == 'button' || $each->type == 'date' || $each->type == 'file' || $each->type == 'header'
                             || $each->type == 'paragraph' || $each->type == 'number' || $each->type == 'text' || $each->type == 'textarea')
                 {
+                    $eachArray[$count]['cave_id'] = $cave_id;
                     $eachArray[$count]['type'] = $each->type;
+                    
                     $eachArray[$count]['label'] = $each->label;
-                    $eachArray[$count]['placeholder'] = $each->placeholder;
+                    if(isset($each->placeholder))
+                    {
+                        $eachArray[$count]['placeholder'] = $each->placeholder;
+                    }
                     if(isset($each->name))
                     {
                         $eachArray[$count]['name'] = $each->name;
@@ -184,10 +217,29 @@ class Caves extends CI_Controller {
                     {
                         $eachArray[$count]['style'] = $each->style;
                     }
+                    if(isset($each->value))
+                    {
+                        $eachArray[$count]['value'] = $each->value;
+                    }
+                    
+                    if(isset($each->subtype))
+                    {
+                        $eachArray[$count]['subtype'] = $each->subtype;
+                    }
+                    
+                    if(isset($each->required))
+                    {
+                        $eachArray[$count]['required'] = 1;
+                    }
+                    
+                    if(isset($each->maxlength))
+                    {
+                        $eachArray[$count]['maxlength'] = $each->maxlength;
+                    }
                 }
                 $count++;
             }
-            
+          
             $res = $this->form_model->insertData($eachArray);
             if(!$res)
             {
@@ -202,5 +254,25 @@ class Caves extends CI_Controller {
                 exit;
             }
         }
+    }
+    
+    public function getFormData()
+    {
+        $caveNumb = $this->input->post('cave_numb');
+        
+        $formDetails = $this->form_model->getFormDetails($caveNumb);
+       
+        if(empty($formDetails))
+        {
+            header('HTTP/1.1 201 Created');
+            echo json_encode(array('message' => 'Empty Array'));
+            exit;
+        }
+        
+        $formDetails = json_encode($formDetails);
+        
+        header('HTTP/1.1 200 Created');
+            echo json_encode(array('message' => 'Successfully Saved', 'data' => $formDetails));
+            exit;
     }
 }
