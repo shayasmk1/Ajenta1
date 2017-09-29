@@ -417,6 +417,7 @@ class Caves extends CI_Controller {
         if($this->input->method() == 'get')
         {
             $caveNum = $this->input->get('cave_num');
+            $caveImageID = $this->input->get('cave_image_id');
             $cave = $this->cave_model->getCaveByCaveNumber($caveNum);
             if(!$cave)
             {
@@ -424,7 +425,7 @@ class Caves extends CI_Controller {
                 echo json_encode(array('message' => 'Somehting went wrong'));
                 exit;
             }
-            $res = $this->Story_model->getAllCaveImages($cave->cave_id);
+            $res = $this->Story_model->getAllCaveImages($cave->cave_id, $caveImageID);
             header('HTTP/1.1 200 Created');
                 echo json_encode($res);
                 exit;

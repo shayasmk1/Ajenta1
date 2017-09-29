@@ -746,13 +746,14 @@ $(document).on('change', '.div-toggle', function () {
     }
     
     $(document).on('click', '.each-image-gallery', function(){
+        $('.marking').remove();
         var image = $(this).attr('data-image');
         var id = $(this).attr('data-id');
         $('#4').show();
         $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="' + image + '"/>');
         window.location.href = '#3';
         var cave_num = cave_num_global;
-        $.get('/caves/getAllCaveImages', {cave_num:cave_num}, function(res){
+        $.get('/caves/getAllCaveImages', {cave_num:cave_num, cave_image_id:id}, function(res){
             var html = '';
             $(res).each(function(i, value){
                 html+= '<div class="marking" data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
