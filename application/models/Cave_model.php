@@ -129,5 +129,9 @@ class Cave_model extends CI_Model {
         }
     }
 
+    function getCaveByCaveNumber($caveNum)
+    {
+        return $this->db->where('cave_numb', $caveNum)->get('caves')->row();
+    }
 }
 ?>

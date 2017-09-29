@@ -389,3 +389,41 @@ footer
 {
     background-color : white;
 }
+
+.each-image-gallery
+{
+    height:180px;
+    background-position:50% 50%;
+    background-size:cover;
+    border:1px solid;
+    cursor:pointer;
+}
+
+.gallery-image-coordiate
+{
+    cursor: crosshair;
+}
+
+#4
+{
+     cursor: crosshair;
+}
+#4-1
+{
+     cursor: crosshair;
+}
+ 
+.marking
+{
+    width : 20px;
+    height : 20px;
+    background-color: red;
+    border-radius: 1px solid;
+    position:absolute;
+    cursor: pointer !important;
+}
+
+#navbarExample ul li
+{
+    margin-right : 10px;
+}

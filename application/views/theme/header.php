@@ -30,8 +30,8 @@
 
 
         <!-- JQuery Example -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        
+<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="/assets/libraries/bootstrap/js/bootstrap.min.js"></script>
 
         <script>
@@ -67,8 +67,8 @@
             <a class="navbar-brand" href="#">Revisting Ajanta</a>
             <div class="collapse navbar-collapse" id="navbarExample">
                 
-                <ul class="navbar-nav ml-auto" >
-                    <li class="nav-item dropdown">
+                <ul class="navbar-nav ml-auto navbar-right" >
+                    <li class="nav-item dropdown" style="margin-top: 5px">
                         <a
                             class="nav-link dropdown-toggle mr-lg-2" href="#"
                             id="messagesDropdown" data-toggle="dropdown" aria-haspopup="true"
@@ -86,14 +86,17 @@
                     
                         
                         <div class="dropdown-menu" aria-labelledby="messagesDropdown">
-                            <h6 class="dropdown-header">New Messages:</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"> <strong>David Miller</strong> <span
+<!--                            <h6 class="dropdown-header">New Messages:</h6>
+                            <div class="dropdown-divider"></div>-->
+                            <a class="dropdown-item" href="#"> 
+                                <strong>David Miller</strong> <span
                                     class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">Hey there! This new version
+                                <div class="dropdown-message small">
+                                    Hey there! This new version
                                     of SB Admin is pretty awesome! These messages clip off when they
                                     reach the end of the box so they don't overflow over to the
-                                    sides!</div>
+                                    sides!
+                                </div>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#"> <strong>Jane Smith</strong> <span
@@ -114,7 +117,7 @@
                         
 <!--                </ul>
                 <ul class="navbar-nav ml-auto">-->
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" style="margin-top: 5px">
                         <a
                             class="nav-link dropdown-toggle mr-lg-2" href="#"
                             id="alertsDropdown" data-toggle="dropdown" aria-haspopup="true"
@@ -133,24 +136,27 @@
                                 class="dropdown-item" href="#">Another action</a> <a
                                 class="dropdown-item" href="#">Something else here</a>
                         </div></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo site_url('home/logout'); ?>"><i
+                        <li style="margin-top: -6px">
+                            <form class="form-inline my-2 my-lg-0 mr-lg-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control"
+                                           placeholder="Search for..."> <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </li>
+                        <li class="nav-item" style="margin-right: 15px"><a class="nav-link" href="<?php echo site_url('home/logout'); ?>"><i
                                 class="fa fa-fw fa-sign-out"></i> Logout</a></li>
 <!--                    <li class="nav-item">
                         
                     </li>-->
                     
-                </ul>
-                <ul class="navbar-nav navbar-right form-menu-container" >
-                    <form class="form-inline my-2 my-lg-0 mr-lg-2">
-                            <div class="input-group">
-                                <input type="text" class="form-control"
-                                       placeholder="Search for..."> <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
+<!--                </ul>
+                <ul class="navbar-nav navbar-right form-menu-container" >-->
+                    
                 </ul>
             </div>
         </nav>

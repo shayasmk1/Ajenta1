@@ -11,6 +11,8 @@ class Caves extends CI_Controller {
         $this->load->helper(array('url', 'form'));
         $this->load->database();
         $this->load->model('cave_model');
+        $this->load->model('CaveImage_model');
+        $this->load->model('Story_model');
         $this->load->model('form_model');
         $this->load->model('painting_model');
         $this->load->library('session');
@@ -274,5 +276,158 @@ class Caves extends CI_Controller {
         header('HTTP/1.1 200 Created');
             echo json_encode(array('message' => 'Successfully Saved', 'data' => $formDetails));
             exit;
+    }
+    
+    public function uploadImage()
+    {
+        $storeFolder = '';   //2
+        if (isset($_FILES) && !empty($_FILES) && isset($_POST['cave_num_global'])) {
+            
+            $tempFile = $_FILES['file']['tmp_name'];
+            $caveNum = $_POST['cave_num_global'];
+            $cave = $this->cave_model->getCaveByCaveNumber($caveNum);
+            if(!$cave)
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode(array('message' => 'Somehting went wrong'));
+                exit;
+            }
+            
+            $targetPath = FCPATH . 'assets/uploads/';  //4
+            $random = date("dhiyms") . rand(10000,99999). $_FILES['file']['name'];
+            $targetFile =  $targetPath. $random;  //5
+
+            if(!move_uploaded_file($tempFile,$targetFile))
+            {
+                header('HTTP/1.1 500 Created');
+                echo json_encode(array('message' => 'Something went wrong'));
+                exit;
+            }
+            
+            $insert['cave_id'] = $cave->cave_id;
+            $insert['location'] = $random;
+            $res = $this->CaveImage_model->insertData($insert);
+            if(!$res)
+            {
+                header('HTTP/1.1 500 Created');
+                echo json_encode(array('message' => 'Somehting went wrong'));
+                exit;
+            }
+            
+            header('HTTP/1.1 200 Created');
+                echo json_encode(array('message' => 'Uploaded SUccessfully'));
+                exit;
+            //$upload->index($storeFolder .'/'. $random);
+            
+        }
+    }
+    
+    public function getImages()
+    {
+        if($this->input->method() == 'get')
+        {
+            $caveNumber = $this->input->get('cave_num');
+            $cave = $this->cave_model->getCaveByCaveNumber($caveNumber);
+            if(!$cave)
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode(array('message' => 'Somehting went wrong'));
+                exit;
+            }
+            $res = $this->CaveImage_model->getAllCaveImages($cave->cave_id);
+            header('HTTP/1.1 200 Created');
+                echo json_encode($res);
+                exit;
+        }
+    }
+    
+    public function saveStory()
+    {
+        if($this->input->method() == 'post')
+        {
+            if($this->input->post('data'))
+            {
+                $data = $this->input->post('data');
+                $caveNumber = $data['cave_num'];
+                $cave = $this->cave_model->getCaveByCaveNumber($caveNumber);
+                if(!$cave)
+                {
+                    header('HTTP/1.1 400 Created');
+                    echo json_encode(array('message' => 'Somehting went wrong'));
+                    exit;
+                }
+                $data['cave_id'] = $cave->cave_id;
+                unset($data['cave_num']);
+                $id = $this->Story_model->insert_data($data);
+                if(!$id)
+                {
+                    header('HTTP/1.1 500 Created');
+                    echo json_encode(array('message' => 'Something went wrong'));
+                    exit;
+                }
+                
+                header('HTTP/1.1 200 Created');
+                echo json_encode(array('message' => 'Story Saved Successfully', 'id' => $id));
+                exit;
+            }
+        }
+    }
+    
+    public function updateStory()
+    {
+        if($this->input->method() == 'post')
+        {
+            if($this->input->post('data'))
+            {
+                $data = $this->input->post('data');
+                $strotyID = $this->input->post('storyID');
+                if(!$strotyID || $strotyID == 0 || trim($strotyID) == '')
+                {
+                    header('HTTP/1.1 400 Created');
+                    echo json_encode(array('message' => 'Somehting went wrong'));
+                    exit;
+                }
+                $caveNumber = $data['cave_num'];
+                $cave = $this->cave_model->getCaveByCaveNumber($caveNumber);
+                if(!$cave)
+                {
+                    header('HTTP/1.1 400 Created');
+                    echo json_encode(array('message' => 'Somehting went wrong'));
+                    exit;
+                }
+                $data['cave_id'] = $cave->cave_id;
+                unset($data['cave_num']);
+                $id = $this->Story_model->updateData($data, $strotyID);
+                if(!$id)
+                {
+                    header('HTTP/1.1 500 Created');
+                    echo json_encode(array('message' => 'Something went wrong'));
+                    exit;
+                }
+                
+                header('HTTP/1.1 200 Created');
+                echo json_encode(array('message' => 'Story Saved Successfully', 'id' => $id));
+                exit;
+            }
+        }
+    }
+    
+    public function getAllCaveImages()
+    {
+        if($this->input->method() == 'get')
+        {
+            $caveNum = $this->input->get('cave_num');
+            $cave = $this->cave_model->getCaveByCaveNumber($caveNum);
+            if(!$cave)
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode(array('message' => 'Somehting went wrong'));
+                exit;
+            }
+            $res = $this->Story_model->getAllCaveImages($cave->cave_id);
+            header('HTTP/1.1 200 Created');
+                echo json_encode($res);
+                exit;
+        }
     }
 }

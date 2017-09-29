@@ -6,15 +6,37 @@
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
 <link href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel = "stylesheet">
 
+<link href = "/assets/css/dropzone.css" rel = "stylesheet">
+
 <!--<link rel="stylesheet" type="text/css" href="/assets/libraries/formBuilder/demo/assets/css/demo.css">-->
 <!--<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.css">-->
 
 <!--<script src="/assets/libraries/formBuilder/demo/assets/js/vendor.js"></script>-->
 <!--  <script src="/assets/libraries/formBuilder/dist/form-builder.min.js"></script>
   <script src="/assets/libraries/formBuilder/dist/form-render.min.js"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>
+
+<!--<link rel="stylesheet" href="/assets/fileUpload/css/jquery.fileupload.css">
+<link rel="stylesheet" href="/assets/fileUpload/css/jquery.fileupload-ui.css">-->
+
+<!-- The basic File Upload plugin -->
+<!--<script src="/assets/fileUpload/js/jquery.fileupload.js"></script>
+ The File Upload processing plugin 
+<script src="/assets/fileUpload/js/jquery.fileupload-process.js"></script>
+ The File Upload image preview & resize plugin 
+<script src="/assets/fileUpload/js/jquery.fileupload-image.js"></script>
+ The File Upload audio preview plugin 
+<script src="/assets/fileUpload/js/jquery.fileupload-audio.js"></script>
+ The File Upload video preview plugin 
+<script src="/assets/fileUpload/js/jquery.fileupload-video.js"></script>
+ The File Upload validation plugin 
+<script src="/assets/fileUpload/js/jquery.fileupload-validate.js"></script>
+ The File Upload user interface plugin 
+<script src="/assets/fileUpload/js/jquery.fileupload-ui.js"></script>-->
+
+<script src="/assets/js/dropzone.js"></script>
 
 <style>
     .hide{
@@ -36,60 +58,20 @@
 }
 
 
-
-
 </style>
 
 <script type="text/javascript">
     var formBuilder = '';
-    $(document).on('change', '.div-toggle', function () {
-        //changing <div> according to the selected dropdown option
-        var target = $(this).data('target'); //get data whose name is'target'
-        var show = $("option:selected", this).data('show'); //get data from HTML elment option:selected of 'this' whose name is 'show'
-        $(target).children().addClass('hide'); //hide  other options if they are shown previously by choosing their dropdown
-        $(show).removeClass('hide');
-        
-        var height = $('.cb-wrap').height();
-        $('.frmb').attr('style', 'min-height:' + height + 'px')
-        //Access Cave Number and send AJAX to controller
-        var e = document.getElementById("cave_numb");
-        var cave_numb = e.options[e.selectedIndex].value;
+    var myDropzone = '';
+    var cave_num_global = 0;
+    var count = 0;
     
-        var cave_number = {
-            'cave_numb': cave_numb
-        };
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url("caves/getFormData"); ?>",
-            data: cave_number,
-            dataType: 'json',
-            success: function (res) {
-             
-                $('#build-wrap').html('');
-                var fbEditor = document.getElementById('build-wrap');
-                formBuilder = $(fbEditor).formBuilder();
-                var formData = res.data;
-              //  document.getElementById('setData').addEventListener('click', function() {
-                setTimeout(
-                    function() 
-                    {
-                        formBuilder.actions.setData(formData);
-                    },1000);
-                    
-//                    setTimeout(
-//                    function() 
-//                    {
-    //                    $('#setData').trigger('click');
-               //     },1000);
-               // });
-                
-            }
-        });
-    });
 
+        
     $(document).ready(function () {
        // $('.switch_data').trigger('change');
     });
+ 
 </script>
 
 
@@ -230,61 +212,6 @@
 </script>
 
 
-
-<script>
-//    $(function () {
-//        var obj = <?php echo $cave_ptp ?>;
-//        var availablePatron = [];
-//        var noNullPatron = [];
-//        var uniquePatron = [];
-//        var i = 0;
-//        for (i in obj) {
-//            availablePatron[i] = obj[i]['cave_patron'];
-//        }
-//        noNullPatron = availablePatron.filter(function (val) {
-//            return val !== null;
-//        });
-//        uniquePatron = noNullPatron.filter(function (value, index, array) {
-//            return array.indexOf(value) === index;
-//        });
-//
-////        $("#three").autocomplete({
-////            source: uniquePatron
-////        });
-//
-//
-//        var availablePeriod = [];
-//        var j = 0;
-//        for (j in obj) {
-//            availablePeriod[j] = obj[j]['cave_period'];
-//        }
-//        noNullPeriod = availablePeriod.filter(function (val) {
-//            return val !== null;
-//        });
-//        uniquePeriod = noNullPeriod.filter(function (value, index, array) {
-//            return array.indexOf(value) === index;
-//        });
-////        $("#four").autocomplete({
-////            source: uniquePeriod
-////        });
-//
-//
-//        var availableType = [];
-//        var k = 0;
-//        for (k in obj) {
-//            availableType[k] = obj[k]['cave_type'];
-//        }
-//        noNullType = availableType.filter(function (val) {
-//            return val !== null;
-//        });
-//        uniqueType = noNullType.filter(function (value, index, array) {
-//            return array.indexOf(value) === index;
-//        });
-////        $("#five").autocomplete({
-////            source: uniqueType
-////        });
-//    });
-</script>
 <script>
     $(document).on("click", function (e) {
         if ($(e.target).is("#detailBtn")) {
@@ -385,36 +312,7 @@
         width:  100%;
     }
 </style>
-<script>
-//    var sections = $('section'), nav = $('nav'), nav_height = nav.outerHeight();
-//
-//    $(window).on('scroll', function () {
-//        var cur_pos = $(this).scrollTop();
-//
-//        sections.each(function () {
-//            var top = $(this).offset().top - nav_height,
-//                    bottom = top + $(this).outerHeight();
-//
-//            if (cur_pos >= top && cur_pos <= bottom) {
-//                nav.find('a').removeClass('active');
-//                sections.removeClass('active');
-//
-//                $(this).addClass('active');
-//                nav.find('a[href="#' + $(this).attr('id') + '"]').addClass('active');
-//            }
-//        });
-//    });
-//
-//    nav.find('a').on('click', function () {
-//        var $el = $(this), id = $el.attr('href');
-//
-//        $('html, body').animate({
-//            scrollTop: $(id).offset().top - nav_height
-//        }, 500);
-//
-//        return false;
-//    });
-</script>
+
 
 <!-- Description Panel -->
 <style>
@@ -570,7 +468,7 @@
         margin: 0;
         padding: 0;
         font-size: 20px;
-        cursor: pointer;
+        //cursor: pointer;
         opacity: 0;
         filter: alpha(opacity=0);
     }
@@ -590,80 +488,9 @@
         // Hover befor close the preview    
     });
 
-//    $(function () {
-//        // Create the close button
-//        var closebtn = $('<button/>', {
-//            type: "button",
-//            text: 'x',
-//            id: 'close-preview',
-//            style: 'font-size: initial;'
-//        });
-//        closebtn.attr("class", "close pull-right");
-//
-//        // Clear event
-//        $('.image-preview-clear').click(function () {
-//            $('.image-preview').attr("data-content", "").popover('hide');
-//            $('.image-preview-filename').val("");
-//            $('.image-preview-clear').hide();
-//            $('.image-preview-input input:file').val("");
-//            $(".image-preview-input-title").text("Browse");
-//        });
-//        // Create the preview image
-//        $(".image-preview-input input:file").change(function () {
-//            var img = $('<img/>', {
-//                id: 'dynamic',
-//                width: 250,
-//                height: 200
-//            });
-//            var file = this.files[0];
-//            var reader = new FileReader();
-//            // Set preview image into the popover data-content
-//            reader.onload = function (e) {
-//                $(".image-preview-input-title").text("Change");
-//                $(".image-preview-clear").show();
-//                $(".image-preview-filename").val(file.name);
-//            };
-//            reader.readAsDataURL(file);
-//        });
-//    });
+
 </script>
 
-<script type="text/javascript">
-//         function dragStart(ev) {
-//             var id =  ev.target.getAttribute('id');
-//             
-//            ev.dataTransfer.effectAllowed='move';
-//            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-//            ev.dataTransfer.setDragImage(ev.target,0,0);
-//            
-//            return true;
-//         }
-//         
-//         function dragEnter(ev) {
-//            event.preventDefault();
-//            return true;
-//         }
-//         
-//         function dragOver(ev) {
-//             
-//            return false;
-//         }
-//         
-//         function dragDrop(ev) {
-//            var src = ev.dataTransfer.getData("Text");
-//            console.log(src);
-//            var clone = $('#' + src).clone();
-//            $(clone).removeAttr('id');
-//            //$(clone).attr('contenteditable', true);
-//            $(clone).attr('style', 'border : 1px solid');
-//            $('.cave-property-right').append(clone);
-//            ev.stopPropagation();
-//            return false;
-//            //ev.target.appendChild(document.getElementById(src));
-//            //
-//            
-//         }
-      </script>
 
 <!-- End File Upload -->
 
@@ -673,9 +500,9 @@
 
 <div class="container submenu col-xs-12 col-md-9 no-padding pull-right" >
     <div class="sections col-xs-12 no-padding" style="z-index:10;margin-top :50px">
-        <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue">
-            <div class="form-wrap ">
-                <div class="tabs ">
+        <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue;min-height:750px">
+            <div class="form-wrap col-xs-12">
+                <div class="tabs col-xs-12">
                     <?php
                     if (isset($cave_list) && !empty($cave_list)) {
                         ?>
@@ -703,89 +530,7 @@
 
                         <!-- CAVE OPTIONS --->
                         <div class="cave_options  col-xs-12 no-padding" style="z-index:1">
-<!--                            <section>
-                                <table border="2" class="table">  
-                                    <tbody>  
-                                        <tr>  
-                                            <th id="one-header" style="text-align:center;background-color: gray;color:white">Cave Number</th>  
-                                            <th>Description</td>
-                                            <th>Patron</td>
-                                            <th>Period</td>
-                                            <th>Type</td>
-                                        </tr>
 
-                                        <tr>
-                                            <td><div id="one"></div></td>
-                                            <td>
-                                                <div id="two"></div>
-                                                <div style="text-align:center;">
-
-                                                </div>
-                                            </td>
-                                            <td><div id="three"></div></td>
-                                            <td><div id="four"></div></td>
-                                            <td><div id="five"></div></td>
-                                        </tr>  
-                                    </tbody>  
-                                </table>
-                                <div class="col-xs-12 property-control-container no-padding">
-                                    <div class="col-xs-12 col-sm-3 pull-left cave-property-left no-padding" style="">
-                                        <div class='col-xs-12 new_category ' draggable="true"
-                ondragstart="return dragStart(event)" id='new_category'>
-                                            <button type="button" class="col-xs-12 btn btn-danger top-margin add-new-category" >Add New Category</button>
-                                            
-                                            <div class='col-xs-12 no-padding'>
-                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12 no-padding' contenteditable="true">Title</div>
-                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12 no-padding'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
-                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12 no-padding' contenteditable="true">Body</div>
-                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger no-padding' type="button" >Delete</button>
-                                            </div>
-                                        </div>
-                                        <?php
-                                            $count = 0;
-                                            if(!empty($column_headers))
-                                            {
-                                                foreach($column_headers AS $each)
-                                                {
-                                                    ?>
-                                        <div class='col-xs-12 new_category ' draggable="true"
-                                             ondragstart="return dragStart(event)" id='new_category<?php echo $count ?>' >
-                                                    <button type="button" class="col-xs-12 btn btn-danger top-margin add-existing-category" id="abcd_<?php echo $count++ ?>"><?php echo $each['name'] ?></button>
-                                                    <div class='col-xs-12 '>
-                                                <div class='col-xs-12 add-new-category-details editable-text-border col-xs-12 no-padding' contenteditable="true"><?php echo $each['name'] ?></div>
-                                                
-                                                <div class='col-xs-12 add-new-category-details-show-container col-xs-12 no-padding'>Show column for other users? <input class="add-new-category-details-show hcenter" type="checkbox" checked="checked"/></div>
-                                                 <div class='col-xs-12 add-new-category-details-body editable-text-border col-xs-12 no-padding' contenteditable="true"><?php echo $each['body'] ?></div>
-                                                 <button class='col-xs-12 add-new-category-details-delete editable-text-border col-xs-12 btn btn-danger no-padding' type="button" >Delete</button>
-                                            </div>
-                                        </div>
-                                                <?php
-                                                }
-                                            }
-                                            ?>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-8 pull-right cave-property-right" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)"  ondragover="return dragOver(event)">
-                                        
-                                    </div>
-                                    <button type="button" class="col-xs-12 btn btn-danger" id="save-columns">Save columns</button>
-                                </div>
-
-                                <div style="text-align:center;">
-                                    <button class="btn btn-primary" onclick="makeEdit()" id="editBtn">Edit Cave</button>
-                                    <button class="btn btn-warning" id="updateBtn" disabled="disabled">Update</button>
-                                    <button class="btn btn-danger" id="deleteBtn" disabled="disabled">Delete Cave</button>
-                                </div>
-
-                                <div style="text-align:right;">
-                                    <nav id="submenu">
-                                            <ul>
-                                                <button class="btn btn-primary" id="moreBtn"><li><a href="#2">Add More</a></li></button>
-                                            </ul>
-                                    </nav>
-                                </div>
-
-
-                            </section>-->
                             <section class="cave-section col-xs-12" style="background:transparent">
                                 <button id="getJSON1" type="button" class="btn btn-success col-xs-12 getJSON">Save Form</button>
                                 <div class="setDataWrap" style="display:none">
@@ -809,72 +554,43 @@
                 </div>
             </div>
         </section>
-
-<!--        <section id="2" class="col-xs-12" style="display:none">          
-            <ul class="desc-menu">
-                <li title="facade"><a href="#2" class="facade" onclick="toggle('facade');">Facade</a></li>
-                <li title="hall"><a href="#2" class="hall" onclick="toggle('hall');">Hall</a></li>
-                <li title="antichamber"><a href="#2" class="antichamber" onclick="toggle('antichamber');">AntiChamber</a></li>
-                <li title="pillars"><a href="#2" class="pillars" onclick="toggle('pillars');">Pillars</a></li>
-                <li title="shrine"><a href="#2" class="shrine" onclick="toggle('shrine');">Shrine</a></li>
-                <li title="ceiling"><a href="#2" class="ceiling" onclick="toggle('ceiling');">Ceiling</a></li>
-            </ul>
-            <div style="text-align:right;">
-                <button class="btn btn-primary" id="moreBtn"><i class="icon-cog"></i>Show Gallery</button>
-                <button class="btn btn-primary" id="moreBtn"><i class="icon-cog"></i>Add Story</button>
-            </div>
-            <div class="wrapper">
-                <div class="content" id="facade" style="display:none;">
-                    <div style="margin-top:-590px">
-                            <?php echo form_open_multipart('Caves/galleryUpload'); ?>
-                                <h3 class="text-primary text-center">Painting</h3>
-                                <?php echo "<input type='file' name='painting' size='350' />"; ?>
-                                <br><br><br><br>
-                                <h3 class="text-primary text-center">Line Drawing</h3>
-                                <?php echo "<input type='file' name='linedrawing' size='350' />"; ?>
-                                <br><br><br><br>
-                                <h3 class="text-primary text-center">Reconstructed Painting</h3>
-                                <?php echo "<input type='file' name='reconstructed' size='350' />"; ?>
-                                <br><br><br><br>
-                                <h3 class="text-primary text-center">Recreated Painting</h3>
-                                <?php echo "<input type='file' name='recreated' size='350' />"; ?>
-                                <br><br><br><br>
-                                <?php echo "<input type='submit' name='submit' value='Upload'/> "; ?>
-                            <?php echo "</form>" ?>
-                    </div>
-                </div>
-                <div class="content" id="hall" style="display:none;">
-                    <div style="margin-top:-590px">
-                        <?php echo form_open_multipart('Caves/galleryUpload'); ?>
-                                <h3 class="text-primary text-center">Painting</h3>
-                                <?php echo form_label('Title:'); ?><br />
-                                <?php echo form_input(array('id' => 'ptitle', 'name' => 'pname')); ?><br />
-                                <?php echo form_label('Description:'); ?><br />
-                                <?php echo form_input(array('id' => 'pdescription', 'name' => 'pname')); ?><br />
-                                <?php echo "<input type='file' name='painting' size='350' />"; ?>
-                                <br><br><br><br>
-                                <h3 class="text-primary text-center">Line Drawing</h3>
-                                <?php echo "<input type='file' name='linedrawing' size='350' />"; ?>
-                                <br><br><br><br>
-                                <h3 class="text-primary text-center">Reconstructed Painting</h3>
-                                <?php echo "<input type='file' name='reconstructed' size='350' />"; ?>
-                                <br><br><br><br>
-                                <h3 class="text-primary text-center">Recreated Painting</h3>
-                                <?php echo "<input type='file' name='recreated' size='350' />"; ?>
-                                <br><br><br><br>
-                                <?php echo "<input type='submit' name='submit' value='Upload'/> "; ?>
-                        <?php echo form_close(); ?>
-                    </div>
-                </div>
-                <div class="content" id="antichamber" style="display:none;">
-                    <div style="margin-top:-550px">
-                        
-                    </div>
-                </div>
+        <section id="2" class='col-xs-12 no-padding' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px">
+            <h1>
+                Upload Images
+            </h1>
+            <div class="col-xs-12">
+                
+                <form class="dropzone" id='dropzone'>
+<!--                    <div class="fallback">
+                      <input name="file" type="file" multiple accept='image/*' />
+                      <input type='text' id='cave_id_image_upload' value='' />
+                    </div>-->
+                </form>
+                
+                <button class="col-xs-12 btn btn-primary top-margin" id="refresh-button" type="button">Refresh / Save All Changes</button>
             </div>
         </section>
         
-        <section id="3" class="col-xs-12" style="display:none">
+        <section id='3' class='col-xs-12' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px;">
+            <h1>
+                Image Gallery
+            </h1>
+            <div class='col-xs-12' id="image-gallery" style="height:200px;overflow:auto;background-color:white;border:1px solid">
+                
+            </div>
+        </section>
+        
+        <section id='4' class='col-xs-12' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px;">
+            <div id='4-1' class='col-xs-12 no-padding' style="position:relative;">
+                
+            </div>
+<!--            <div class="dummy-area" style="z-index: 10;position:absolute;left:0;top:0">
+                
+            </div>-->
+        </section>
+
+        
+<!--        <section id="3" class="col-xs-12" style="display:none">
             <h1>Image Gallery</h1>
             
                  https://tympanus.net/codrops/2011/09/20/responsive-image-gallery/ 
@@ -886,141 +602,41 @@
         
     </div> <!-- Section Tag Ends Here -->
 </div> <!--Ending Container -->
-
-
-
-
-<!--<script>
-    $(document).ready(function () {
-        // Add smooth scrolling to all links
-        $("a").on('click', function (event) {
-
-            // Make sure this.hash has a value before overriding default behavior
-            if (this.hash !== "") {
-                // Prevent default anchor click behavior
-                event.preventDefault();
-
-                // Store hash
-                var hash = this.hash;
-
-                // Using jQuery's animate() method to add smooth page scroll
-                // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-                $('html, body').animate({
-                    scrollTop: $(hash).offset().top
-                }, 800, function () {
-
-                    // Add hash (#) to URL when done scrolling (default click behavior)
-                    window.location.hash = hash;
-                });
-            } // End if
-        });
-    });
-</script>-->
+<!-- Modal -->
+<div class="modal fade" id="storyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content col-xs-12 no-padding">
+      <div class="modal-header col-xs-12 no-padding">
+        <h5 class="modal-title col-xs-6" id="exampleModalLabel">Add Story</h5>
+        <button type="button" class="close col-xs-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body col-xs-12 no-padding">
+          <div class="col-xs-12">
+              <label class="col-xs-12 no-padding">Story Title</label>
+              <div class="col-xs-12 no-padding">
+                  <input type="text" class="form-control" id="title"/>
+              </div>
+          </div>
+          <div class="col-xs-12 ">
+              <label class="col-xs-12 no-padding">Story Description</label>
+               <div class="col-xs-12 no-padding">
+                   <textarea class="form-control" id="description" style="height:150px"></textarea>
+              </div>
+          </div>
+          <input type="hidden" value="" id="marking_id" />
+          <input type="hidden" id="story_id" />
+      </div>
+      <div class="modal-footer col-xs-12">
+        <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-save">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-    
-//        $(document).on('click','.add-new-category-details',function(){
-//            if($(this).text() == 'Title')
-//            {
-//                $(this).text('');
-//            }
-//        });
-//        
-//        $(document).on('click','.add-new-category-details-body',function(){
-//            if($(this).text() == 'Body')
-//            {
-//                $(this).text('');
-//            }
-//        });
-//        
-//        $(document).on('click', '#save-columns', function(){
-//            var data = new Object();
-//            var count = 1;
-//            $('.cave-property-right .new_category').each(function(){
-//                data[count] = new Object();
-//                data[count]['title'] = $(this).find('.add-new-category-details').text();
-//                data[count]['body'] = $(this).find('.add-new-category-details-body').text();
-//                data[count]['column_order'] = count;
-//                if($(this).find('.add-new-category-details-show').is(':checked'))
-//                {
-//                    data[count]['column_show'] = 1;
-//                }
-//                else
-//                {
-//                    data[count]['column_show'] = 0;
-//                }
-//                count++;
-//            });
-//            
-//            saveColumns(data);
-//        });
-//        
-//        
-//        $(document).on('click', '.add-new-category-details-delete', function(){
-//           var conf  = confirm("Are you sure you want to delete this?"); 
-//           if(!conf)
-//           {
-//               return;
-//           }
-//           
-//           var parent = $(this).parents('.new_category').first();
-//           $(parent).remove();
-//        });
-//        
-//        $(document).on('click', '.add-new-category-details-body', function(){
-//           //jQuery('#editBodyModal').modal('show'); 
-//        });
-//        
-//        $(document).on('click', '.gray-field', function(){
-//            var parent = $(this).parents('.gray-bg').first();
-//            $(parent).find('.brown-field').removeClass('brown-field'); 
-//            $(this).addClass('brown-field'); 
-//        });
-//        
-//        $(document).on('click', '.textfield', function(){
-//            var parent = $(this).parents('.gray-bg').first();
-//            $(parent).find('.input-area').hide();
-//            $(parent).find('[data-type="textfield"]').show(); 
-//        });
-//        
-//        $(document).on('click', '.textarea', function(){
-//            var parent = $(this).parents('.gray-bg').first();
-//            $(parent).find('.input-area').hide();
-//            $(parent).find('[data-type="textarea"]').show(); 
-//        });
-//        
-//        $(document).on('click', '.select', function(){
-//            var parent = $(this).parents('.gray-bg').first();
-//            $(parent).find('.input-area').hide();
-//            $(parent).find('[data-type="select"]').show(); 
-//        });
-//        
-//        $(document).on('click', '.btn-add-option', function(){
-//            var parent = $(this).parents('.select-area').first();
-//            var html = "<div class='col-xs-12 option-container no-padding'><div class='col-xs-8 white-bg editable-text-border' contenteditable='true' style='color:gray;text-align:left'></div><button type='button' class='col-xs-2 btn btn-success btn-add-option'><i class='glyphicon glyphicon-plus'></i></button><button type='button' class='col-xs-2 btn btn-danger btn-delete-option'><i class='glyphicon glyphicon-remove'></i></button></div>";
-//            $('.select-area').append(html);
-//        });
-//        
-//        $(document).on('click', '.btn-delete-option', function(){
-//            var parent = $(this).parents('.option-container').first();
-//            var conf = confirm("Are you sure you want to delete this option?");
-//            if(!conf)
-//            {
-//                return 0;
-//            }
-//            
-//            $(parent).remove();
-//        });
-//        
-//        function saveColumns(data)
-//        {
-//            var caveNum = $('#cave_numb').val();
-//            $.post('/home/caves/save', {data:data, caveNum:caveNum}, function(){
-//                alert('Columns Saved Succefully');
-//                location.reload();
-//            });
-//        }
-//        
         
         
 jQuery(function($) {
@@ -1046,6 +662,186 @@ jQuery(function($) {
         });
     });
 });
-  
-  
-</script>
+
+
+$(document).on('change', '.div-toggle', function () {
+    $('#4-1').html('');
+    $('#dropzone').find('.dz-complete').remove();
+    $('#dropzone').removeClass('dz-started');
+        //changing <div> according to the selected dropdown option
+        var target = $(this).data('target'); //get data whose name is'target'
+        var show = $("option:selected", this).data('show'); //get data from HTML elment option:selected of 'this' whose name is 'show'
+        $(target).children().addClass('hide'); //hide  other options if they are shown previously by choosing their dropdown
+        $(show).removeClass('hide');
+        
+        
+        var height = $('.cb-wrap').height();
+        $('.frmb').attr('style', 'min-height:' + height + 'px')
+        //Access Cave Number and send AJAX to controller
+        var e = document.getElementById("cave_numb");
+        var cave_numb = e.options[e.selectedIndex].value;
+        cave_num_global = cave_numb;
+        refreshGalllery();
+        
+        $('#cave_id_image_upload').val(cave_numb);
+    
+        var cave_number = {
+            'cave_numb': cave_numb
+        };
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url("caves/getFormData"); ?>",
+            data: cave_number,
+            dataType: 'json',
+            success: function (res) {
+                
+                $('#2').show();
+                $('#3').show();
+              //  $("div#myId").dropzone({ url: "/file/post" });
+                $('#build-wrap').html('');
+                var fbEditor = document.getElementById('build-wrap');
+                formBuilder = $(fbEditor).formBuilder();
+                var formData = res.data;
+                
+              //  document.getElementById('setData').addEventListener('click', function() {
+                setTimeout(
+                    function() 
+                    {
+                        formBuilder.actions.setData(formData);
+                    },1000);
+                    //activateDropZone();
+                    
+            }
+        });
+    });
+    
+    Dropzone.autoDiscover = false;
+    $('.dropzone').dropzone ({
+            url: "/caves/uploadImage",
+            init: function() {
+                this.on("sending", function(file, xhr, formData){
+                    formData.append("cave_num_global", cave_num_global)
+                }),
+                this.on("success", function(file, xhr){
+                    alert(file.xhr.response);
+                })
+            },
+    });        
+                    
+    $(document).on('click', '#refresh-button', function(res){
+       refreshGalllery();
+    });
+    
+    function refreshGalllery()
+    {
+        $('#dropzone').find('.dz-default').html('<span>Drop files here to upload</span>');
+        $.get('/caves/getImages', {'cave_num' : cave_num_global}, function(res){
+            var html = '';
+            $(res).each(function(i,value){
+                var bgImage = "'/assets/uploads/" + value.location + "'";
+                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin"><div class="col-xs-12 each-image-gallery" data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
+            });
+            $('#image-gallery').html(html);
+        },'json');
+    }
+    
+    $(document).on('click', '.each-image-gallery', function(){
+        var image = $(this).attr('data-image');
+        var id = $(this).attr('data-id');
+        $('#4').show();
+        $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="' + image + '"/>');
+        window.location.href = '#3';
+        var cave_num = cave_num_global;
+        $.get('/caves/getAllCaveImages', {cave_num:cave_num}, function(res){
+            var html = '';
+            $(res).each(function(i, value){
+                html+= '<div class="marking" data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
+            });
+            console.log(html);
+            $('#4-1').append(html);
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON.message);
+            $('.btn-close').removeAttr('disabled');
+        },'json');
+    });
+    
+    $(document).on('click', '.gallery-image-coordiate', function(e){
+        var offset = $(this).offset();
+        var left = (e.pageX - offset.left) -5;
+        var top = (e.pageY - offset.top) - 5;
+        count = count + 1;
+        $('#4-1').append('<div class="marking" id="coordinate_' + count + '" data-x=' + left + ' data-y=' + top + ' style="left:' + left + 'px;top:' + top + 'px"></div>');
+        $('#title').val('');
+        $('#description').val('');
+        $('#marking_id').val('coordinate_' + count);
+        $('#story_id').val('');
+        $('#storyModal').modal('show');
+    });
+    
+    $(document).on('click', '#btn-save', function(){
+        $('.btn-close').attr('disabled', 'disabled');
+        var data = new Object();
+        var title = data['title'] = $('#title').val();
+        var description = data['description'] = $('#description').val();
+        data['cave_image_id'] = $('.gallery-image-coordiate').attr('data-id');
+        data['cave_num'] = cave_num_global;
+        
+        var markingID = $('#marking_id').val();
+        data['x'] = $('#' + markingID).attr('data-x');
+        data['y'] = $('#' + markingID).attr('data-y');
+        data['window_width'] = document.getElementById('hash-4-image').clientWidth;
+        data['image_actual_width'] = document.getElementById('hash-4-image').naturalWidth;
+        data['window_height'] = document.getElementById('hash-4-image').clientHeight;
+        data['image_actual_height'] = document.getElementById('hash-4-image').naturalHeight;
+        if($('#story_id').val().trim() == '')
+        {
+            $.post('/caves/saveStory', {data:data}, function(res){
+                $('#' + markingID).attr('data-title', title);
+                $('#' + markingID).attr('data-description', description);
+                $('#' + markingID).attr('data-id', res.id);
+                $('#story_id').val(res.id);
+
+                alert("Story Saved Successfully");
+                $('#storyModal').modal('hide');
+                $('.btn-close').removeAttr('disabled');
+            },'json').fail( function(xhr, textStatus, errorThrown) {
+                alert(xhr.responseJSON.message);
+                $('.btn-close').removeAttr('disabled');
+            },'json');
+        }
+        else
+        {
+            var storyID = $('#story_id').val();
+            $.post('/caves/updateStory', {data:data, storyID:storyID}, function(res){
+                $('#' + markingID).attr('data-title', title);
+                $('#' + markingID).attr('data-description', description);
+                $('#' + markingID).attr('data-id', res.id);
+                $('#story_id').val(res.id);
+
+                alert("Story Saved Successfully");
+                $('#storyModal').modal('hide');
+                $('.btn-close').removeAttr('disabled');
+            },'json').fail( function(xhr, textStatus, errorThrown) {
+                alert(xhr.responseJSON.message);
+                $('.btn-close').removeAttr('disabled');
+            },'json');
+        }
+    });
+    
+    $(document).on('click', '.marking', function(){
+        var title = $(this).attr('data-title');
+        var description = $(this).attr('data-description');
+        var id = $(this).attr('data-id');
+        $('#title').val(title);
+        $('#description').val(description);
+        $('#story_id').val(id);
+        
+        $('#storyModal').modal('show');
+    });
+        
+//    function activateDropZone()
+//    {
+//        console.log("A");
+//        
+//    }
+//</script>

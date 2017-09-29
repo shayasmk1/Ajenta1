@@ -2,11 +2,22 @@
 
 class Story_model extends CI_Model {
 	function __construct(){
+            $this->model = 'story';
 		parent::__construct();
 	}
 	
 	function insert_data($data){
-		$this->db->insert('painting',$data);
+            $res = $this->db->set($data)->insert($this->model);
+            return $this->db->insert_id();
 	}
+        
+        function updateData($data, $storyID){
+            return $this->db->where('id', $storyID)->set($data)->update($this->model);
+	}
+        
+        function getAllCaveImages($caveID)
+        {
+            return $this->db->where('cave_id', $caveID)->get($this->model)->result_array();
+        }
 }
 ?>
