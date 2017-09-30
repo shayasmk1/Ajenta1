@@ -15,7 +15,7 @@ class Story_model extends CI_Model {
             return $this->db->where('id', $storyID)->set($data)->update($this->model);
 	}
         
-        function getAllCaveImages($caveID, $caveImageID)
+        function getAllCaveStories($caveID, $caveImageID)
         {
             return $this->db->where('cave_id', $caveID)->where('cave_image_id', $caveImageID)->get($this->model)->result_array();
         }

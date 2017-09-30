@@ -226,7 +226,7 @@
     .form-wrap .tabs {
         overflow: hidden;
       //  z-index: 100;
-        top: 80px;
+       // top: 80px;
        // height: 500px;
         position: relative;
         padding-left: 50px;
@@ -476,9 +476,14 @@
         margin-left:2px;
     }
     
-    .input-control-0, .input-control-2
+    .input-control-0, .input-control-2, .input-control-3, .input-control-4, .fld-subtype option[value="fineuploader"]
     {
         display : none;
+    }
+    
+    #cave_numb
+    {
+        margin-top : 100px;
     }
 </style>
 
@@ -500,14 +505,15 @@
 
 <div class="container submenu col-xs-12 col-md-9 no-padding pull-right" >
     <div class="sections col-xs-12 no-padding" style="z-index:10;margin-top :50px">
-        <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue;min-height:750px">
+        
+        <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue;">
             <div class="form-wrap col-xs-12">
                 <div class="tabs col-xs-12">
                     <?php
                     if (isset($cave_list) && !empty($cave_list)) {
                         ?>
 
-                        <select id="cave_numb" name="cave_numb" class="div-toggle center white" data-target=".switch_data">
+                    <select id="cave_numb" name="cave_numb" class="div-toggle center white" data-target=".switch_data">
                             <option>Select Cave Number</option>
 
                             <?php
@@ -530,15 +536,30 @@
 
                         <!-- CAVE OPTIONS --->
                         <div class="cave_options  col-xs-12 no-padding" style="z-index:1">
-
-                            <section class="cave-section col-xs-12" style="background:transparent">
-                                <button id="getJSON1" type="button" class="btn btn-success col-xs-12 getJSON">Save Form</button>
-                                <div class="setDataWrap" style="display:none">
-                                    <button id="setData" type="button">Set Data</button>
-                                  </div>
-                                <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
-                                <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
-                            </section>
+                            <?php
+                            
+                            if($this->session->userdata('user_profile') == 'administrator')
+                            {
+                            ?>
+                                <section class="cave-section col-xs-12" style="background:transparent">
+                                    <button id="getJSON1" type="button" class="btn btn-success col-xs-12 getJSON">Save Form</button>
+                                    <div class="setDataWrap" style="display:none">
+                                        <button id="setData" type="button">Set Data</button>
+                                      </div>
+                                    <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
+                                    <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
+                                </section>
+                            <?php
+                            }
+                            else
+                            {
+                                ?>
+                            <form id="cave_form">
+                                
+                            </form>
+                            <?php
+                            }
+                            ?>
                         </div> <!-- CLOSE CAVE OPTIONS -->
 
                         <div class="add_cave hide">
@@ -554,6 +575,7 @@
                 </div>
             </div>
         </section>
+        
         <section id="2" class='col-xs-12 no-padding' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px">
             <h1>
                 Upload Images
@@ -668,49 +690,104 @@ $(document).on('change', '.div-toggle', function () {
     $('#4-1').html('');
     $('#dropzone').find('.dz-complete').remove();
     $('#dropzone').removeClass('dz-started');
-        //changing <div> according to the selected dropdown option
-        var target = $(this).data('target'); //get data whose name is'target'
-        var show = $("option:selected", this).data('show'); //get data from HTML elment option:selected of 'this' whose name is 'show'
-        $(target).children().addClass('hide'); //hide  other options if they are shown previously by choosing their dropdown
-        $(show).removeClass('hide');
+    //changing <div> according to the selected dropdown option
+    var target = $(this).data('target'); //get data whose name is'target'
+    var show = $("option:selected", this).data('show'); //get data from HTML elment option:selected of 'this' whose name is 'show'
+    $(target).children().addClass('hide'); //hide  other options if they are shown previously by choosing their dropdown
+    $(show).removeClass('hide');
         
         
-        var height = $('.cb-wrap').height();
-        $('.frmb').attr('style', 'min-height:' + height + 'px')
-        //Access Cave Number and send AJAX to controller
-        var e = document.getElementById("cave_numb");
-        var cave_numb = e.options[e.selectedIndex].value;
-        cave_num_global = cave_numb;
-        refreshGalllery();
-        
-        $('#cave_id_image_upload').val(cave_numb);
+    var height = $('.cb-wrap').height();
+    $('.frmb').attr('style', 'min-height:' + height + 'px')
+    //Access Cave Number and send AJAX to controller
+    var e = document.getElementById("cave_numb");
+    var cave_numb = e.options[e.selectedIndex].value;
+    cave_num_global = cave_numb;
+    refreshGalllery();
+
+    $('#cave_id_image_upload').val(cave_numb);
+
+    var cave_number = {
+        'cave_numb': cave_numb
+    };
     
-        var cave_number = {
-            'cave_numb': cave_numb
-        };
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url("caves/getFormData"); ?>",
-            data: cave_number,
-            dataType: 'json',
-            success: function (res) {
-                
-                $('#2').show();
-                $('#3').show();
-              //  $("div#myId").dropzone({ url: "/file/post" });
-                $('#build-wrap').html('');
-                var fbEditor = document.getElementById('build-wrap');
-                formBuilder = $(fbEditor).formBuilder();
-                var formData = res.data;
-                
-              //  document.getElementById('setData').addEventListener('click', function() {
-                setTimeout(
-                    function() 
-                    {
-                        formBuilder.actions.setData(formData);
-                    },1000);
+    $.ajax({
+        type: "POST",
+        url: "<?php echo site_url("caves/getFormData"); ?>",
+        data: cave_number,
+        dataType: 'json',
+        success: function (res, textStatus, xhr) {
+            $('#2').show();
+            $('#3').show();
+          //  $("div#myId").dropzone({ url: "/file/post" });
+          
+                <?php
+                if($this->session->userdata('user_profile') == 'administrator')
+                {
+                    ?>
+                    $('#build-wrap').html('');
+
+                    var fbEditor = document.getElementById('build-wrap');
+                    formBuilder = $(fbEditor).formBuilder();
+                    var formData = res.data;
+
+                  //  document.getElementById('setData').addEventListener('click', function() {
+                    setTimeout(
+                        function() 
+                        {
+                            formBuilder.actions.setData(formData);
+                        },1000);
                     //activateDropZone();
-                    
+                    <?php
+                }
+                else
+                {
+                    ?>
+                        $('#cave_form').html('');
+                        if(xhr.status == 200)
+                        {
+                            var html = '';
+                            var result = $.parseJSON(res.data);
+                            $(result).each(function(i, value){
+                                
+                                html+= "<div class='col-xs-12'>";
+                                html+=      "<label class='col-xs-12'>" + value.label + "</label>";
+                                html+=      "<div class='col-xs-12'>";
+
+                                var actualValue = '';
+                                var placeholder = '';
+                                if(value.value != null)
+                                {
+                                    actualValue = value.value;
+                                }  
+                                if(value.value != null)
+                                {
+                                    placeholder = value.value;
+                                }  
+                                if(value.type == 'file' || value.type == 'text' || value.type == 'number' || value.type == 'button' || value.type == 'date')
+                                {
+                                    html+=  "<input type='" + value.type + "' name='" + value.name + "' id='" + value.name + "' class='" + value.className + "' style='" + value.style + "' placeholder='" + placeholder + "' value='" + actualValue + "' />";
+                                }
+                                else if(value.type == 'select')
+                                {
+                                    html+= "<select name='" + value.name + "' id='" + value.name + "' class='" + value.className + "' style='" + value.style + "'>";
+                                    console.log(value.values);
+//                                    var valueOptions = $.parseJSON(value.values);
+//                                    $(valueOptions).each(function(i1,value1){
+//                                        
+//                                        html+=      "<option value='" + value1.options + "'>'" + value1.label_name + "'</option>";
+//                                    });
+                                    html+= "</select>";
+                                }
+
+                                html+=      "</div>";
+                                html+= "</div>";
+                            });
+                            $('#cave_form').html(html);
+                        }
+                    <?php
+                }
+                ?>
             }
         });
     });
@@ -746,6 +823,7 @@ $(document).on('change', '.div-toggle', function () {
     }
     
     $(document).on('click', '.each-image-gallery', function(){
+        $('#image-overlay-loading').remove();
         $('.marking').remove();
         var image = $(this).attr('data-image');
         var id = $(this).attr('data-id');
@@ -753,16 +831,19 @@ $(document).on('change', '.div-toggle', function () {
         $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="' + image + '"/>');
         window.location.href = '#3';
         var cave_num = cave_num_global;
-        $.get('/caves/getAllCaveImages', {cave_num:cave_num, cave_image_id:id}, function(res){
+        $.get('/caves/getAllCaveStories', {cave_num:cave_num, cave_image_id:id}, function(res){
+            $('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
             var html = '';
             $(res).each(function(i, value){
                 html+= '<div class="marking" data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
             });
             console.log(html);
             $('#4-1').append(html);
+            $('#image-overlay-loading').remove();
         },'json').fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseJSON.message);
             $('.btn-close').removeAttr('disabled');
+            $('#image-overlay-loading').remove();
         },'json');
     });
     

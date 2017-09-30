@@ -23,7 +23,7 @@ class Home extends CI_Controller {
 			if (! file_exists ( 'application/views/' . $page . '.php' )) {
 				show_404 ();
 			}
-			  
+			
 			$this->load->view ('theme/header');
                         
                         $data['cave_list'] = $this->cave_model->get_dropdown_list();
@@ -38,8 +38,10 @@ class Home extends CI_Controller {
                         {
                             $data['column_headers'] = $this->CaveHeader_model->getAllDistinctHeaders();
                         }
-                        $this->load->view($page, $data);
                         
+                        
+                        
+                        $this->load->view($page, $data);
 			$this->load->view ('theme/footer');
 			
 		} else {
@@ -63,7 +65,7 @@ class Home extends CI_Controller {
 		if ($is_valid) {
 			$data = array(
 					'user_name' => $user_name,
-					'user_profile'=> 'moderator',
+					'user_profile'=> $is_valid['user_profile'],
 					'is_logged_in' => true
 			);
 			$this->session->set_userdata($data); //set the session
