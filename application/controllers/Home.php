@@ -12,6 +12,7 @@ class Home extends CI_Controller {
                 $this->load->model('cave_model');
                 $this->load->model('listHeader_model');
                 $this->load->model('CaveHeader_model');
+                $this->load->model('form_model');
 	}
 	
 	/*
@@ -26,9 +27,7 @@ class Home extends CI_Controller {
 			
 			$this->load->view ('theme/header');
                         
-                        $data['cave_list'] = $this->cave_model->get_dropdown_list();
-                        //To get Patron(p), Type(t), Period(p) for Autocomplete
-                        $data['cave_ptp'] = $this->cave_model->getCaveM(); 
+                        
                         $data['list'] = array();
                         if($page == 'list')
                         {
@@ -36,10 +35,28 @@ class Home extends CI_Controller {
                         }
                         if($page == 'caves')
                         {
+                            if($this->input->method() == 'post')
+                            {
+                                $forms = $this->input->post();
+//                                foreach($forms AS $form)
+//                                {
+                                    $res = $this->form_model->updateValues($forms);
+                                    if($res)
+                                    {
+                                        $data['message'] = 'Updated Successfully';
+                                    }
+                                    else
+                                    {
+                                        $data['message'] = 'Something went wrong';
+                                    }
+                              //  }
+                            }
+                            
                             $data['column_headers'] = $this->CaveHeader_model->getAllDistinctHeaders();
                         }
-                        
-                        
+                        $data['cave_list'] = $this->cave_model->get_dropdown_list();
+                        //To get Patron(p), Type(t), Period(p) for Autocomplete
+                        $data['cave_ptp'] = $this->cave_model->getCaveM(); 
                         
                         $this->load->view($page, $data);
 			$this->load->view ('theme/footer');

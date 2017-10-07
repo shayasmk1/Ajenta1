@@ -120,5 +120,18 @@
                 }
                 return $query;
             }
+            
+            public function updateValues($forms)
+            {
+                $caveID = $forms['cave_id'];
+                unset($forms['cave_id']);
+                foreach($forms AS $key => $form){
+                    $value['value'] = $form;
+                    
+                    $this->db->where('name', $key)->where('cave_id', $caveID)->set($value)->update($this->table);
+                }
+                
+                return 1;
+            }
         }
         ?>

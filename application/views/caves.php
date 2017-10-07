@@ -57,6 +57,11 @@
   background: #f2f2f2 url('http://formbuilder.readthedocs.io/en/latest/img/noise.png');
 }
 
+.form-custom-container label
+{
+    text-align: left;
+}
+
 
 </style>
 
@@ -476,7 +481,7 @@
         margin-left:2px;
     }
     
-    .input-control-0, .input-control-2, .input-control-3, .input-control-4, .fld-subtype option[value="fineuploader"]
+    .input-control-0, .input-control-2, .input-control-3, .input-control-4, .input-control-6, .fld-subtype option[value="fineuploader"]
     {
         display : none;
     }
@@ -509,6 +514,7 @@
         <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue;">
             <div class="form-wrap col-xs-12">
                 <div class="tabs col-xs-12">
+                    
                     <?php
                     if (isset($cave_list) && !empty($cave_list)) {
                         ?>
@@ -531,6 +537,16 @@
                         echo "<br><br><br>";
                     }
                     ?>
+                    <?php
+                     if(isset($message))
+                                {
+                                ?>
+                                    <div class='col-xs-12 error'>
+                                        <?php echo $message ?>
+                                    </div>
+                                <?php
+                                }
+                                ?>
                     <br><br>
                     <div class="switch_data col-xs-12 no-padding">
 
@@ -553,11 +569,12 @@
                             }
                             else
                             {
-                                ?>
-                            <form id="cave_form">
-                                
-                            </form>
+                               ?>
+                                    <form id="cave_form" method="post">
+
+                                    </form>
                             <?php
+                                
                             }
                             ?>
                         </div> <!-- CLOSE CAVE OPTIONS -->
@@ -744,18 +761,22 @@ $(document).on('change', '.div-toggle', function () {
                 {
                     ?>
                         $('#cave_form').html('');
+                        var count1 = 0;
                         if(xhr.status == 200)
                         {
                             var html = '';
                             var result = $.parseJSON(res.data);
+                            html+= "<div class='col-xs-12 form-custom-container no-padding'>";
+                            html+= "<input type='hidden' name='cave_id' value='" + cave_num_global + "' />";
                             $(result).each(function(i, value){
                                 
-                                html+= "<div class='col-xs-12'>";
+                                html+= "<div class='col-xs-12 each-form-field'>";
                                 html+=      "<label class='col-xs-12'>" + value.label + "</label>";
-                                html+=      "<div class='col-xs-12'>";
+                                html+=      "<div class='col-xs-12' style='text-align:left'>";
 
                                 var actualValue = '';
                                 var placeholder = '';
+                                
                                 if(value.value != null)
                                 {
                                     actualValue = value.value;
@@ -764,25 +785,59 @@ $(document).on('change', '.div-toggle', function () {
                                 {
                                     placeholder = value.value;
                                 }  
-                                if(value.type == 'file' || value.type == 'text' || value.type == 'number' || value.type == 'button' || value.type == 'date')
+                                
+                                if(value.type == 'file' || value.type == 'number' || value.type == 'date')
                                 {
                                     html+=  "<input type='" + value.type + "' name='" + value.name + "' id='" + value.name + "' class='" + value.className + "' style='" + value.style + "' placeholder='" + placeholder + "' value='" + actualValue + "' />";
+                                }
+                                else if(value.type == 'button' || value.type == 'text')
+                                {
+                                    html+=  "<input type='" + value.subtype + "' name='" + value.name + "' id='" + value.name + "' class='" + value.className + "' style='" + value.style + "' placeholder='" + placeholder + "' value='" + actualValue + "' />";
                                 }
                                 else if(value.type == 'select')
                                 {
                                     html+= "<select name='" + value.name + "' id='" + value.name + "' class='" + value.className + "' style='" + value.style + "'>";
                                     console.log(value.values);
-//                                    var valueOptions = $.parseJSON(value.values);
-//                                    $(valueOptions).each(function(i1,value1){
-//                                        
-//                                        html+=      "<option value='" + value1.options + "'>'" + value1.label_name + "'</option>";
-//                                    });
+                                    $(value.values).each(function(i1, value1){
+                                        
+                                        var selected = '';
+                                        if(value1.selected == 1)
+                                        {
+                                            selected = 'selected="selected"';
+                                        }
+                                        html+=      "<option value='" + value1.label + "' " + selected + ">" + value1.value + "</option>";
+                                    })
+
                                     html+= "</select>";
+                                }
+                                else if(value.type == 'checkbox-group')
+                                {
+                                    html+= "<div class='col-xs-12'>";
+                                    $(value.values).each(function(i1, value1){
+                                        html+= "<label class='pull-left'>" + value1.label + "</label>";
+                                        html+= "<input type='checkbox' class='pull-left' value='" + value1.value + "'/>";
+                                    });
+                                    html+= "</div>";
+                                }
+                                else if(value.type == 'radio-group')
+                                {
+                                    html+= "<div class='col-xs-12'>";
+                                    $(value.values).each(function(i1, value1){
+                                        html+= "<label class='pull-left'>" + value1.label + "</label>";
+                                        html+= "<input type='radio' class='pull-left' name='radio_" + count1 + "' value='" + value1.value + "'/>";
+                                    });
+                                    html+= "</div>";
+                                    count1++;
+                                }
+                                else if(value.type == 'textarea')
+                                {
+                                    html+= "<textarea name='" + value.name + "' id='" + value.name + "' class='" + value.className + "' style='" + value.style + "' placeholder='" + placeholder + "' >" + actualValue + "</textarea>";
                                 }
 
                                 html+=      "</div>";
                                 html+= "</div>";
                             });
+                            html+= "</div>";
                             $('#cave_form').html(html);
                         }
                     <?php

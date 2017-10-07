@@ -427,3 +427,16 @@ footer
 {
     margin-right : 10px;
 }
+
+.form-custom-container
+{
+    border : 1px solid;
+    background-color : lightgoldenrodyellow;
+    padding-top :15px;
+    padding-bottom : 15px;
+}
+
+.each-form-field
+{
+    margin-bottom: 15px;
+}
