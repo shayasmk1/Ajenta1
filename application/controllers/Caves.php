@@ -196,8 +196,7 @@ class Caves extends CI_Controller {
                         $count1++;
                     }
                 }
-                else if($each->type == 'button' || $each->type == 'date' || $each->type == 'file' || $each->type == 'header'
-                            || $each->type == 'paragraph' || $each->type == 'number' || $each->type == 'text' || $each->type == 'textarea')
+                else if($each->type == 'button' || $each->type == 'date' || $each->type == 'file' || $each->type == 'number' || $each->type == 'text' || $each->type == 'textarea')
                 {
                     $eachArray[$count]['cave_id'] = $cave_id;
                     $eachArray[$count]['type'] = $each->type;
@@ -237,6 +236,18 @@ class Caves extends CI_Controller {
                     if(isset($each->maxlength))
                     {
                         $eachArray[$count]['maxlength'] = $each->maxlength;
+                    }
+                }
+                else if($each->type == 'header' || $each->type == 'paragraph')
+                {
+                    $eachArray[$count]['name'] = $each->type . rand(1000000,9999999);
+                    $eachArray[$count]['cave_id'] = $cave_id;
+                    $eachArray[$count]['type'] = $each->type;
+                    $eachArray[$count]['label'] = $each->label;
+                    
+                    if(isset($each->subtype))
+                    {
+                        $eachArray[$count]['subtype'] = $each->subtype;
                     }
                 }
                 $count++;

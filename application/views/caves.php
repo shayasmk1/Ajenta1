@@ -481,7 +481,7 @@
         margin-left:2px;
     }
     
-    .input-control-0, .input-control-2, .input-control-3, .input-control-4, .input-control-6, .fld-subtype option[value="fineuploader"]
+    .input-control-0, .input-control-2, .input-control-6, .fld-subtype option[value="fineuploader"]
     {
         display : none;
     }

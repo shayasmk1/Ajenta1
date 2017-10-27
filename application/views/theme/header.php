@@ -86,33 +86,30 @@
                     
                         
                         <div class="dropdown-menu" aria-labelledby="messagesDropdown">
-<!--                            <h6 class="dropdown-header">New Messages:</h6>
-                            <div class="dropdown-divider"></div>-->
+                            <h6 class="dropdown-header" id="new-message-header">New Messages:</h6>
+                            
                             <a class="dropdown-item" href="#"> 
                                 <strong>David Miller</strong> <span
                                     class="small float-right text-muted">11:21 AM</span>
                                 <div class="dropdown-message small">
                                     Hey there! This new version
-                                    of SB Admin is pretty awesome! These messages clip off when they
-                                    reach the end of the box so they don't overflow over to the
-                                    sides!
+                                    of SB Admin...
                                 </div>
                             </a>
-                            <div class="dropdown-divider"></div>
+                           
                             <a class="dropdown-item" href="#"> <strong>Jane Smith</strong> <span
                                     class="small float-right text-muted">11:21 AM</span>
                                 <div class="dropdown-message small">I was wondering if you could
-                                    meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
+                                    meet for an...</div>
                             </a>
-                            <div class="dropdown-divider"></div>
+                            
                             <a class="dropdown-item" href="#"> <strong>John Doe</strong> <span
                                     class="small float-right text-muted">11:21 AM</span>
                                 <div class="dropdown-message small">I've sent the final files
-                                    over to you for review. When you're able to sign off of them let
-                                    me know and we can discuss distribution.</div>
+                                    over to you for review. When...</div>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item view-all-messages col-xs-12" href="#"> View All Messages </a>
+                            <a class="dropdown-item view-all-messages col-xs-12" href="#"> <span>View All Messages</span> </a>
                         </div></li>
                         
 <!--                </ul>
@@ -132,9 +129,9 @@
                                     <span class="number">6</span></span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-                            <a class="dropdown-item" href="#">Action</a> <a
-                                class="dropdown-item" href="#">Another action</a> <a
-                                class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#"><span class="notification-list">Action</span></a>
+                            <a class="dropdown-item" href="#"><span class="notification-list">Another action</span></a>
+                                <a class="dropdown-item" href="#"><span class="notification-list">Something else here</span></a>
                         </div></li>
                         <li style="margin-top: -6px">
                             <form class="form-inline my-2 my-lg-0 mr-lg-2">

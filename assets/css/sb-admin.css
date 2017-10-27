@@ -338,10 +338,17 @@ footer
 .view-all-messages
 {
     width  :100%;
-    text-align: center;
-    background-color : gray;
-    color : white;
+    //text-align: center;
+    //background-color : gray;
+    color : gray;
     padding : 10px;
+    font-size : 17px;
+    
+    padding-top : 5px !important;
+}
+.view-all-messages span
+{
+    padding-left : 15px;
 }
 
 #navbarExample ul
@@ -439,4 +446,57 @@ footer
 .each-form-field
 {
     margin-bottom: 15px;
+}
+
+.dropdown-menu
+{
+    width : 35rem;
+    border-radius: 3px;
+    
+    border-top-left-radius: 3px !important;
+    border-top-right-radius: 3px !important;
+    
+}
+
+#new-message-header
+{
+    font-size: 16px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 15px;
+}
+
+.dropdown-item strong
+{
+    padding-left : 15px;
+    font-size : 17px;
+    color : black;
+}
+
+.dropdown-item .dropdown-message
+{
+    font-size : 15px;
+    padding-left :15px;
+    color : gray;
+    border-bottom: 1px solid lightgray;
+    max-width: 100% !important;
+}
+
+.dropdown-item
+{
+    padding : 0px !important;
+    margin-bottom : 10px !important;
+    color : gray;
+}
+
+.dropdown-item .text-muted
+{
+        text-align: right;
+    float: right;
+    padding-right: 15px;
+}
+
+.notification-list
+{
+    padding : 5px 15px;
+    font-size: 17px;
 }

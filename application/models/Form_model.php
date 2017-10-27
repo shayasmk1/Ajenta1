@@ -49,12 +49,14 @@
                         $this->db->where('id', $insertID)->set($data1)->update($this->table);
                     }
                     
+                    
                     if(!$insertID)
                     {
                         $this->db->rollback();
                         return 0;
                         exit;
                     }
+                   
                     if(isset($values) || !empty($values))
                     {
                         foreach($values AS $value)
