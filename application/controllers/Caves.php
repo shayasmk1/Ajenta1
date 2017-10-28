@@ -442,4 +442,27 @@ class Caves extends CI_Controller {
                 exit;
         }
     }
+    
+    public function deleteCaveStory()
+    {
+        if($this->input->method() != 'get')
+        {
+            header('HTTP/1.1 500 Created');
+            echo json_encode(array('message' => 'Something went wrong'));
+            exit;
+        }
+        $storyID = $this->input->get('storyID');
+        
+        $res = $this->Story_model->deleteStory($storyID);
+        if(!$res)
+        {
+            header('HTTP/1.1 500 Created');
+            echo json_encode(array('message' => 'Something went wrong'));
+            exit;
+        }
+        
+        header('HTTP/1.1 200 Created');
+        echo json_encode(array('message' => 'Deleted Successfully'));
+        exit;
+    }
 }

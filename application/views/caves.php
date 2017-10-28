@@ -670,6 +670,7 @@
       <div class="modal-footer col-xs-12">
         <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="btn-save">Save changes</button>
+        <button type="button" class="btn btn-danger" id="btn-delete">Delete</button>
       </div>
     </div>
   </div>
@@ -700,8 +701,22 @@ jQuery(function($) {
             alert(xhr.responseText);
         });
     });
+    
+  
 });
 
+$(document).on('click', '.btn-close', function(){
+   var markingID = $('#marking_id').val();
+   console.log(markingID);
+   
+   var attr = $('#' + markingID).attr('data-id');
+    // For some browsers, `attr` is undefined; for others,
+    // `attr` is false.  Check for both.
+    if (typeof attr == typeof undefined || attr == false) {
+        $('#' + markingID).remove();
+    }
+   
+});
 
 $(document).on('change', '.div-toggle', function () {
     $('#4-1').html('');
@@ -886,11 +901,12 @@ $(document).on('change', '.div-toggle', function () {
         $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="' + image + '"/>');
         window.location.href = '#3';
         var cave_num = cave_num_global;
+        var count1 = 0;
         $.get('/caves/getAllCaveStories', {cave_num:cave_num, cave_image_id:id}, function(res){
             $('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
             var html = '';
             $(res).each(function(i, value){
-                html+= '<div class="marking" data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
+                html+= '<div class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
             });
             console.log(html);
             $('#4-1').append(html);
@@ -950,9 +966,9 @@ $(document).on('change', '.div-toggle', function () {
         {
             var storyID = $('#story_id').val();
             $.post('/caves/updateStory', {data:data, storyID:storyID}, function(res){
-                $('#' + markingID).attr('data-title', title);
-                $('#' + markingID).attr('data-description', description);
-                $('#' + markingID).attr('data-id', res.id);
+                $('[data-id="' + storyID + '"]').attr('data-title', title);
+                $('[data-id="' + storyID + '"]').attr('data-description', description);
+                $('[data-id="' + storyID + '"]').attr('data-id', res.id);
                 $('#story_id').val(res.id);
 
                 alert("Story Saved Successfully");
@@ -972,8 +988,33 @@ $(document).on('change', '.div-toggle', function () {
         $('#title').val(title);
         $('#description').val(description);
         $('#story_id').val(id);
+        $('#marking_id').val($(this).attr('id'));
         
         $('#storyModal').modal('show');
+    });
+    
+    $(document).on('click', '#btn-delete', function(){
+        var markingID = $('#marking_id').val();
+        var storyID = $('#' + markingID).attr('data-id');
+        
+         // For some browsers, `attr` is undefined; for others,
+             // `attr` is false.  Check for both.
+             if (typeof storyID == typeof undefined || storyID == false) {
+                 console.log("A");
+                 $('#' + markingID).remove();
+                 $('#storyModal').modal('hide');
+             }
+             else
+             {
+                $.get('/caves/deleteCaveStory', {'storyID' : storyID}, function(){
+                    $('[data-id="' + storyID + '"]').remove();
+                    $('#storyModal').modal('hide');
+                    alert("Story Deleted Successfully");
+                },'json').fail( function(xhr, textStatus, errorThrown) {
+                   alert(xhr.responseJSON.message);
+                   $('.btn-close').removeAttr('disabled');
+               },'json');;
+           }
     });
         
 //    function activateDropZone()
