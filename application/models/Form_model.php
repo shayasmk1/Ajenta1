@@ -19,11 +19,19 @@
                 return $this->db->where('id', $listID)->delete($this->table);
             }
             
-            function insertData($data)
+            function insertData($data, $caveID)
             {
-                
                 $this->db->trans_begin();
                 $count = 1;
+                
+                $optionDelete = $this->db->where('cave_id', $caveID)->set(array('deleted_at' => date("Y-m-d H:i:s")))->update($this->table);
+                if(!$optionDelete)
+                {
+                    $this->db->rollback();
+                    return 0;
+                    exit;
+                }
+                
                 foreach($data AS $each)
                 {
                  
@@ -36,6 +44,7 @@
                     }
                     
                     $data1['field_order'] = $count++;
+                    $data1['deleted_at'] = null;
                     
                     $form = $this->db->where('name', $data1['name'])->where('cave_id', $data1['cave_id'])->get('form')->row();
                     if(!$form)
@@ -85,6 +94,14 @@
                             }
                         }
                     }
+                }
+                
+                $delete = $this->db->where('cave_id', $caveID)->where('deleted_at IS NOT NULL')->delete($this->table);
+                if(!$delete)
+                {
+                    $this->db->rollback();
+                    return 0;
+                    exit;
                 }
                 
                 if($this->db->trans_status() === FALSE)

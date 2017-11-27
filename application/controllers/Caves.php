@@ -119,6 +119,7 @@ class Caves extends CI_Controller {
         if($this->input->method() == 'post')
         {
             $data = $this->input->post('data');
+            $caveID = $this->input->post('cave_id');
             
             $data = json_decode($data);
             $eachArray = array();
@@ -253,7 +254,7 @@ class Caves extends CI_Controller {
                 $count++;
             }
           
-            $res = $this->form_model->insertData($eachArray);
+            $res = $this->form_model->insertData($eachArray, $caveID);
             if(!$res)
             {
                 header('HTTP/1.1 500 Created');
