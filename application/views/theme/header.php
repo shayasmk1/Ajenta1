@@ -209,5 +209,9 @@
                             </li> -->
                         </ul>
                     </li>
+                    <li class="nav-item col-xs-12">
+                        <a class="nav-link" href="<?php echo site_url('form/default_add'); ?>">
+                            <i class="fa fa-fw fa-underline"></i>Default Form</a>
+                    </li>
 
                 </ul>

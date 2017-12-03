@@ -120,6 +120,7 @@ class Caves extends CI_Controller {
         {
             $data = $this->input->post('data');
             $caveID = $this->input->post('cave_id');
+            $formName = $this->input->post('form_name');
             
             $data = json_decode($data);
             $eachArray = array();
@@ -254,7 +255,7 @@ class Caves extends CI_Controller {
                 $count++;
             }
           
-            $res = $this->form_model->insertData($eachArray, $caveID);
+            $res = $this->form_model->insertData($eachArray, $caveID, $formName);
             if(!$res)
             {
                 header('HTTP/1.1 500 Created');
@@ -273,7 +274,7 @@ class Caves extends CI_Controller {
     public function getFormData()
     {
         $caveNumb = $this->input->post('cave_numb');
-        
+        $cave = $this->cave_model->getCaveByCaveNumber($caveNumb);
         $formDetails = $this->form_model->getFormDetails($caveNumb);
        
         if(empty($formDetails))
@@ -286,8 +287,8 @@ class Caves extends CI_Controller {
         $formDetails = json_encode($formDetails);
         
         header('HTTP/1.1 200 Created');
-            echo json_encode(array('message' => 'Successfully Saved', 'data' => $formDetails));
-            exit;
+        echo json_encode(array('message' => 'Successfully Saved', 'data' => $formDetails, 'formName' => $cave->form_name));
+        exit;
     }
     
     public function uploadImage()

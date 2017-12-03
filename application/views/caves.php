@@ -558,10 +558,18 @@
                             {
                             ?>
                                 <section class="cave-section col-xs-12" style="background:transparent">
-                                    <button id="getJSON1" type="button" class="btn btn-success col-xs-12 getJSON">Save Form</button>
+                                    <label class="col-xs-12 pull-left" style="text-align:left">You are using</label>
+                                    <select class="form-control" id="form-templte-select">
+                                        <option value="custom">Custom Form</option>
+                                        <option value="default">Default Form</option>
+                                    </select>
                                     <div class="setDataWrap" style="display:none">
                                         <button id="setData" type="button">Set Data</button>
                                       </div>
+                                    <div class="col-xs-12 top-margin-big no-padding">
+                                        <label class="col-xs-12 pull-left" style="text-align:left">Add a name for this form</label>
+                                        <input type="text" class="form-control" id="form_name" placeholder="Add a name for form" />
+                                    </div>
                                     <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
                                     <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
                                 </section>
@@ -570,6 +578,7 @@
                             else
                             {
                                ?>
+                            <h3 id="title_for_users" style="text-align:left"></h3>
                                     <form id="cave_form" method="post">
 
                                     </form>
@@ -677,9 +686,62 @@
 </div>
 
 <script>
-        
+$(document).ready(function(){
+    $('#form-templte-select').change(function(){
+        if($(this).val() == 'default')
+        {
+            $.ajax({
+            type: "POST",
+            url: "<?php echo site_url("form/getDefaultFormData"); ?>",
+            dataType: 'json',
+            success: function (res, textStatus, xhr) {
+                $('#build-wrap').html('');
+
+                var fbEditor = document.getElementById('build-wrap');
+                formBuilder = $(fbEditor).formBuilder();
+                var formData = res.data;
+
+              //  document.getElementById('setData').addEventListener('click', function() {
+                setTimeout(
+                    function() 
+                    {
+                        formBuilder.actions.setData(formData);
+                    },300);
+                }
+
+            });   
+        }
+        else
+        {
+            var cave_numb = $('#cave_numb').val();
+            var cave_number = {
+                'cave_numb': cave_numb
+            };
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("caves/getFormData"); ?>",
+                data: cave_number,
+                dataType: 'json',
+                success: function (res, textStatus, xhr) {
+                    $('#build-wrap').html('');
+                    $('#form_name').val(res.formName);
+                    var fbEditor = document.getElementById('build-wrap');
+                    formBuilder = $(fbEditor).formBuilder();
+                    var formData = res.data;
+
+                    setTimeout(
+                        function() 
+                        {
+                            formBuilder.actions.setData(formData);
+                        },500);
+                }
+            });
+        }
+    });
+});
         
 jQuery(function($) {
+    
     //var formBuilder = $(document.getElementById('build-wrap')).formBuilder();
      $('.cave_options').addClass('hide');
     //document.getElementById('getJSON1').addEventListener('click', function() {
@@ -695,7 +757,8 @@ jQuery(function($) {
    // document.getElementById('getJSON2').addEventListener('click', function() {
     $(document).on('click', '#getJSON2', function(){
         var data = formBuilder.actions.getData('json');
-        $.post('/caves/forms',{'data':data, 'cave_id': $('#cave_numb').val()}, function(res){
+        var form_name = $('#form_name').val();
+        $.post('/caves/forms',{'data':data, 'cave_id': $('#cave_numb').val(), 'form_name': form_name}, function(res){
             alert(res);
         }).fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseText);
@@ -758,7 +821,8 @@ $(document).on('change', '.div-toggle', function () {
                 {
                     ?>
                     $('#build-wrap').html('');
-
+                    $('#form_name').val(res.formName);
+                    
                     var fbEditor = document.getElementById('build-wrap');
                     formBuilder = $(fbEditor).formBuilder();
                     var formData = res.data;
@@ -768,7 +832,7 @@ $(document).on('change', '.div-toggle', function () {
                         function() 
                         {
                             formBuilder.actions.setData(formData);
-                        },1000);
+                        },500);
                     //activateDropZone();
                     <?php
                 }
@@ -776,6 +840,14 @@ $(document).on('change', '.div-toggle', function () {
                 {
                     ?>
                         $('#cave_form').html('');
+                        if(res.message == 'Empty Array')
+                        {
+                            $('#title_for_users').text('');
+                        }
+                        else
+                        {
+                            $('#title_for_users').text(res.formName);
+                        }
                         var count1 = 0;
                         if(xhr.status == 200)
                         {

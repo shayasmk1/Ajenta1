@@ -1,10 +1,10 @@
         <?php
 
-        class Form_model extends CI_Model {
+        class DefaultForm_model extends CI_Model {
 
             function __construct() {
                 parent::__construct();
-                $this->table = 'form';
+                $this->table = 'default_form';
             }
             
             /*
@@ -19,21 +19,12 @@
                 return $this->db->where('id', $listID)->delete($this->table);
             }
             
-            function insertData($data, $caveID, $formName = null)
+            function insertData($data)
             {
                 $this->db->trans_begin();
                 $count = 1;
                 
-                $caveInsert = array('form_name' => $formName);
-                $caveUpdate = $this->db->where('cave_numb', $caveID)->set($caveInsert)->update('caves');
-                if(!$caveUpdate)
-                {
-                    $this->db->rollback();
-                    return 0;
-                    exit;
-                }
-                
-                $optionDelete = $this->db->where('cave_id', $caveID)->set(array('deleted_at' => date("Y-m-d H:i:s")))->update($this->table);
+                $optionDelete = $this->db->set(array('deleted_at' => date("Y-m-d H:i:s")))->update($this->table);
                 if(!$optionDelete)
                 {
                     $this->db->rollback();
@@ -55,7 +46,7 @@
                     $data1['field_order'] = $count++;
                     $data1['deleted_at'] = null;
                     
-                    $form = $this->db->where('name', $data1['name'])->where('cave_id', $data1['cave_id'])->get('form')->row();
+                    $form = $this->db->where('name', $data1['name'])->get('form')->row();
                     if(!$form)
                     {
                         $this->db->set($data1)->insert($this->table);
@@ -81,18 +72,18 @@
                         {
                             $value1['label_name'] = $value['label'];
                             $value1['options'] = $value['value'];
-                            $value1['form_id'] = $insertID;
+                            $value1['default_form_id'] = $insertID;
                             
                             $formOption = $this->db->where('label_name', $value1['label_name'])->where('form_id', $insertID)->get('form_options')->row();
                             if(!$formOption)
                             {
-                                $this->db->set($value1)->insert('form_options');
+                                $this->db->set($value1)->insert('default_form_options');
                                 $insertID1 = $this->db->insert_id();
                             }
                             else
                             {
                                 $insertID1 = $formOption->id;
-                                $this->db->where('id', $insertID1)->set($value1)->update('form_options');
+                                $this->db->where('id', $insertID1)->set($value1)->update('default_form_options');
                             }
                             
                             if(!$insertID1)
@@ -105,7 +96,7 @@
                     }
                 }
                 
-                $delete = $this->db->where('cave_id', $caveID)->where('deleted_at IS NOT NULL')->delete($this->table);
+                $delete = $this->db->where('deleted_at IS NOT NULL')->delete($this->table);
                 if(!$delete)
                 {
                     $this->db->rollback();
@@ -124,9 +115,9 @@
                 exit;
             }
             
-            public function getFormDetails($caveID)
+            public function getDefaultFormDetails()
             {
-                $query = $this->db->where('form.cave_id', $caveID)->order_by('field_order')->get($this->table)->result_array();
+                $query = $this->db->order_by('field_order')->get($this->table)->result_array();
                 
                 // Loop through the products array
                 foreach($query as $i => $value) {
