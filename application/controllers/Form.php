@@ -167,7 +167,6 @@ class Form extends CI_Controller {
                 else if($each->type == 'header' || $each->type == 'paragraph')
                 {
                     $eachArray[$count]['name'] = $each->type . rand(1000000,9999999);
-                    $eachArray[$count]['cave_id'] = $cave_id;
                     $eachArray[$count]['type'] = $each->type;
                     $eachArray[$count]['label'] = $each->label;
                     
