@@ -1,6 +1,8 @@
 <footer class="app-footer">
-    <span><a href="http://coreui.io">CoreUI</a> © 2017 creativeLabs.</span>
-    <span class="ml-auto">Powered by <a href="http://coreui.io">CoreUI</a></span>
+    <span><a href="http://coreui.io">Developed by <a href="https://www.facebook.com/sopan.tripathi">Vivek
+		Tripathi</a></a> © All Rights Reserved by <a
+		href="http://www.idc.iitb.ac.in/">IDC IIT Bombay</a>.</span>
+    <span class="ml-auto"></span>
   </footer>
 
   <!-- Bootstrap and necessary plugins -->
