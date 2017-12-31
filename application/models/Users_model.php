@@ -84,5 +84,8 @@ class Users_model extends CI_Model {
 		}
 	}
 
-
+        function insertData($data)
+        {
+            return $this->db->set($data)->insert('membership');
+        }
 }

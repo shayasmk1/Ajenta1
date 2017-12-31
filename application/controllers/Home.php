@@ -62,7 +62,8 @@ class Home extends CI_Controller {
 			$this->load->view ('theme/footer');
 			
 		} else {
-			$this->load->view ( 'login' );
+                    redirect('/auth/login');
+			//$this->load->view ( 'login' );
 		}
 		
 	}
@@ -81,14 +82,14 @@ class Home extends CI_Controller {
 		
 		if ($is_valid) {
 			$data = array(
-					'user_name' => $user_name,
-					'user_profile'=> $is_valid['user_profile'],
-					'is_logged_in' => true
+                            'user_name' => $user_name,
+                            'user_profile'=> $is_valid['user_profile'],
+                            'is_logged_in' => true
 			);
 			$this->session->set_userdata($data); //set the session
 			redirect('home/index');
 		} else {
-			echo $this->lang->line('error_message');
+			
 			$data['is_logged_in'] = FALSE;
 			$this->load->view('login'); 
 		}

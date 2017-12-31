@@ -28,6 +28,7 @@ class Form extends CI_Controller {
         }
         $this->load->view ('theme/header');
         $this->load->view('default_form');
+        $this->load->view ('theme/footer');
     }
     
     function getDefaultFormData()

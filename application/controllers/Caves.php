@@ -34,6 +34,8 @@ class Caves extends CI_Controller {
             'cave_numb' => $this->input->post('cave_numb'),
         );
         $this->cave_model->insertCaveM($data);
+        http_response_code(200);
+        
     }
 
     /*

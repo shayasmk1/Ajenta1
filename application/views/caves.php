@@ -1,69 +1,8 @@
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/cavescript.js"></script>
-
-<!-- Script for Auto complete 3 -->
-<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
-<!--<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
-<link href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel = "stylesheet">
-
+<script type="text/javascript" src="/assets/js/cavescript.js"></script>
 <link href = "/assets/css/dropzone.css" rel = "stylesheet">
-
-<!--<link rel="stylesheet" type="text/css" href="/assets/libraries/formBuilder/demo/assets/css/demo.css">-->
-<!--<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.css">-->
-
-<!--<script src="/assets/libraries/formBuilder/demo/assets/js/vendor.js"></script>-->
-<!--  <script src="/assets/libraries/formBuilder/dist/form-builder.min.js"></script>
-  <script src="/assets/libraries/formBuilder/dist/form-render.min.js"></script>-->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>
-
-<!--<link rel="stylesheet" href="/assets/fileUpload/css/jquery.fileupload.css">
-<link rel="stylesheet" href="/assets/fileUpload/css/jquery.fileupload-ui.css">-->
-
-<!-- The basic File Upload plugin -->
-<!--<script src="/assets/fileUpload/js/jquery.fileupload.js"></script>
- The File Upload processing plugin 
-<script src="/assets/fileUpload/js/jquery.fileupload-process.js"></script>
- The File Upload image preview & resize plugin 
-<script src="/assets/fileUpload/js/jquery.fileupload-image.js"></script>
- The File Upload audio preview plugin 
-<script src="/assets/fileUpload/js/jquery.fileupload-audio.js"></script>
- The File Upload video preview plugin 
-<script src="/assets/fileUpload/js/jquery.fileupload-video.js"></script>
- The File Upload validation plugin 
-<script src="/assets/fileUpload/js/jquery.fileupload-validate.js"></script>
- The File Upload user interface plugin 
-<script src="/assets/fileUpload/js/jquery.fileupload-ui.js"></script>-->
-
 <script src="/assets/js/dropzone.js"></script>
-
-<style>
-    .hide{
-        display: none;
-    }
-
-    .center {
-        margin: auto;
-        width: 100%;
-        border: 2px solid green;
-        text-align: center;
-        padding: 10px;
-    }
-    
-    .cave-section {
-  padding: 0;
-  margin: 10px 0;
-  background: #f2f2f2 url('http://formbuilder.readthedocs.io/en/latest/img/noise.png');
-}
-
-.form-custom-container label
-{
-    text-align: left;
-}
-
-
-</style>
 
 <script type="text/javascript">
     var formBuilder = '';
@@ -71,68 +10,8 @@
     var cave_num_global = 0;
     var count = 0;
     
-
-        
-    $(document).ready(function () {
-       // $('.switch_data').trigger('change');
-    });
- 
 </script>
 
-
-
-
-<script>
-    function makeEdit() {
-        document.getElementById("two").contentEditable = true;
-        document.getElementById("three").contentEditable = true;
-        document.getElementById("four").contentEditable = true;
-        document.getElementById("five").contentEditable = true;
-        document.getElementById("editBtn").disabled = true;
-        document.getElementById("updateBtn").disabled = false;
-        document.getElementById("deleteBtn").disabled = false;
-    }
-</script>
-<script type="text/javascript">
-    $(function () {
-        $('#updateBtn').click(function () {
-            //get input data as a array
-            var post_data = {
-                'cave_numb': $("#one").html(),
-                'cave_description': $("#two").html(),
-                'cave_patron': $("#three").html(),
-                'cave_period': $("#four").html(),
-                'cave_type': $("#five").html()
-            };
-            $.ajax({
-                type: "POST",
-                url: "<?php echo site_url("caves/updateCave"); ?>",
-                data: post_data,
-                success: function (data) {
-                    //Create jQuery object from the response HTML.
-                    //console.log(data);
-                    var data = eval("(" + data + ")");
-                    //console.log(data.one_cave_data[0].cave_description);
-
-                    $("#one").html(data.one_cave_data[0].cave_numb);
-                    $("#two").html(data.one_cave_data[0].cave_description);
-                    $("#three").html(data.one_cave_data[0].cave_patron);
-                    $("#four").html(data.one_cave_data[0].cave_period);
-                    $("#five").html(data.one_cave_data[0].cave_type);
-                }
-            });
-
-
-            document.getElementById("two").contentEditable = false;
-            document.getElementById("three").contentEditable = false;
-            document.getElementById("four").contentEditable = false;
-            document.getElementById("five").contentEditable = false;
-            document.getElementById("editBtn").disabled = false;
-            document.getElementById("deleteBtn").disabled = true;
-            document.getElementById("updateBtn").disabled = true;
-        });
-    });
-</script>
 
 
 <script type="text/javascript">
@@ -155,16 +34,12 @@
     });
 </script>
 
-<script>
-    function isNormalInteger(n) {
-        return n % 1 === 0 ? true : false;
-    }
-</script>
-
 <script type="text/javascript">
     $(function () {
         $('#newCaveBtn').click(function () {
-            if (isNormalInteger(document.getElementById("add_cave").value)) {
+            console.log(isNaN($("#add_cave").val()));
+            if (!isNaN($("#add_cave").val())) {
+                $(this).attr('disabled', 'disabled').text('Adding New Cave....');
                 var caveToAdd = document.getElementById("add_cave").value;
                 var x = document.getElementById("cave_numb");
                 var option = document.createElement("option");
@@ -173,8 +48,8 @@
                 option.text = res;
                 option.value = caveToAdd;
                 x.add(option);
-                document.getElementById('newCaveBtn').style.visibility = 'hidden';
-                document.getElementById('caveadded').innerHTML = "Cave is Added !";
+                //document.getElementById('newCaveBtn').style.visibility = 'hidden';
+                //document.getElementById('caveadded').innerHTML = "Cave is Added !";
                 //get input data as a array
                 var post_data = {
                     'cave_numb': option.value,
@@ -188,25 +63,11 @@
                     url: "<?php echo site_url("caves/addCave"); ?>",
                     data: post_data,
                     success: function (data) {
-                        //Create jQuery object from the response HTML.
-                        console.log(data);
-                        var data = eval("(" + data + ")");
-                        console.log(data.one_cave_data[0].cave_description);
-
-                        $("#one").html(data.one_cave_data[0].cave_numb);
-                        $("#two").html(data.one_cave_data[0].cave_description);
-                        $("#three").html(data.one_cave_data[0].cave_patron);
-                        $("#four").html(data.one_cave_data[0].cave_period);
-                        $("#five").html(data.one_cave_data[0].cave_type);
+  
+                        alert("Cave Added Successfully");
+                        location.reload();
                     }
                 });
-                document.getElementById("two").contentEditable = false;
-                document.getElementById("three").contentEditable = false;
-                document.getElementById("four").contentEditable = false;
-                document.getElementById("five").contentEditable = false;
-                document.getElementById("editBtn").disabled = false;
-                document.getElementById("updateBtn").disabled = true;
-                location.reload();
 
             } else {
                 window.alert("Enter Numeric Integer Only !");
@@ -216,242 +77,6 @@
     });
 </script>
 
-
-<script>
-    $(document).on("click", function (e) {
-        if ($(e.target).is("#detailBtn")) {
-            $("#image-gallery").show();
-        } else {
-        }
-    });
-</script>
-<style type="text/css">
-
-    /* Section 1 **/
-    .form-wrap .tabs {
-        overflow: hidden;
-      //  z-index: 100;
-       // top: 80px;
-       // height: 500px;
-        position: relative;
-        padding-left: 50px;
-        padding-right: 50px;
-    }
-
-
-    #submit_button{
-        display:none;
-    }
-
-    .hide{
-        display: none;
-    }
-
-    /* Navigation */
-
-    nav#submenu {
-        height: 60px;
-        position: relative; 
-        top: 10px;
-        text-align: right;
-    }
-
-    nav#submenu ul {
-        padding: 20px;
-        margin: 0 auto;
-        list-style: none;
-    }
-    nav#submenu ul li {
-        display: inline-block;
-        margin: 0 30px;
-    }
-    nav#submenu ul li a {
-        padding: 10px 0;
-        color: #fff;
-        font-size: 1rem;
-        text-decoration: none;
-        font-weight: bold;
-        transition: all 0.2s ease;
-    }
-    nav#submenu ul li a:hover {
-        color: #34495E;
-    }
-    nav#submenu a.active {
-        border-bottom: 2px solid #ecf0f1;
-    }
-
-
-    /* Headings */
-
-    h1 {
-        font-size: 5rem;
-        color: #34495E;
-    }
-
-    /* Section */
-    section {
-        width: 100%;
-        background: #fff;
-        /*border-bottom: 1px solid #ccc;
-        height: 500px;*/
-       // height: 600px;
-        margin-top: 20px; 
-        z-index: -1;
-        text-align: center;
-    }
-    section:nth-child(even) {
-        background: #ecf0f1;
-    }
-    section:nth-child(odd) {
-        background: #fff;
-    }
-    .sections section:first-child {
-        margin-top: 0px;
-    }
-
-    footer {
-       // height: 500px;
-        background: #34495e;
-        position: fixed;
-        bottom : 0px;
-        width:  100%;
-    }
-</style>
-
-
-<!-- Description Panel -->
-<style>
-    .desc-menu {
-        font-family: 'Roboto', sans-serif;  
-        top: 0;
-        height: 100%;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        background: #fff4f5;
-        width: 45px;
-    }
-    .desc-menu li a{
-        display:block;
-        width:5em;
-        text-indent:-500em;
-        line-height:5em;
-        text-align:center;
-        color: #ff5c62;
-        background: #fff4f5;
-        position: relative;
-        border-bottom: 1px solid #ffe2e3;
-        transition: background 0.3s ease-in-out;
-    }
-    .desc-menu li a:before {
-        font-family: FontAwesome;
-        speak: none;
-        text-indent: 0em;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        font-size: 1.4em;
-    }
-    .desc-menu li a.facade:before {
-        content: "\0046";
-    }
-    .desc-menu li a.hall:before {
-        content: "\0048";
-    }
-    .desc-menu li a.antichamber:before {
-        content: "\0041";/*content: "\f040";*/
-    }
-    .desc-menu li a.pillars:before {
-        content: "\0050";/*content: "\f040";*/
-    }
-    .desc-menu li a.shrine:before {
-        content: "\0053";
-    }
-    .desc-menu li a.ceiling:before {
-        content: "\0043";
-    }
-    .desc-menu li a.wall:before {
-        content: "\0057";
-    }
-    .desc-menu li a:hover{
-        background: #ff5c62;
-        color: #fff;
-    }
-    .desc-menu li.current a {
-        background: #ff5e5e;
-        color: #fff;
-    }
-    .desc-menu li a.active {
-        background: #ff5e5e;
-        color: #fff;
-    }
-    .desc-menu li a.active:after{
-        position:absolute;
-        left:5em;
-        top:0;
-        content:"";
-        border:2.5em solid transparent;
-        border-left-color:#ff5c62;
-        border-width: 2.5em 1em
-    }
-    .desc-menu li{
-        position:relative;
-    }
-    .desc-menu li:after{
-        content: attr(title);
-        position:absolute;
-        left:5em;
-        top:0;
-        height:5em;   
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        text-transform:uppercase;
-        background:#ff5c62;
-        padding:2em;
-        transition: all 0.3s ease-in-out;
-        visibility:hidden;
-        opacity:0;
-    }
-    .desc-menu li:hover:after{
-        visibility:visible;
-        opacity:1;
-    }
-    @media screen and (max-height: 34em){
-        .desc-menu li{
-            font-size:70%;
-        }
-    }
-
-    .wrapper{
-        position: relative;
-        left:50px;
-        display: inline;
-        margin: 0;
-        padding: 0;
-        font-size: 12px;
-        background: aqua;
-    }
-</style>
-<script>
-    function toggle(target) {
-        var artz = document.getElementsByClassName('content');
-        var targ = document.getElementById(target);
-        var isVis = targ.style.display === 'block';
-
-        // hide all
-        for (var i = 0; i < artz.length; i++) {
-            artz[i].style.display = 'none';
-        }
-        // toggle current
-        targ.style.display = isVis ? 'none' : 'block';
-
-        return false;
-    }
-</script>
-<!-- End Desc Panel -->
 
 <!-- File Upload -->
 <style>
@@ -486,10 +111,6 @@
         display : none;
     }
     
-    #cave_numb
-    {
-        margin-top : 100px;
-    }
 </style>
 
 <script>
@@ -508,150 +129,233 @@
 
 <!-- End of Gallery -->
 
-<div class="container submenu col-xs-12 col-md-9 no-padding pull-right" >
-    <div class="sections col-xs-12 no-padding" style="z-index:10;margin-top :50px">
-        
-        <section id="1" class='col-xs-12 no-padding' style="background-color:lightblue;">
-            <div class="form-wrap col-xs-12">
-                <div class="tabs col-xs-12">
-                    
-                    <?php
-                    if (isset($cave_list) && !empty($cave_list)) {
-                        ?>
 
-                    <select id="cave_numb" name="cave_numb" class="div-toggle center white" data-target=".switch_data">
-                            <option>Select Cave Number</option>
+<main class="main">
 
+      <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+<!--  <li class="breadcrumb-item">Home</li>
+      <li class="breadcrumb-item"><a href="#">Admin</a></li>-->
+      <li class="breadcrumb-item active">Caves</li>
+
+
+    </ol>
+      
+    <div class="container-fluid">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Management</small>
+                        </div>
+                        <div class="card-body">
                             <?php
-                            foreach ($cave_list as $value) {
+                            if (isset($cave_list) && !empty($cave_list)) {
                                 ?>
-                                <option data-show=".cave_options" value="<?php echo $value; ?>" <?php echo (isset($_POST['cave_numb']) && $_POST['cave_numb'] == $value) ? 'selected="selected"' : ''; ?>><?php echo "Cave " . $value; ?></option>
-                                <?php
-                            }
-                            ?>
-                            <option data-show=".add_cave">Add New Cave</option>
-                        </select>
-                        <?php
-                    } else {
-                        echo "No Cave Data Available !";
-                        echo "<br><br><br>";
-                    }
-                    ?>
-                    <?php
-                     if(isset($message))
-                                {
-                                ?>
-                                    <div class='col-xs-12 error'>
-                                        <?php echo $message ?>
-                                    </div>
-                                <?php
-                                }
-                                ?>
-                    <br><br>
-                    <div class="switch_data col-xs-12 no-padding">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="name">Select Cave Number</label>
+                                        <select id="cave_numb" name="cave_numb" class="form-control" data-target=".switch_data">
+                                        <option value="">Select Cave Number</option>
 
-                        <!-- CAVE OPTIONS --->
-                        <div class="cave_options  col-xs-12 no-padding" style="z-index:1">
-                            <?php
-                            
-                            if($this->session->userdata('user_profile') == 'administrator')
-                            {
-                            ?>
-                                <section class="cave-section col-xs-12" style="background:transparent">
-                                    <label class="col-xs-12 pull-left" style="text-align:left">You are using</label>
-                                    <select class="form-control" id="form-templte-select">
-                                        <option value="custom">Custom Form</option>
-                                        <option value="default">Default Form</option>
+                                        <?php
+                                        foreach ($cave_list as $value) {
+                                            ?>
+                                            <option data-show=".cave_options" value="<?php echo $value; ?>" <?php echo (isset($_POST['cave_numb']) && $_POST['cave_numb'] == $value) ? 'selected="selected"' : ''; ?>><?php echo "Cave " . $value; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                        <option data-show="add_cave">Add New Cave</option>
                                     </select>
-                                    <div class="setDataWrap" style="display:none">
-                                        <button id="setData" type="button">Set Data</button>
-                                      </div>
-                                    <div class="col-xs-12 top-margin-big no-padding">
-                                        <label class="col-xs-12 pull-left" style="text-align:left">Add a name for this form</label>
-                                        <input type="text" class="form-control" id="form_name" placeholder="Add a name for form" />
-                                    </div>
-                                    <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
-                                    <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
-                                </section>
-                            <?php
-                            }
-                            else
-                            {
-                               ?>
-                            <h3 id="title_for_users" style="text-align:left"></h3>
-                                    <form id="cave_form" method="post">
 
-                                    </form>
-                            <?php
+                                  </div>
+
+                                </div>
                                 
+                            </div>
+                            
+                            <?php
+                            } else {
+                                echo "No Cave Data Available !";
+                                echo "<br><br><br>";
                             }
                             ?>
-                        </div> <!-- CLOSE CAVE OPTIONS -->
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav nav-pills" id="cave-sub-menu">
+                                
+                                <li class="nav-item" id="cave-info-li">
+                                    <a class="nav-link active"  href="#">Cave Info</a>
+                                </li>
+                                <li class="nav-item" id="cave-gallery-li">
+                                    <a class="nav-link" href="#">Cave Gallery</a>
+                                </li>
+                                <li class="nav-item" id="cave-story-li">
+                                    <a class="nav-link" href="#">Cave Story</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card hide" id="section-1">
+                        <div class="card-header">
+                            <strong>Caves / Form</strong>
+                            <small>Create / Edit</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group hide" id="select-cave">
+                                        <?php
 
-                        <div class="add_cave hide">
-                            <div style="text-align:center;">
-                                <p>Cave Number:
-                                    <textarea rows="1" class="input" id="add_cave" name="cave_number" class="input"></textarea>
-                                </p>
-                                <div id="caveadded"></div>
-                                <button class="btn btn-primary" id="newCaveBtn">Add New Cave</button>
+                                        if($this->session->userdata('user_profile') == 'administrator')
+                                        {
+                                        ?>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 pull-left" style="text-align:left">You are using</label>
+                                                <select class="form-control" id="form-templte-select">
+                                                    <option value="custom">Custom Form</option>
+                                                    <option value="default">Default Form</option>
+                                                </select>
+                                            </div>
+                                            
+                                                <div class="setDataWrap" style="display:none">
+                                                    <button id="setData" type="button">Set Data</button>
+                                                  </div>
+                                            <div class="form-group">
+                                                <div class="col-xs-12 top-margin-big no-padding">
+                                                    <label class="col-xs-12 pull-left" style="text-align:left">Add a name for this form</label>
+                                                    <input type="text" class="form-control" id="form_name" placeholder="Add a name for form" />
+                                                </div>
+                                            </div>
+                                                <div id="build-wrap" class="col-xs-12 top-margin no-padding" ></div>
+                                                <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
+                                            
+                                        <?php
+                                        }
+                                        else
+                                        {
+                                           ?>
+                                        <h3 id="title_for_users" style="text-align:left"></h3>
+                                                <form id="cave_form" method="post">
+
+                                                </form>
+                                        <?php
+
+                                        }
+                                        ?>
+                                    </div>  
+
+                                    <div class="form-group hide" id="add-cave">
+                                        <div class="col-xs-12 top-margin-big no-padding">
+                                            <label class="col-xs-12 pull-left">Cave Number</label>
+                                            <textarea rows="1" class="form-control" id="add_cave" name="cave_number" style="margin-bottom:15px;height:100px"></textarea>
+                                           
+                                            <div id="caveadded"></div>
+                                            <button class="btn btn-primary" id="newCaveBtn">Add New Cave</button>
+                                        </div>
+                                    </div> 
+                                </div>
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
+                    
+                    <div class="card section-2 hide">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Upload Image</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    
+                                        <h1>
+                                            Upload Images
+                                        </h1>
+                                        <div class="col-xs-12">
+
+                                            <form class="dropzone" id='dropzone'>
+                                                <div class="fallback">
+                                                  <input name="file" type="file" multiple accept='image/*' />
+                                                  <input type='text' id='cave_id_image_upload' value='' />
+                                                </div>
+                                            </form>
+
+                                            <button class="col-xs-12 btn btn-primary top-margin" id="refresh-button" type="button">Refresh / Save All Changes</button>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card section-2 hide">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Image Gallery</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    
+                                        <h1>
+                                            Image Gallery
+                                        </h1>
+                                        <div class='col-xs-12' id="image-gallery" style="height:200px;overflow:auto;background-color:white;border:1px solid">
+
+                                        </div>
+                                    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card section-3 hide">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Stories</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div id='4' class='col-xs-12' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px;">
+                                        <div id='4-1' class='col-xs-12 no-padding' style="position:relative;">
+
+                                        </div>
+                                        <div class="dummy-area" style="z-index: 10;position:absolute;left:0;top:0">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card hide" id="section-loading">
+                        <div class="card-body">
+                            <div class="row">
+                                <i class="fa fa-spin fa-spinner"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Processing Request......
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
                 </div>
             </div>
-        </section>
-        
-        <section id="2" class='col-xs-12 no-padding' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px">
-            <h1>
-                Upload Images
-            </h1>
-            <div class="col-xs-12">
-                
-                <form class="dropzone" id='dropzone'>
-<!--                    <div class="fallback">
-                      <input name="file" type="file" multiple accept='image/*' />
-                      <input type='text' id='cave_id_image_upload' value='' />
-                    </div>-->
-                </form>
-                
-                <button class="col-xs-12 btn btn-primary top-margin" id="refresh-button" type="button">Refresh / Save All Changes</button>
-            </div>
-        </section>
-        
-        <section id='3' class='col-xs-12' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px;">
-            <h1>
-                Image Gallery
-            </h1>
-            <div class='col-xs-12' id="image-gallery" style="height:200px;overflow:auto;background-color:white;border:1px solid">
-                
-            </div>
-        </section>
-        
-        <section id='4' class='col-xs-12' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px;">
-            <div id='4-1' class='col-xs-12 no-padding' style="position:relative;">
-                
-            </div>
-<!--            <div class="dummy-area" style="z-index: 10;position:absolute;left:0;top:0">
-                
-            </div>-->
-        </section>
+        </div>
+    </div>
+</main>
 
-        
-<!--        <section id="3" class="col-xs-12" style="display:none">
-            <h1>Image Gallery</h1>
-            
-                 https://tympanus.net/codrops/2011/09/20/responsive-image-gallery/ 
-        </section>
-        
-        <section id="4" class="col-xs-12" style="display:none">
-            <h1> Story Section</h1>   
-        </section>-->
-        
-    </div> <!-- Section Tag Ends Here -->
-</div> <!--Ending Container -->
 <!-- Modal -->
-<div class="modal fade" id="storyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
+<div class="modal" id="storyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
   <div class="modal-dialog" role="document">
     <div class="modal-content col-xs-12 no-padding">
       <div class="modal-header col-xs-12 no-padding">
@@ -687,8 +391,34 @@
 
 <script>
 $(document).ready(function(){
-    $('#form-templte-select').change(function(){
-        if($(this).val() == 'default')
+    $('#cave-info-li').click(function(){
+        $('#section-1').removeClass('hide');
+        $('.section-2').addClass('hide');
+        $('.section-3').addClass('hide');
+        $('#cave-sub-menu li a').removeClass('active');
+        $('#cave-info-li a').addClass('active');
+    });
+    
+    $('#cave-gallery-li').click(function(){
+        $('#section-1').addClass('hide');
+        $('.section-2').removeClass('hide');
+        $('.section-3').addClass('hide');
+        $('#cave-sub-menu li a').removeClass('active');
+        $('#cave-gallery-li a').addClass('active');
+    });
+    
+    $('#cave-story-li').click(function(){
+        $('#section-1').addClass('hide');
+        $('.section-2').addClass('hide');
+        $('.section-3').removeClass('hide');
+        $('#cave-sub-menu li a').removeClass('active');
+        $('#cave-story-li a').addClass('active');
+    });
+    
+    function getFormValues()
+    {
+        $('#section-loading').removeClass('hide');
+        if($('#form-templte-select').val() == 'default')
         {
             $.ajax({
             type: "POST",
@@ -706,6 +436,7 @@ $(document).ready(function(){
                     function() 
                     {
                         formBuilder.actions.setData(formData);
+                        $('#section-loading').addClass('hide');
                     },300);
                 }
 
@@ -733,10 +464,57 @@ $(document).ready(function(){
                         function() 
                         {
                             formBuilder.actions.setData(formData);
-                        },500);
+                            $('#section-loading').addClass('hide');
+                        },300);
                 }
             });
         }
+        
+        
+    }
+    
+    
+    $('#cave_numb').change(function(){
+        cave_num_global = $(this).val();
+        $('#section-1').removeClass('hide');
+        $('.section-2').addClass('hide');
+        $('.section-3').addClass('hide');
+        $('#cave-info-li').trigger('click');
+        
+        $('#4-1').html('');
+        $('#dummy-area').html('');
+        
+        $('#dropzone').find('.dz-complete').remove();
+        $('#dropzone').removeClass('dz-started');
+        
+        refreshGalllery();
+        if($(this).val() == '')
+        {
+            $('#section-1').addClass('hide');
+            return;
+        }
+        
+        if($('#cave_numb option:selected').attr('data-show') == 'add_cave')
+        {
+            $('#select-cave').addClass('hide');
+            $('#add-cave').removeClass('hide');
+        }
+        else
+        {
+            $('#select-cave').removeClass('hide');
+            $('#add-cave').addClass('hide');
+        }
+        
+        $('#section-1').addClass('hide');
+        $('#form-templte-select').val('custom');
+        getFormValues();
+        $('#section-1').removeClass('hide');
+    });
+    
+    $('#form-templte-select').change(function(){
+        $('#section-1').addClass('hide');
+        getFormValues();
+        $('#section-1').removeClass('hide');
     });
 });
         
@@ -958,9 +736,11 @@ $(document).on('change', '.div-toggle', function () {
             var html = '';
             $(res).each(function(i,value){
                 var bgImage = "'/assets/uploads/" + value.location + "'";
-                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin"><div class="col-xs-12 each-image-gallery" data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
+                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin image-each-container"><div class="col-xs-12 each-image-gallery" data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
             });
             $('#image-gallery').html(html);
+        },'json').fail(function(xhr, textStatus, errorThrown) {
+            $('#image-gallery').html('');
         },'json');
     }
     
@@ -983,6 +763,7 @@ $(document).on('change', '.div-toggle', function () {
             console.log(html);
             $('#4-1').append(html);
             $('#image-overlay-loading').remove();
+            $('#cave-story-li').trigger('click');
         },'json').fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseJSON.message);
             $('.btn-close').removeAttr('disabled');
@@ -1089,9 +870,11 @@ $(document).on('change', '.div-toggle', function () {
            }
     });
         
-//    function activateDropZone()
-//    {
-//        console.log("A");
-//        
-//    }
-//</script>
+</script>
+
+
+<script>
+    $(document).ready(function(){
+        $('#caves-li').addClass('active');
+    });
+</script>

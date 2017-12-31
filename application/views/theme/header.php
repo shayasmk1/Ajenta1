@@ -1,217 +1,143 @@
+<!--
+ * CoreUI - Open Source Bootstrap Admin Template
+ * @version v1.0.6
+ * @link http://coreui.io
+ * Copyright (c) 2017 creativeLabs Łukasz Holeczek
+ * @license MIT
+ -->
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+  <meta name="author" content="Łukasz Holeczek">
+  <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,Angular 2,Angular4,Angular 4,jQuery,CSS,HTML,RWD,Dashboard,React,React.js,Vue,Vue.js">
+  <link rel="shortcut icon" href="img/favicon.png">
+  <title>CoreUI - Open Source Bootstrap Admin Template</title>
 
-    <head>
+  <!-- Icons -->
+  <link href="/assets/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/assets/node_modules/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Main styles for this application -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+  <!-- Styles required by this views -->
+  
+   <script src="/assets/node_modules/jquery/dist/jquery.min.js"></script>
 
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <title>Ajanta Backend System</title>
+</head>
 
-        <!-- Bootstrap Core CSS -->
-        <link href="/assets/css/sb-admin.css"
-              rel="stylesheet" type="text/css">
-        <link
-            href="/assets/libraries/bootstrap/css/bootstrap.min.css"
-            rel="stylesheet">
+<!-- BODY options, add following classes to body to change options
 
-        <!-- Custom Fonts -->
-        <link
-            href="/assets/libraries/font-awesome/css/font-awesome.min.css"
-            rel="stylesheet" type="text/css">
+// Header options
+1. '.header-fixed'					- Fixed Header
 
-        <!-- Custom CSS -->
-        <link href="/assets/css/sb-admin.css"
-              rel="stylesheet">
+// Brand options
+1. '.brand-minimized'       - Minimized brand (Only symbol)
 
+// Sidebar options
+1. '.sidebar-fixed'					- Fixed Sidebar
+2. '.sidebar-hidden'				- Hidden Sidebar
+3. '.sidebar-off-canvas'		- Off Canvas Sidebar
+4. '.sidebar-minimized'			- Minimized Sidebar (Only icons)
+5. '.sidebar-compact'			  - Compact Sidebar
 
-        <!-- JQuery Example -->
-<!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="/assets/libraries/bootstrap/js/bootstrap.min.js"></script>
+// Aside options
+1. '.aside-menu-fixed'			- Fixed Aside Menu
+2. '.aside-menu-hidden'			- Hidden Aside Menu
+3. '.aside-menu-off-canvas'	- Off Canvas Aside Menu
 
-        <script>
-            $(document).ready(function () {
-                $(document).on("click", ".nav-item", function () {
-                    console.log($(this));
-                    $(this).addClass('nav-item active');
-                });
+// Breadcrumb options
+1. '.breadcrumb-fixed'			- Fixed Breadcrumb
 
+// Footer options
+1. '.footer-fixed'					- Fixed footer
 
-            });
-            //document.getElementById("tab_c").childNodes[0].onclick = function() {
-            //return false;
-            //};
-        </script>
-        <!-- 
-        <style>
-        li#tab_c{display:none}
-        </style> -->
-    </head>
+-->
 
-    <body>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+  <header class="app-header navbar">
+    <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Navigation -->
-        <nav id="mainNav"
-             class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse navbar-light bg-faded" style="z-index: 1000000">
-            <button class="navbar-toggler navbar-toggler-right hidden-sm hidden-md hidden-lg" type="button"
-                    data-toggle="collapse" data-target="#navbarExample"
-                    aria-controls="navbarExample" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">Revisting Ajanta</a>
-            <div class="collapse navbar-collapse" id="navbarExample">
-                
-                <ul class="navbar-nav ml-auto navbar-right" >
-                    <li class="nav-item dropdown" style="margin-top: 5px">
-                        <a
-                            class="nav-link dropdown-toggle mr-lg-2" href="#"
-                            id="messagesDropdown" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> 
-                            <i class="fa fa-fw fa-envelope"></i> 
-<!--                            <span
-                                class="hidden-lg-up">Messages <span
-                                    class="badge badge-pill badge-primary">12 New</span></span> -->
-                                    <span
-                                class="new-indicator text-primary hidden-md-down count-container">
-<!--                                        <i
-                                    class="fa fa-fw fa-circle"></i>-->
-                                    <span class="number">12</span></span>
-                        </a>
-                    
-                        
-                        <div class="dropdown-menu" aria-labelledby="messagesDropdown">
-                            <h6 class="dropdown-header" id="new-message-header">New Messages:</h6>
-                            
-                            <a class="dropdown-item" href="#"> 
-                                <strong>David Miller</strong> <span
-                                    class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">
-                                    Hey there! This new version
-                                    of SB Admin...
-                                </div>
-                            </a>
-                           
-                            <a class="dropdown-item" href="#"> <strong>Jane Smith</strong> <span
-                                    class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">I was wondering if you could
-                                    meet for an...</div>
-                            </a>
-                            
-                            <a class="dropdown-item" href="#"> <strong>John Doe</strong> <span
-                                    class="small float-right text-muted">11:21 AM</span>
-                                <div class="dropdown-message small">I've sent the final files
-                                    over to you for review. When...</div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item view-all-messages col-xs-12" href="#"> <span>View All Messages</span> </a>
-                        </div></li>
-                        
-<!--                </ul>
-                <ul class="navbar-nav ml-auto">-->
-                    <li class="nav-item dropdown" style="margin-top: 5px">
-                        <a
-                            class="nav-link dropdown-toggle mr-lg-2" href="#"
-                            id="alertsDropdown" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="fa fa-fw fa-bell"></i> 
-<!--                            <span
-                                class="hidden-lg-up">Alerts <span
-                                    class="badge badge-pill badge-warning">6 New</span></span> -->
-                                    <span
-                                class="new-indicator text-warning hidden-md-down count-container">
-<!--                                        <i
-                                    class="fa fa-fw fa-circle"></i>-->
-                                    <span class="number">6</span></span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-                            <a class="dropdown-item" href="#"><span class="notification-list">Action</span></a>
-                            <a class="dropdown-item" href="#"><span class="notification-list">Another action</span></a>
-                                <a class="dropdown-item" href="#"><span class="notification-list">Something else here</span></a>
-                        </div></li>
-                        <li style="margin-top: -6px">
-                            <form class="form-inline my-2 my-lg-0 mr-lg-2">
-                                <div class="input-group">
-                                    <input type="text" class="form-control"
-                                           placeholder="Search for..."> <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                        </li>
-                        <li class="nav-item" style="margin-right: 15px"><a class="nav-link" href="<?php echo site_url('home/logout'); ?>"><i
-                                class="fa fa-fw fa-sign-out"></i> Logout</a></li>
-<!--                    <li class="nav-item">
-                        
-                    </li>-->
-                    
-<!--                </ul>
-                <ul class="navbar-nav navbar-right form-menu-container" >-->
-                    
-                </ul>
-            </div>
+<!--    <ul class="nav navbar-nav d-md-down-none">
+      <li class="nav-item px-3">
+        <a class="nav-link" href="#">Dashboard</a>
+      </li>
+      <li class="nav-item px-3">
+        <a class="nav-link" href="#">Users</a>
+      </li>
+      <li class="nav-item px-3">
+        <a class="nav-link" href="#">Settings</a>
+      </li>
+    </ul>-->
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle " href="#"><i class="fa fa-globe"></i><span class="badge badge-pill badge-danger">4</span></a>
+        <div class="dropdown-menu dropdown-menu-right">
+          
+            <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Notification 1</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Notification 2</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Notification 3</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Notification 4</a>
+          
+          
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle " href="#"><i class="fa fa-envelope"></i><span class="badge badge-pill badge-danger">3</span></a>
+        <div class="dropdown-menu dropdown-menu-right">
+          
+            <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Message 1</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Message 2</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> New Message 3</a>
+          
+          
+        </div>
+      </li>
+      
+      <li class="nav-item d-md-down-none">
+        <a class="nav-link" href="#">
+          <img src="/assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+        </a>
+        
+      </li>
+    </ul>
+<!--    <button class="navbar-toggler aside-menu-toggler" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>-->
+
+  </header>
+
+<div class="app-body">
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" id="caves-li" href="<?php echo site_url('home/index/caves'); ?>"><i class="fa fa-plus"></i> Caves </a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" id="rest-li" href="<?php echo site_url('home/index/rest'); ?>"><i class="fa fa-code"></i> Check REST</a>
+
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" id="default-li" href="<?php echo site_url('form/default_add'); ?>"><i class="fa fa-list"></i> Default Forms</a>
+
+                </li>
+
+                <li class="nav-item ">
+                  <a class="nav-link" href="<?php echo site_url('/auth/logout'); ?>"><i class="fa fa-sign-out"></i> Logout</a>
+
+                </li>
+
+            </ul>
         </nav>
-        <ul class="sidebar-nav navbar-nav custom-sidebar col-xs-12 col-sm-3" style="top : 0px;">
-                    <!-- 
-                    <li class="nav-item" id="tab_a"><a class="nav-link" href="<php echo site_url('home/index/painting');?>"><i
-                                    class="fa fa-fw fa-camera"></i> Paintings</a></li>
-                    -->
-                    <!--				<li class="nav-item"><a class="nav-link nav-link-collapse collapsed"
-                                                            data-toggle="collapse" href="#collapseExample"><i
-                                                                    class="fa fa-fw fa-camera"></i>Caves</a>
-                                                            <ul class="sidebar-second-level collapse" id="collapseExample">
-                                                                <li><a href="<php echo site_url('painting/all_paintings');?>">Show all Painting</a></li>
-                                                                    <li><a href="<php echo site_url('home/index/painting');?>">Upload Painting</a></li>					
-                                                                    <li><a href="#">Line-Drawing</a></li>
-                                                                      
-                                                                    <li><a class="nav-link-collapse collapsed" data-toggle="collapse"
-                                                                            href="#collapseExample2">Third Level</a>
-                                                                            <ul class="sidebar-third-level collapse" id="collapseExample2">
-                                                                                    <li><a href="#">Third Level Item</a></li>
-                                                                                    <li><a href="#">Third Level Item</a></li>
-                                                                            </ul>
-                                                                    </li> 
-                                                            </ul>
-                                                    </li>-->
-
-
-
-                    <li class="nav-item col-xs-12" id="tab_b" style="margin-top: 60px"><a class="nav-link" href="<?php echo site_url('home/index/caves'); ?>"><i
-                                class="fa fa-fw fa-commenting-o"></i> Caves </a></li>
-                    <!--
-                                    <li class="nav-item" id="tab_c"><a class="nav-link" href="<php echo site_url('home/index/animation');?>"><i
-                                    class="fa fa-fw fa-fast-forward"></i> Animation</a></li>-->
-
-                    <li class="nav-item col-xs-12"><a class="nav-link" href="<?php echo site_url('home/index/rest'); ?>"><i
-                                class="fa fa-fw fa-underline"></i> Check REST</a></li>
-                    
-                    <li class="nav-item col-xs-12"><a class="nav-link" href="<?php echo site_url('home/index/list'); ?>"><i
-                                class="fa fa-fw fa-underline"></i> Create List</a></li>
-
-                    <li class="nav-item col-xs-12"><a class="nav-link nav-link-collapse collapsed"
-                                            data-toggle="collapse" href="#collapseExample"><i
-                                class="fa fa-fw fa-sitemap"></i>Search</a>
-                        <ul class="sidebar-second-level collapse" id="collapseExample">
-                            <li><a href="<?php echo site_url('home/index/all_paintings'); ?>">Paintings</a></li>
-                            <li><a href="#">Stories</a></li>
-                            <!-- <li><a class="nav-link-collapse collapsed" data-toggle="collapse"
-                                    href="#collapseExample2">Third Level</a>
-                                    <ul class="sidebar-third-level collapse" id="collapseExample2">
-                                            <li><a href="#">Third Level Item</a></li>
-                                            <li><a href="#">Third Level Item</a></li>
-                                    </ul>
-                            </li> -->
-                        </ul>
-                    </li>
-                    <li class="nav-item col-xs-12">
-                        <a class="nav-link" href="<?php echo site_url('form/default_add'); ?>">
-                            <i class="fa fa-fw fa-underline"></i>Default Form</a>
-                    </li>
-
-                </ul>
+        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+    </div>
