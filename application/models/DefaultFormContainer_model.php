@@ -19,5 +19,10 @@
                 return $this->db->where('id', $formID)->get($this->table)->row();
             }
             
+            function deleteForm($formID)
+            {
+                return $this->db->where('id', $formID)->delete($this->table);
+            }
+            
         }
         ?>

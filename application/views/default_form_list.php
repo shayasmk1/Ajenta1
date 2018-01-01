@@ -61,7 +61,7 @@
                                             </td>
                                             <td>
                                                 <a href="/form/edit/<?php echo htmlspecialchars($each['id']) ?>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
-                                                <button data-href="/form/delete/<?php echo htmlspecialchars($each['id']) ?>" class="btn btn-danger btn-sm"><i class="fa fa-remove"></i></button>
+                                                <button data-id="<?php echo htmlspecialchars($each['id']) ?>" data-href="/form/delete/<?php echo htmlspecialchars($each['id']) ?>" class="btn btn-danger btn-sm btn-delete"><i class="fa fa-remove"></i></button>
                                             </td>
                                         </tr>
                                         <?php
@@ -109,6 +109,22 @@ jQuery(function($) {
     });
     
   
+});
+
+$(document).on('click', '.btn-delete', function(){
+    var conf = confirm("Are you Sure you want to delete this form?");
+    if(!conf)
+    {
+        return;
+    }
+    var id = $(this).attr('data-id');
+    var parent = $(this).parents('tr').first();
+    $.post('/form/default_delete',{'id':id}, function(res){
+            alert("Form Deletd Successfully");
+            $(parent).remove();
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert("Something Went Wrong");
+        },'json');
 });
 
 </script>

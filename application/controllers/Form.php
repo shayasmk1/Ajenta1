@@ -73,6 +73,39 @@ class Form extends CI_Controller {
         $this->load->view ('theme/footer');
     }
     
+    function default_delete()
+    {
+        if($this->session->userdata('user_profile') != 'administrator')
+        {
+            header('HTTP/1.1 401 UnAuthorized');
+            echo json_encode(array('message' => 'Unauthorized. Please Login.'));
+            exit;
+        }
+        
+        $id = $this->input->post('id');
+        $currentForm = $this->DefaultFormContainer_model->getForm($id);
+        if(!$currentForm)
+        {
+            header('HTTP/1.1 406 Not Allowed');
+            echo json_encode(array('message' => 'Form Not Found.'));
+            exit;
+        }
+        if($this->input->method() == 'post')
+        {
+            $delete = $this->DefaultFormContainer_model->deleteForm($id);
+            if($delete)
+            {
+                http_response_code(200);
+                echo json_encode('Form Deleted Successfully');
+                exit;
+            }
+
+            http_response_code(500);
+            echo json_encode('Something Went Wrong');
+            exit;
+        }
+    }
+    
     function getDefaultFormData($id)
     {
         if($this->session->userdata('user_profile') != 'administrator' || !is_numeric($id))
