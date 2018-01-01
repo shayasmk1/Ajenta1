@@ -9495,7 +9495,8 @@ hr.transparent {
     border: 1px solid gray;
     margin-bottom: 15px !important;
     padding: 15px !important;
-    background-color:lightgray;
+    //background-color:lightgray;
+    background-image : url('/assets/libraries/formBuilder/docs/img/noise.png');
 }
 
 .hide
@@ -9546,4 +9547,8 @@ hr.transparent {
     border-radius: 1px solid;
     position:absolute;
     cursor: pointer !important;
+}
+.form-wrap.form-builder .frmb li
+{
+    padding : 6px 15px !important;
 }

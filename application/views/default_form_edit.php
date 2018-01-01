@@ -1,7 +1,6 @@
 <script type="text/javascript" src="/assets/js/cavescript.js"></script>
 <link href = "/assets/css/dropzone.css" rel = "stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-<!--<script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>-->
 <script src="/assets/libraries/formBuilder/dist/form-builder.min.js"></script>
 <script src="/assets/js/dropzone.js"></script>
 
@@ -38,11 +37,11 @@
                     <div class="card">
                         <div class="card-header">
                             <strong>Form</strong>
-                                <small>Create</small>
+                                <small>Edit</small>
                         </div>
                         <div class="card-body" >
         
-        <section id="1" class='col-xs-12 no-padding' >
+        <section id="1" class='col-xs-12 no-padding hide' >
             <div class="form-wrap col-xs-12" >
                 <div class="tabs col-xs-12" >
                     
@@ -60,7 +59,7 @@
                                         <button id="setData" type="button">Set Data</button>
                                       </div>
                             <div id="build-wrap" class="col-xs-12 top-margin no-padding"></div>
-                                    <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
+                                    <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Update Form</button>
                         </div> <!-- CLOSE CAVE OPTIONS -->
 
                         
@@ -68,7 +67,9 @@
                 </div>
             </div>
         </section>
-        
+                            <section id="2" class='col-xs-12 no-padding' >
+                                <i class="fa fa-spin fa-spinner"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Processing Request......
+                            </section>
         
         
         
@@ -88,26 +89,30 @@
      var fbEditor = document.getElementById('build-wrap');
     formBuilder = $(fbEditor).formBuilder();
     
-//    $.ajax({
-//        type: "POST",
-//        url: "<?php echo site_url("form/getDefaultFormData"); ?>",
-//        dataType: 'json',
-//        success: function (res, textStatus, xhr) {
-//            $('#build-wrap').html('');
-//
-//            var fbEditor = document.getElementById('build-wrap');
-//            formBuilder = $(fbEditor).formBuilder();
-//            var formData = res.data;
-//
-//          //  document.getElementById('setData').addEventListener('click', function() {
-//            setTimeout(
-//                function() 
-//                {
-//                    formBuilder.actions.setData(formData);
-//                },300);
-//        }
-//    
-//    });   
+    $.ajax({
+        type: "POST",
+        url: "<?php echo site_url("form/getDefaultFormData/" . $id); ?>",
+        dataType: 'json',
+        success: function (res, textStatus, xhr) {
+            
+            $('#form_name').val(res.formName);
+            $('#build-wrap').html('');
+
+            var fbEditor = document.getElementById('build-wrap');
+            formBuilder = $(fbEditor).formBuilder();
+            var formData = res.data;
+
+          //  document.getElementById('setData').addEventListener('click', function() {
+            setTimeout(
+                function() 
+                {
+                    $('#1').removeClass('hide');
+                    $('#2').addClass('hide');
+                    formBuilder.actions.setData(formData);
+                },200);
+        }
+    
+    });   
  });
         
 jQuery(function($) {
@@ -117,9 +122,9 @@ jQuery(function($) {
         $('.error').html('<div class="alert alert-warning"><i class="fa fa-spin fa-spinner"></i> Saving Form...</div>');
         var data = formBuilder.actions.getData('json');
         var form_name = $('#form_name').val();
-        $.post('/form/default_save',{'data':data, 'form_name': form_name}, function(res){
-            alert("Form Added Successfully");
-            window.location.href = '/form/default_add';
+        $.post('/form/default_update/<?php echo $id ?>',{'data':data, 'form_name': form_name}, function(res){
+            alert("Form Updated Successfully");
+            window.location.href = '/form/edit/<?php echo $id ?>';
         },'json').fail( function(xhr, textStatus, errorThrown) {
             $('.error').html('<div class="alert alert-danger">' + xhr.responseJSON + '</div>');
             window.location.href = '#main';

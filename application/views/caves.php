@@ -1,7 +1,8 @@
 <script type="text/javascript" src="/assets/js/cavescript.js"></script>
 <link href = "/assets/css/dropzone.css" rel = "stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-<script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>
+<!--<script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>-->
+<script src="/assets/libraries/formBuilder/dist/form-builder.min.js"></script>
 <script src="/assets/js/dropzone.js"></script>
 
 <script type="text/javascript">
@@ -221,7 +222,16 @@
                                                 <label class="col-xs-12 pull-left" style="text-align:left">You are using</label>
                                                 <select class="form-control" id="form-templte-select">
                                                     <option value="custom">Custom Form</option>
-                                                    <option value="default">Default Form</option>
+                                                    <?php
+                                                    if(!empty($defaultCaves))
+                                                    foreach($defaultCaves AS $defaultCave)
+                                                    {
+                                                        
+                                                    ?>
+                                                    <option value="<?php echo $defaultCave['id'] ?>"><?php echo $defaultCave['name'] ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </select>
                                             </div>
                                             
@@ -275,9 +285,6 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     
-                                        <h1>
-                                            Upload Images
-                                        </h1>
                                         <div class="col-xs-12">
 
                                             <form class="dropzone" id='dropzone'>
@@ -304,9 +311,6 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     
-                                        <h1>
-                                            Image Gallery
-                                        </h1>
                                         <div class='col-xs-12' id="image-gallery" style="height:200px;overflow:auto;background-color:white;border:1px solid">
 
                                         </div>
@@ -418,11 +422,12 @@ $(document).ready(function(){
     function getFormValues()
     {
         $('#section-loading').removeClass('hide');
-        if($('#form-templte-select').val() == 'default')
+        if($('#form-templte-select').val() != 'custom')
         {
+            var defaultID = $('#form-templte-select').val();
             $.ajax({
             type: "POST",
-            url: "<?php echo site_url("form/getDefaultFormData"); ?>",
+            url: "/form/getDefaultFormData/" + defaultID,
             dataType: 'json',
             success: function (res, textStatus, xhr) {
                 $('#build-wrap').html('');

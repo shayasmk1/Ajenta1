@@ -10,7 +10,7 @@
   <meta name="keyword" content="CoreUI Bootstrap 4 Admin Template">
   <!-- <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
 
-  <title>Login</title>
+  <title>Login - Revisiting Ajanta</title>
 
   <!-- Icons -->
   <link href="/assets/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -75,6 +75,6 @@
   <script src="/assets/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="/assets/node_modules/popper.js/dist/umd/popper.min.js"></script>
   <script src="/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-
+  <div style="display: none">
 </body>
 </html>

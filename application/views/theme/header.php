@@ -15,14 +15,17 @@
   <meta name="author" content="Łukasz Holeczek">
   <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,Angular 2,Angular4,Angular 4,jQuery,CSS,HTML,RWD,Dashboard,React,React.js,Vue,Vue.js">
   <link rel="shortcut icon" href="img/favicon.png">
-  <title>CoreUI - Open Source Bootstrap Admin Template</title>
+  <title>Revisting Ajanta</title>
 
+  
   <!-- Icons -->
   <link href="/assets/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="/assets/node_modules/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
 
   <!-- Main styles for this application -->
   <link href="/assets/css/style.css" rel="stylesheet">
+  
+  
   <!-- Styles required by this views -->
   
    <script src="/assets/node_modules/jquery/dist/jquery.min.js"></script>
@@ -127,9 +130,16 @@
                   <a class="nav-link" id="rest-li" href="<?php echo site_url('home/index/rest'); ?>"><i class="fa fa-code"></i> Check REST</a>
 
                 </li>
-                <li class="nav-item ">
-                  <a class="nav-link" id="default-li" href="<?php echo site_url('form/default_add'); ?>"><i class="fa fa-list"></i> Default Forms</a>
-
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle" id="default-li" href="#"><i class="fa fa-list"></i> Default Forms</a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url('form/default_add'); ?>"><i class="fa fa-plus"></i> Create New Form</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo site_url('form/default_list'); ?>"><i class="fa fa-list"></i> List All Forms</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="nav-item ">

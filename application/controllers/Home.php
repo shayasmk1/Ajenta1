@@ -13,6 +13,7 @@ class Home extends CI_Controller {
                 $this->load->model('listHeader_model');
                 $this->load->model('CaveHeader_model');
                 $this->load->model('form_model');
+                $this->load->model('DefaultFormContainer_model');
 	}
 	
 	/*
@@ -57,6 +58,7 @@ class Home extends CI_Controller {
                         $data['cave_list'] = $this->cave_model->get_dropdown_list();
                         //To get Patron(p), Type(t), Period(p) for Autocomplete
                         $data['cave_ptp'] = $this->cave_model->getCaveM(); 
+                        $data['defaultCaves'] = $this->DefaultFormContainer_model->getList();
                         
                         $this->load->view($page, $data);
 			$this->load->view ('theme/footer');

@@ -10,7 +10,7 @@
   <meta name="keyword" content="CoreUI Bootstrap 4 Admin Template">
   <!-- <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
 
-  <title>Register</title>
+  <title>Register - Revisiting Ajanta</title>
 
   <!-- Icons -->
   <link href="/assets/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
