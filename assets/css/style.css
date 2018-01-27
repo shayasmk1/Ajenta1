@@ -9552,3 +9552,14 @@ hr.transparent {
 {
     padding : 6px 15px !important;
 }
+
+.each-story
+{
+    padding : 15px;
+    border-bottom : 1px dotted lightgray;
+}
+
+#story-headers
+{
+    border-right : 1px solid lightgray;
+}

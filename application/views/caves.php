@@ -330,8 +330,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div id='4' class='col-xs-12' style="display:none;background-color:lightblue;margin-top:0px;padding-bottom:55px;">
-                                        <div id='4-1' class='col-xs-12 no-padding' style="position:relative;">
+                                    <div id='4' class='col-xs-12' style="display:none;margin-top:0px;padding-bottom:55px;">
+                                        <div class="col-xs-12 col-sm-3 pull-left" id="story-headers">
+                                            
+                                        </div>
+                                        <div id='4-1' class='col-xs-12 col-sm-9 no-padding pull-right' style="position:relative;">
 
                                         </div>
                                         <div class="dummy-area" style="z-index: 10;position:absolute;left:0;top:0">
@@ -376,12 +379,18 @@
                   <input type="text" class="form-control" id="title"/>
               </div>
           </div>
-          <div class="col-xs-12 ">
+          <div class="col-xs-12 top-margin">
+              <h4>Add Chapters <button type="button" class="btn btn-xs pull-right btn-danger" id="btn-add"><i class="fa fa-plus"></i></button></h4>
+          </div>
+          <div class="col-xs-12 " id="chapters-text">
+              <input type="text" class="form-control top-margin" placeholder="Add Chapters"/>
+          </div>
+<!--          <div class="col-xs-12 ">
               <label class="col-xs-12 no-padding">Story Description</label>
                <div class="col-xs-12 no-padding">
                    <textarea class="form-control" id="description" style="height:150px"></textarea>
               </div>
-          </div>
+          </div>-->
           <input type="hidden" value="" id="marking_id" />
           <input type="hidden" id="story_id" />
       </div>
@@ -866,11 +875,16 @@ $(document).on('change', '.div-toggle', function () {
         $.get('/caves/getAllCaveStories', {cave_num:cave_num, cave_image_id:id}, function(res){
             $('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
             var html = '';
+            var html1 = '';
             $(res).each(function(i, value){
                 html+= '<div class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
+                html1+= '<div class="col-xs-12 each-story" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</div>';
             });
+            
+            html1+= '<button type="button" class="btn btn-success col-xs-12 col-sm-12" id="add-new-story">Add New Story</button>';
             console.log(html);
             $('#4-1').append(html);
+            $('#story-headers').html(html1);
             $('#image-overlay-loading').remove();
             $('#cave-story-li').trigger('click');
         },'json').fail( function(xhr, textStatus, errorThrown) {
@@ -955,6 +969,18 @@ $(document).on('change', '.div-toggle', function () {
         $('#storyModal').modal('show');
     });
     
+    $(document).on('click', '.each-story', function(){
+        var title = $(this).attr('data-title');
+        var description = $(this).attr('data-description');
+        var id = $(this).attr('data-id');
+        $('#title').val(title);
+        $('#description').val(description);
+        $('#story_id').val(id);
+        $('#marking_id').val($(this).attr('id'));
+        
+        $('#storyModal').modal('show');
+    });
+    
     $(document).on('click', '#btn-delete', function(){
         var markingID = $('#marking_id').val();
         var storyID = $('#' + markingID).attr('data-id');
@@ -977,6 +1003,18 @@ $(document).on('change', '.div-toggle', function () {
                    $('.btn-close').removeAttr('disabled');
                },'json');;
            }
+    });
+    
+    $(document).on('click', '#btn-add', function(res){
+        $('#chapters-text').append('<input type="text" class="form-control top-margin" placeholder="Add Chapters"/>');
+    });
+    
+    $(document).on('click', '#add-new-story', function(){
+        $('#title').val('');
+        $('#description').val('');
+        $('#marking_id').val('coordinate_' + count);
+        $('#story_id').val('');
+        $('#storyModal').modal('show');
     });
         
 </script>
