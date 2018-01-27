@@ -306,7 +306,7 @@
                     <div class="card section-2 hide">
                         <div class="card-header">
                             <strong>Caves</strong>
-                            <small>Image Gallery</small>
+                            <small>Image Gallery  (* Click over an existing image to see its stories)</small>
                         </div>
                         <div class="card-body">
                             <div class="row">
