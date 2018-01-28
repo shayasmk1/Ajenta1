@@ -133,5 +133,10 @@ class Cave_model extends CI_Model {
     {
         return $this->db->where('cave_numb', $caveNum)->get('caves')->row();
     }
+    
+    function getCurrentCave($caveID)
+    {
+        return $this->db->where('cave_id', $caveID)->get('caves')->row();
+    }
 }
 ?>

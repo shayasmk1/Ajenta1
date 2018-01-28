@@ -27,5 +27,10 @@
             {
                 return $this->db->group_by('name')->get($this->table)->result_array();
             }
+            
+            function getCurrentCaveImage($caveImageID)
+            {
+                return $this->db->where('id', $caveImageID)->get($this->table)->row();
+            }
         }
         ?>

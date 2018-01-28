@@ -15,6 +15,7 @@ class Caves extends CI_Controller {
         $this->load->model('Story_model');
         $this->load->model('form_model');
         $this->load->model('painting_model');
+        $this->load->model('Title_model');
         $this->load->library('session');
         $this->lang->load('public_lang', 'english');
         $this->load->library('upload');
@@ -468,5 +469,31 @@ class Caves extends CI_Controller {
         header('HTTP/1.1 200 Created');
         echo json_encode(array('message' => 'Deleted Successfully'));
         exit;
+    }
+    
+    public function story($caveStoryID)
+    {
+        $data['story'] = $this->Story_model->getCurrentCaveStory($caveStoryID);
+        if(!$data['story'])
+        {
+            die();
+        }
+        $caveImageID = $data['story']->cave_image_id;
+        $data['caveImage'] = $this->CaveImage_model->getCurrentCaveImage($caveImageID);
+        if(!$data['caveImage'])
+        {
+            die();
+        }
+        $caveID = $data['story']->cave_id;
+        $data['cave'] = $this->cave_model->getCurrentCave($caveID);
+        if(!$data['cave'])
+        {
+            die();
+        }
+        
+        $data['titles'] = $this->Title_model->getAllTitles($caveStoryID);
+        $this->load->view ('theme/header');
+        $this->load->view('cave_image_view', $data);
+        $this->load->view ('theme/footer');
     }
 }

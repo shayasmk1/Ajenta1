@@ -10,6 +10,7 @@
     var myDropzone = '';
     var cave_num_global = 0;
     var count = 0;
+    var cave_image_id_global = 0;
     
 </script>
 
@@ -379,18 +380,13 @@
                   <input type="text" class="form-control" id="title"/>
               </div>
           </div>
-          <div class="col-xs-12 top-margin">
-              <h4>Add Chapters <button type="button" class="btn btn-xs pull-right btn-danger" id="btn-add"><i class="fa fa-plus"></i></button></h4>
-          </div>
-          <div class="col-xs-12 " id="chapters-text">
-              <input type="text" class="form-control top-margin" placeholder="Add Chapters"/>
-          </div>
-<!--          <div class="col-xs-12 ">
+          
+          <div class="col-xs-12 ">
               <label class="col-xs-12 no-padding">Story Description</label>
                <div class="col-xs-12 no-padding">
                    <textarea class="form-control" id="description" style="height:150px"></textarea>
               </div>
-          </div>-->
+          </div>
           <input type="hidden" value="" id="marking_id" />
           <input type="hidden" id="story_id" />
       </div>
@@ -649,7 +645,7 @@ jQuery(function($) {
         });
     });
     
-   // document.getElementById('getJSON2').addEventListener('click', function() {
+    // document.getElementById('getJSON2').addEventListener('click', function() {
     $(document).on('click', '#getJSON2', function(){
         var data = formBuilder.actions.getData('json');
         var form_name = $('#form_name').val();
@@ -659,8 +655,6 @@ jQuery(function($) {
             alert(xhr.responseText);
         });
     });
-    
-  
 });
 
 $(document).on('click', '.btn-close', function(){
@@ -866,22 +860,29 @@ $(document).on('change', '.div-toggle', function () {
         $('#image-overlay-loading').remove();
         $('.marking').remove();
         var image = $(this).attr('data-image');
-        var id = $(this).attr('data-id');
+        var cave_image_id = $(this).attr('data-id');
+        cave_image_id_global = cave_image_id;
         $('#4').show();
-        $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="' + image + '"/>');
+        $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + cave_image_id + '" src="' + image + '"/>');
         window.location.href = '#3';
         var cave_num = cave_num_global;
+        
+        getAllCaveStories(cave_num, cave_image_id);
+    });
+    
+    function getAllCaveStories(cave_num, cave_image_id)
+    {
         var count1 = 0;
-        $.get('/caves/getAllCaveStories', {cave_num:cave_num, cave_image_id:id}, function(res){
+        $.get('/caves/getAllCaveStories', {cave_num:cave_num, cave_image_id:cave_image_id}, function(res){
             $('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
             var html = '';
-            var html1 = '';
+            var html1 = '<div id="story-container">';
             $(res).each(function(i, value){
                 html+= '<div class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
-                html1+= '<div class="col-xs-12 each-story" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</div>';
+                html1+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</a>';
             });
             
-            html1+= '<button type="button" class="btn btn-success col-xs-12 col-sm-12" id="add-new-story">Add New Story</button>';
+            html1+= '</div><button type="button" class="btn btn-success col-xs-12 col-sm-12" id="add-new-story">Add New Story</button>';
             console.log(html);
             $('#4-1').append(html);
             $('#story-headers').html(html1);
@@ -892,7 +893,7 @@ $(document).on('change', '.div-toggle', function () {
             $('.btn-close').removeAttr('disabled');
             $('#image-overlay-loading').remove();
         },'json');
-    });
+    }
     
     $(document).on('click', '.gallery-image-coordiate', function(e){
         var offset = $(this).offset();
@@ -915,13 +916,16 @@ $(document).on('change', '.div-toggle', function () {
         data['cave_image_id'] = $('.gallery-image-coordiate').attr('data-id');
         data['cave_num'] = cave_num_global;
         
-        var markingID = $('#marking_id').val();
-        data['x'] = $('#' + markingID).attr('data-x');
-        data['y'] = $('#' + markingID).attr('data-y');
-        data['window_width'] = document.getElementById('hash-4-image').clientWidth;
-        data['image_actual_width'] = document.getElementById('hash-4-image').naturalWidth;
-        data['window_height'] = document.getElementById('hash-4-image').clientHeight;
-        data['image_actual_height'] = document.getElementById('hash-4-image').naturalHeight;
+        if($('#marking_id').val() != '')
+        {
+            var markingID = $('#marking_id').val();
+            data['x'] = $('#' + markingID).attr('data-x');
+            data['y'] = $('#' + markingID).attr('data-y');
+            data['window_width'] = document.getElementById('hash-4-image').clientWidth;
+            data['image_actual_width'] = document.getElementById('hash-4-image').naturalWidth;
+            data['window_height'] = document.getElementById('hash-4-image').clientHeight;
+            data['image_actual_height'] = document.getElementById('hash-4-image').naturalHeight;
+        }
         if($('#story_id').val().trim() == '')
         {
             $.post('/caves/saveStory', {data:data}, function(res){
@@ -931,6 +935,9 @@ $(document).on('change', '.div-toggle', function () {
                 $('#story_id').val(res.id);
 
                 alert("Story Saved Successfully");
+                
+                getAllCaveStories(cave_num_global, cave_image_id_global);
+                
                 $('#storyModal').modal('hide');
                 $('.btn-close').removeAttr('disabled');
             },'json').fail( function(xhr, textStatus, errorThrown) {
@@ -969,17 +976,17 @@ $(document).on('change', '.div-toggle', function () {
         $('#storyModal').modal('show');
     });
     
-    $(document).on('click', '.each-story', function(){
-        var title = $(this).attr('data-title');
-        var description = $(this).attr('data-description');
-        var id = $(this).attr('data-id');
-        $('#title').val(title);
-        $('#description').val(description);
-        $('#story_id').val(id);
-        $('#marking_id').val($(this).attr('id'));
-        
-        $('#storyModal').modal('show');
-    });
+//    $(document).on('click', '.each-story', function(){
+//        var title = $(this).attr('data-title');
+//        var description = $(this).attr('data-description');
+//        var id = $(this).attr('data-id');
+//        $('#title').val(title);
+//        $('#description').val(description);
+//        $('#story_id').val(id);
+//        $('#marking_id').val($(this).attr('id'));
+//        
+//        $('#storyModal').modal('show');
+//    });
     
     $(document).on('click', '#btn-delete', function(){
         var markingID = $('#marking_id').val();

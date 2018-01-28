@@ -20,6 +20,11 @@ class Story_model extends CI_Model {
             return $this->db->where('cave_id', $caveID)->where('cave_image_id', $caveImageID)->get($this->model)->result_array();
         }
         
+        function getCurrentCaveStory($id)
+        {
+            return $this->db->where('id', $id)->get($this->model)->row();
+        }
+        
         function deleteStory($storyID)
         {
             return $this->db->where('id', $storyID)->delete($this->model);
