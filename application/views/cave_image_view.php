@@ -25,7 +25,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <small>Story</small>
                         </div>
                         <div class="card-body">
-                            <div class='each-api'>
+                            <button type="button" class="btn btn-success pull-right" id="edit-story">Edit</button>
+                            <div class='each-api top-margin col-sm-12 pull-left'>
                                 <table class="table table-striped">
                                     <tr>
                                         <th>
@@ -40,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             Story Title
                                         </th>
                                         <td>
-                                            <?php echo $story->title ?>
+                                            <div class="story-edit" id="story_title"><?php echo $story->title ?></div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -48,9 +49,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             Story Description
                                         </th>
                                         <td>
-                                            <?php echo $story->description ?>
+                                            <div class="story-edit" id="story_description"><?php echo $story->description ?></div>
                                         </td>
                                     </tr>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button type="button" class="btn btn-success pull-right hide" id="update-story">Update Story</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
 
 
@@ -64,8 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <small>Title</small>
                         </div>
                         <div class="card-body">
-
-                            <div class="col-xs-12">
+                            <div class="col-xs-12 top-margin">
                                 <label class="col-xs-12">
                                     Title
                                 </label>
@@ -91,16 +98,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <strong>Story</strong>
                             <small>All Titles</small>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" id="story-title-container">
                             <?php
                             if(!empty($titles))
                             {
                                 foreach($titles AS $title)
                                 {
                                     ?>
-                                    <div class='each-title'>
+                            <div class="col-xs-12 each-story-title-container">
+                                    <div class='each-story-title'>
                                         <?php echo $title['name'] ?>
+                                        <i class="fa fa-chevron-down pull-right"></i>
                                     </div>
+                                <div class='each-story-title-description' style="display:none">
+                                        <?php echo $title['description'] ?>
+                                    </div>
+                                
+                            </div>
                                     <?php
                                 }
                             }
@@ -114,8 +128,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             
                         </div>
                     </div>
+                    <?php 
+                    if(isset($caveImage->location))
+                    {
+                        ?>
                     
                     <img src="/assets/uploads/<?php echo $caveImage->location ?>" class="col-xs-12 col-sm-12" />
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -132,6 +153,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $(this).text('Saving Title....').attr('disabled', 'disabled');
             var current = $(this);
             var data = new Object();
+            
             data['name'] = $('#title').val();
             data['description'] = CKEDITOR.instances['description'].getData()
             $.post('/title/save/<?php echo $story->id ?>', {data:data}, function(res){
@@ -139,10 +161,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 $(current).removeAttr('disabled', 'disabled').text('Save Title');
                 $('#title').val('');
                 CKEDITOR.instances['description'].setData('');
+                getAllTtitles()
             },'json').fail( function(xhr, textStatus, errorThrown) {
                 alert(xhr.responseJSON);
                 $(current).removeAttr('disabled', 'disabled').text('Save Title');
             },'json');
         });
+        
+        $('#edit-story').click(function(){
+            $('.story-edit').addClass('editable-text-border').attr('contenteditable', 'true');
+            $('#edit-story').addClass('hide');
+            $('#update-story').removeClass('hide');
+        });
     });
+    
+    function getAllTtitles()
+    {
+        $('#story-title-container').html('Loading.....');
+        $.get('/title/all/<?php echo $story->id ?>', function(res){
+            var html = '';
+            $(res).each(function(i, value){
+                html+= '<div class="col-xs-12 each-story-title-container">';
+                html+= '<div class="each-story-title">' + value.name + '<i class="fa fa-chevron-down pull-right"></i></div>';
+                html+= '<div class="each-story-title-description" style="display:none">' + value.description + '</div>';
+                html+= '</div>';
+            });
+            $('#story-title-container').html(html);
+        },'json');
+    }
+    
+    $(document).on('click', '#update-story', function(){
+        var data = new Object();
+        data['title'] = $('#story_title').text().trim();
+        data['description'] = $('#story_description').text().trim();
+        $(this).attr('disabled', 'disabled');
+        var current = $(this);
+        $.post('/caves/updateStory',{'storyID':<?php echo $story->id ?>, data:data}, function(res){
+            alert(res);
+            $('.story-edit').removeClass('editable-text-border').removeAttr('contenteditable', 'true');
+            $('#edit-story').removeClass('hide');
+            $('#update-story').addClass('hide');
+            $('#update-story').removeAttr('disabled', 'disabled');
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            $(current).removeAttr('disabled', 'disabled');
+        },'json');
+    });
+    
+    $(document).on('click', '.each-story-title', function(){
+        var parent = $(this).parents('.each-story-title-container').first();
+        $(parent).find('.each-story-title-description').slideToggle();
+    });
+    
 </script>

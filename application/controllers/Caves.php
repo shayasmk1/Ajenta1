@@ -374,6 +374,8 @@ class Caves extends CI_Controller {
                 }
                 $data['cave_id'] = $cave->cave_id;
                 unset($data['cave_num']);
+                
+                
                 $id = $this->Story_model->insert_data($data);
                 if(!$id)
                 {
@@ -400,29 +402,20 @@ class Caves extends CI_Controller {
                 if(!$strotyID || $strotyID == 0 || trim($strotyID) == '')
                 {
                     header('HTTP/1.1 400 Created');
-                    echo json_encode(array('message' => 'Somehting went wrong'));
+                    echo json_encode(array('Somehting went wrong'));
                     exit;
                 }
-                $caveNumber = $data['cave_num'];
-                $cave = $this->cave_model->getCaveByCaveNumber($caveNumber);
-                if(!$cave)
-                {
-                    header('HTTP/1.1 400 Created');
-                    echo json_encode(array('message' => 'Somehting went wrong'));
-                    exit;
-                }
-                $data['cave_id'] = $cave->cave_id;
-                unset($data['cave_num']);
+                
                 $id = $this->Story_model->updateData($data, $strotyID);
                 if(!$id)
                 {
                     header('HTTP/1.1 500 Created');
-                    echo json_encode(array('message' => 'Something went wrong'));
+                    echo json_encode(array('Something went wrong'));
                     exit;
                 }
                 
                 header('HTTP/1.1 200 Created');
-                echo json_encode(array('message' => 'Story Saved Successfully', 'id' => $id));
+                echo json_encode(array('Story Updated Successfully'));
                 exit;
             }
         }
@@ -480,10 +473,10 @@ class Caves extends CI_Controller {
         }
         $caveImageID = $data['story']->cave_image_id;
         $data['caveImage'] = $this->CaveImage_model->getCurrentCaveImage($caveImageID);
-        if(!$data['caveImage'])
-        {
-            die();
-        }
+//        if(!$data['caveImage'])
+//        {
+//            die();
+//        }
         $caveID = $data['story']->cave_id;
         $data['cave'] = $this->cave_model->getCurrentCave($caveID);
         if(!$data['cave'])
@@ -491,9 +484,34 @@ class Caves extends CI_Controller {
             die();
         }
         
+        
         $data['titles'] = $this->Title_model->getAllTitles($caveStoryID);
         $this->load->view ('theme/header');
         $this->load->view('cave_image_view', $data);
         $this->load->view ('theme/footer');
+    }
+    
+    public function generalStories()
+    {
+        if(!isset($_POST['caveNumb']))
+        {
+            header('HTTP/1.1 400 Created');
+            echo json_encode('Please Select Cave');
+            exit;
+        }
+        
+        $caveNumb = $_POST['caveNumb'];
+        $cave = $this->cave_model->getCaveByCaveNumber($caveNumb);
+        if(!$cave)
+        {
+            header('HTTP/1.1 400 Created');
+            echo json_encode('Cave Not Found');
+            exit;
+        }
+        
+        $stories = $this->Story_model->getAllGeneralStories($cave->cave_id);
+        header('HTTP/1.1 200 Created');
+        echo json_encode($stories);
+        exit;
     }
 }

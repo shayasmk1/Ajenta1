@@ -14,6 +14,7 @@ class Home extends CI_Controller {
                 $this->load->model('CaveHeader_model');
                 $this->load->model('form_model');
                 $this->load->model('DefaultFormContainer_model');
+                $this->load->model('Story_model');
 	}
 	
 	/*

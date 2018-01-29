@@ -202,10 +202,16 @@
                                 <li class="nav-item" id="cave-story-li">
                                     <a class="nav-link" href="#">Cave Story</a>
                                 </li>
+                                <li class="nav-item" id="cave-general-story-li">
+                                    <a class="nav-link" href="#">Add a new General Story</a>
+                                </li>
+                                <li class="nav-item" id="cave-general-story-list-li">
+                                    <a class="nav-link" href="#">List ALl General Stories</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="card hide" id="section-1">
+                    <div class="card hide section-breaker" id="section-1">
                         <div class="card-header">
                             <strong>Caves / Form</strong>
                             <small>Create / Edit</small>
@@ -278,7 +284,7 @@
                         </div>
                     </div>
                     
-                    <div class="card section-2 hide">
+                    <div class="card section-2 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Upload Image</small>
@@ -304,7 +310,7 @@
                         </div>
                     </div>
                     
-                    <div class="card section-2 hide">
+                    <div class="card section-2 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Image Gallery  (* Click over an existing image to see its stories)</small>
@@ -323,7 +329,7 @@
                         </div>
                     </div>
                     
-                    <div class="card section-3 hide">
+                    <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Stories</small>
@@ -344,6 +350,42 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card section-4 hide section-breaker">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>General Stories</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-xs-12 top-margin">
+                                <label class="col-xs-12">
+                                    Title
+                                </label>
+                                <input type="text" class="form-control" id="cave_title"/>
+                            </div>
+
+                            <div class="col-xs-12 top-margin">
+                                <label class="col-xs-12">
+                                    Description
+                                </label>
+                                <textarea class="form-control" id="cave_description"></textarea>
+                            </div>
+                            
+                            <div class="col-xs-12 top-margin">
+                                <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card section-5 hide section-breaker">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>General Stories List</small>
+                        </div>
+                        <div class="card-body" id="general-stories-list">
+                            
                         </div>
                     </div>
                     
@@ -401,30 +443,66 @@
 
 <script>
 $(document).ready(function(){
+    $('#story-save').click(function(){
+        var caveID = $('#cave_numb').val();
+        if(caveID.trim() == '')
+        {
+            alert('Please Select Cave');
+            return;
+        }
+        var data = new Object();
+        data['title'] = $('#cave_title').val();
+        data['description'] = $('#cave_description').val();
+        data['cave_num'] = caveID;
+        var current = $(this);
+        $(current).attr('disabled', 'disabled').text('Saving.....');
+        $.post('/caves/saveStory', {data:data}, function(res){
+            alert(res.message);
+            window.location.href = '/caves/story/' + res.id;
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            
+            $(current).removeAttr('disabled', 'disabled').text('Save Story');
+        },'json');
+    });
+    
+    
     $('#cave-info-li').click(function(){
+        $('.section-breaker').addClass('hide');
         $('#section-1').removeClass('hide');
-        $('.section-2').addClass('hide');
-        $('.section-3').addClass('hide');
+        
         $('#cave-sub-menu li a').removeClass('active');
         $('#cave-info-li a').addClass('active');
     });
     
     $('#cave-gallery-li').click(function(){
-        $('#section-1').addClass('hide');
+       $('.section-breaker').addClass('hide');
         $('.section-2').removeClass('hide');
-        $('.section-3').addClass('hide');
         $('#cave-sub-menu li a').removeClass('active');
         $('#cave-gallery-li a').addClass('active');
     });
     
     $('#cave-story-li').click(function(){
-        $('#section-1').addClass('hide');
-        $('.section-2').addClass('hide');
+        $('.section-breaker').addClass('hide');
         $('.section-3').removeClass('hide');
         $('#cave-sub-menu li a').removeClass('active');
         $('#cave-story-li a').addClass('active');
     });
     
+    $('#cave-general-story-li').click(function(){
+        $('.section-breaker').addClass('hide');
+        $('.section-4').removeClass('hide');
+        $('#cave-sub-menu li a').removeClass('active');
+        $('#cave-general-story-li a').addClass('active');
+    });
+
+    $('#cave-general-story-list-li').click(function(){
+        $('.section-breaker').addClass('hide');
+        $('.section-5').removeClass('hide');
+        $('#cave-sub-menu li a').removeClass('active');
+        $('#cave-general-story-list-li a').addClass('active');
+    });
+        
     function getFormValues()
     {
         $('#section-loading').removeClass('hide');
@@ -622,6 +700,7 @@ $(document).ready(function(){
         $('#form-templte-select').val('custom');
         getFormValues();
         $('#section-1').removeClass('hide');
+        getGeneralStoriesList();
     });
     
     $('#form-templte-select').change(function(){
@@ -878,7 +957,7 @@ $(document).on('change', '.div-toggle', function () {
             var html = '';
             var html1 = '<div id="story-container">';
             $(res).each(function(i, value){
-                html+= '<div class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></div>';
+                html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></a>';
                 html1+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</a>';
             });
             
@@ -964,17 +1043,17 @@ $(document).on('change', '.div-toggle', function () {
         }
     });
     
-    $(document).on('click', '.marking', function(){
-        var title = $(this).attr('data-title');
-        var description = $(this).attr('data-description');
-        var id = $(this).attr('data-id');
-        $('#title').val(title);
-        $('#description').val(description);
-        $('#story_id').val(id);
-        $('#marking_id').val($(this).attr('id'));
-        
-        $('#storyModal').modal('show');
-    });
+//    $(document).on('click', '.marking', function(){
+//        var title = $(this).attr('data-title');
+//        var description = $(this).attr('data-description');
+//        var id = $(this).attr('data-id');
+//        $('#title').val(title);
+//        $('#description').val(description);
+//        $('#story_id').val(id);
+//        $('#marking_id').val($(this).attr('id'));
+//        
+//        $('#storyModal').modal('show');
+//    });
     
 //    $(document).on('click', '.each-story', function(){
 //        var title = $(this).attr('data-title');
@@ -1023,6 +1102,20 @@ $(document).on('change', '.div-toggle', function () {
         $('#story_id').val('');
         $('#storyModal').modal('show');
     });
+    
+    function getGeneralStoriesList()
+    {
+        var caveNumb = $('#cave_numb').val();
+        $.post('/caves/generalStories', {caveNumb:caveNumb}, function(res){
+           var html = '<table class="table table-bordered table-striped">';
+            $(res).each(function(i, value){
+                html+= '<tr><td><a href="/caves/story/' + value.id + '" target="_blank">' + value.title + '</a></td></tr>';
+            });
+            html+= '</table>'
+            
+            $('#general-stories-list').html(html);
+        },'json');
+    }
         
 </script>
 

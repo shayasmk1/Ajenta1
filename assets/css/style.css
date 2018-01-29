@@ -9564,3 +9564,24 @@ hr.transparent {
 {
     border-right : 1px solid lightgray;
 }
+
+.each-story-title
+{
+    background-color : cadetblue;
+    padding: 5px 15px 5px 15px;
+    margin-top : 5px;
+    color : white;
+    cursor : pointer;
+}
+
+.each-story-title-description
+{
+    border : 1px solid lightgray;
+    padding : 10px;
+}
+
+.editable-text-border
+{
+    border : 1px solid gray;
+    padding : 5px;
+}

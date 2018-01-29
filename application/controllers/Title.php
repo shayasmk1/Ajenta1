@@ -52,6 +52,10 @@ class Title extends CI_Controller {
             echo json_encode($msg);
             exit;
         }
+        
+        $maxPosition = $this->Title_model->getMaxPosition($storyID);
+        $data['position'] = $maxPosition->position + 1;
+        
         $data['cave_story_id'] = $storyID;
         $data['created_at'] = $data['updated_at'] = date("Y-m-d H:i:s");
         $res = $this->Title_model->insert_data($data);
@@ -65,5 +69,12 @@ class Title extends CI_Controller {
         header('HTTP/1.1 200 Created');
             echo json_encode('Title Added Successfully');
             exit;
+    }
+    
+    public function all($storyID)
+    {
+        $titles = $this->Title_model->getAllTitles($storyID);
+        header('HTTP/1.1 200 Created');
+        echo json_encode($titles);
     }
 }

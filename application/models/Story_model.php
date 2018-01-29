@@ -29,5 +29,11 @@ class Story_model extends CI_Model {
         {
             return $this->db->where('id', $storyID)->delete($this->model);
         }
+        
+        function getAllGeneralStories($caveID)
+        {
+            return $this->db->where('cave_id', $caveID)->where('cave_image_id', 0)->get($this->model)->result_array();
+        }
+        
 }
 ?>

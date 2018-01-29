@@ -7,7 +7,7 @@ class Title_model extends CI_Model {
 	}
 	
 	function getAllTitles($caveStoryID){
-            return $this->db->where('cave_story_id', $caveStoryID)->get($this->model)->result_array();
+            return $this->db->where('cave_story_id', $caveStoryID)->order_by('position')->get($this->model)->result_array();
             
 	}
         
@@ -15,6 +15,11 @@ class Title_model extends CI_Model {
             $res = $this->db->set($data)->insert($this->model);
             return $this->db->insert_id();
 	}
+        
+        function getMaxPosition($caveStoryID)
+        {
+             return $this->db->select_max('position')->where('cave_story_id', $caveStoryID)->get($this->model)->row();
+        }
         
 }
 ?>
