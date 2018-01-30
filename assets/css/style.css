@@ -9585,3 +9585,19 @@ hr.transparent {
     border : 1px solid gray;
     padding : 5px;
 }
+
+.active-image
+{
+    background-color: skyblue;
+}
+
+.active-image .each-image-gallery
+{
+    opacity: .3;
+}
+
+.no-padding
+{
+    padding-left : 0px !important;
+    padding-right : 0px !important;
+}

@@ -514,4 +514,28 @@ class Caves extends CI_Controller {
         echo json_encode($stories);
         exit;
     }
+    
+    public function allStories()
+    {
+        if(!isset($_POST['caveNumb']))
+        {
+            header('HTTP/1.1 400 Created');
+            echo json_encode('Please Select Cave');
+            exit;
+        }
+        
+        $caveNumb = $_POST['caveNumb'];
+        $cave = $this->cave_model->getCaveByCaveNumber($caveNumb);
+        if(!$cave)
+        {
+            header('HTTP/1.1 400 Created');
+            echo json_encode('Cave Not Found');
+            exit;
+        }
+        
+        $stories = $this->Story_model->getAllStories($cave->cave_id);
+        header('HTTP/1.1 200 Created');
+        echo json_encode($stories);
+        exit;
+    }
 }

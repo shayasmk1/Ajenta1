@@ -60,6 +60,7 @@ class Home extends CI_Controller {
                         //To get Patron(p), Type(t), Period(p) for Autocomplete
                         $data['cave_ptp'] = $this->cave_model->getCaveM(); 
                         $data['defaultCaves'] = $this->DefaultFormContainer_model->getList();
+                        //$data['allStories'] = $this->Story_model->getAllStories
                         
                         $this->load->view($page, $data);
 			$this->load->view ('theme/footer');

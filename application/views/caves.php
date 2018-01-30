@@ -202,12 +202,12 @@
                                 <li class="nav-item" id="cave-story-li">
                                     <a class="nav-link" href="#">Cave Story</a>
                                 </li>
-                                <li class="nav-item" id="cave-general-story-li">
+<!--                                <li class="nav-item" id="cave-general-story-li">
                                     <a class="nav-link" href="#">Add a new General Story</a>
                                 </li>
                                 <li class="nav-item" id="cave-general-story-list-li">
                                     <a class="nav-link" href="#">List ALl General Stories</a>
-                                </li>
+                                </li>-->
                             </ul>
                         </div>
                     </div>
@@ -319,13 +319,87 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     
-                                        <div class='col-xs-12' id="image-gallery" style="height:200px;overflow:auto;background-color:white;border:1px solid">
+                                        <div class='col-xs-12' id="image-gallery" style="height:400px;overflow:auto;background-color:white;border:1px solid">
 
                                         </div>
                                     
                                    
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-left" id="list-story">
+                        <div class="card-body" style="height:363px;overflow:auto">
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-story">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Add Story</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-sm-12 alert alert-success" id="image-count">
+            No Images Selected
+        </div>
+                            <div class="col-xs-12 top-margin">
+                                <label class="col-xs-12">
+                                    Story Title
+                                </label>
+                                <input type="text" class="form-control" id="cave_title"/>
+                            </div>
+
+                            <div class="col-xs-12 top-margin">
+                                <label class="col-xs-12">
+                                    Description
+                                </label>
+                                <textarea class="form-control" id="cave_description"></textarea>
+                            </div>
+                            
+                            <div class="col-xs-12 top-margin">
+                                <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-title" style="display:none">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Add Title</small>
+                        </div>
+                    
+                        <div class="card-body">
+                            <div class="alert alert-success" id="story-name"></div>
+                            <div class="col-xs-12 top-margin">
+                                <label class="col-xs-12">
+                                    Title
+                                </label>
+                                <input type="text" class="form-control" id="title"/>
+                            </div>
+
+                            <div class="col-xs-12 top-margin">
+                                <label class="col-xs-12">
+                                    Description
+                                </label>
+                                <textarea class="form-control" id="title_description"></textarea>
+                            </div>
+                            <div class="col-sm-12 no-padding top-margin">
+                                <div class="col-sm-3 btn btn-primary no-padding pull-left">
+                                    Add Marker
+                                </div>
+                                <div class="col-sm-3 btn btn-warning no-padding pull-left">
+                                    Add Audio
+                                </div>
+                                <div class="col-sm-3 btn btn-danger no-padding pull-left">
+                                    Add More Titles
+                                </div>
+                                <div id="title-save" class="btn btn-success pull-left col-sm-3 no-padding">Save Title</div>
+                            </div>
+                            
                         </div>
                     </div>
                     
@@ -353,7 +427,7 @@
                         </div>
                     </div>
                     
-                    <div class="card section-4 hide section-breaker">
+<!--                    <div class="card section-4 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>General Stories</small>
@@ -377,7 +451,7 @@
                                 <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="card section-5 hide section-breaker">
                         <div class="card-header">
@@ -415,6 +489,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+        
       <div class="modal-body col-xs-12 no-padding">
           <div class="col-xs-12">
               <label class="col-xs-12 no-padding">Story Title</label>
@@ -454,11 +529,48 @@ $(document).ready(function(){
         data['title'] = $('#cave_title').val();
         data['description'] = $('#cave_description').val();
         data['cave_num'] = caveID;
+        if($('.active-image').length)
+        {
+            data['cave_image_id'] = $('.active-image').find('.each-image-gallery').attr('data-id');
+        }
         var current = $(this);
         $(current).attr('disabled', 'disabled').text('Saving.....');
         $.post('/caves/saveStory', {data:data}, function(res){
             alert(res.message);
-            window.location.href = '/caves/story/' + res.id;
+            $('#add-story').slideUp();
+            $('#add-title').slideDown();
+            
+            $('#story-name').text('Story Name : ' +  $('#cave_title').val());
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            
+            $(current).removeAttr('disabled', 'disabled').text('Save Story');
+        },'json');
+    });
+    
+    $('#title-save').click(function(){
+        var caveID = $('#cave_numb').val();
+        if(caveID.trim() == '')
+        {
+            alert('Please Select Cave');
+            return;
+        }
+        var data = new Object();
+        data['title'] = $('#cave_title').val();
+        data['description'] = $('#cave_description').val();
+        data['cave_num'] = caveID;
+        if($('.active-image').length)
+        {
+            data['cave_image_id'] = $('.active-image').find('.each-image-gallery').attr('data-id');
+        }
+        var current = $(this);
+        $(current).attr('disabled', 'disabled').text('Saving.....');
+        $.post('/caves/saveStory', {data:data}, function(res){
+            alert(res.message);
+            $('#add-story').slideUp();
+            $('#add-title').slideDown();
+            
+            $('#story-name').text('Story Name : ' +  $('#cave_title').val());
         },'json').fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseJSON);
             
@@ -700,7 +812,7 @@ $(document).ready(function(){
         $('#form-templte-select').val('custom');
         getFormValues();
         $('#section-1').removeClass('hide');
-        getGeneralStoriesList();
+        getAllStoriesList();
     });
     
     $('#form-templte-select').change(function(){
@@ -936,17 +1048,23 @@ $(document).on('change', '.div-toggle', function () {
     }
     
     $(document).on('click', '.each-image-gallery', function(){
-        $('#image-overlay-loading').remove();
-        $('.marking').remove();
-        var image = $(this).attr('data-image');
-        var cave_image_id = $(this).attr('data-id');
-        cave_image_id_global = cave_image_id;
-        $('#4').show();
-        $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + cave_image_id + '" src="' + image + '"/>');
-        window.location.href = '#3';
-        var cave_num = cave_num_global;
+        var parent = $(this).parents('.image-each-container').first();
         
-        getAllCaveStories(cave_num, cave_image_id);
+        $('.active-image').removeClass('active-image');
+        $(parent).addClass('active-image');
+        $('#image-count').text('1 Image Selected');
+//        $('#image-overlay-loading').remove();
+//        $('.marking').remove();
+//        var image = $(this).attr('data-image');
+//        var cave_image_id = $(this).attr('data-id');
+//        cave_image_id_global = cave_image_id;
+//        $('#4').show();
+//        $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + cave_image_id + '" src="' + image + '"/>');
+//        window.location.href = '#3';
+//        var cave_num = cave_num_global;
+//        
+//        getAllCaveStories(cave_num, cave_image_id);
+        window.location.href = '#add-story';
     });
     
     function getAllCaveStories(cave_num, cave_image_id)
@@ -1043,6 +1161,8 @@ $(document).on('change', '.div-toggle', function () {
         }
     });
     
+    
+    
 //    $(document).on('click', '.marking', function(){
 //        var title = $(this).attr('data-title');
 //        var description = $(this).attr('data-description');
@@ -1116,7 +1236,21 @@ $(document).on('change', '.div-toggle', function () {
             $('#general-stories-list').html(html);
         },'json');
     }
-        
+    
+    
+    function getAllStoriesList()
+    {
+         var caveNumb = $('#cave_numb').val();
+        $.post('/caves/allStories', {caveNumb:caveNumb}, function(res){
+           var html = '<table class="table table-bordered table-striped">';
+            $(res).each(function(i, value){
+                html+= '<tr><td><a href="/caves/story/' + value.id + '" target="_blank">' + value.title + '</a></td></tr>';
+            });
+            html+= '</table>'
+            
+            $('#list-story .card-body').html(html);
+        },'json');
+    }
 </script>
 
 
