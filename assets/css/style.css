@@ -9565,7 +9565,7 @@ hr.transparent {
     border-right : 1px solid lightgray;
 }
 
-.each-story-title
+.each-story
 {
     background-color : cadetblue;
     padding: 5px 15px 5px 15px;
@@ -9574,10 +9574,11 @@ hr.transparent {
     cursor : pointer;
 }
 
-.each-story-title-description
+.each-story-description
 {
     border : 1px solid lightgray;
     padding : 10px;
+    
 }
 
 .editable-text-border
@@ -9600,4 +9601,19 @@ hr.transparent {
 {
     padding-left : 0px !important;
     padding-right : 0px !important;
+}
+
+#story-container
+{
+    height : 300px;
+    overflow:auto;
+}
+
+.each-story-title-container
+{
+    border : 1px solid gray;
+    margin-top:5px;
+    border-radius: 15px;
+    padding: 15px;
+    #F5F9F9
 }

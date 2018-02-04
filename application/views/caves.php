@@ -4,6 +4,7 @@
 <!--<script src="http://formbuilder.online/assets/js/form-builder.min.js"></script>-->
 <script src="/assets/libraries/formBuilder/dist/form-builder.min.js"></script>
 <script src="/assets/js/dropzone.js"></script>
+<script src='/assets/ckeditor/ckeditor.js' ></script>
 
 <script type="text/javascript">
     var formBuilder = '';
@@ -11,7 +12,8 @@
     var cave_num_global = 0;
     var count = 0;
     var cave_image_id_global = 0;
-    
+    var currentStoryGlobal = 0;
+    var currentTitleGlobal = 0;
 </script>
 
 
@@ -340,7 +342,7 @@
                             <strong>Caves</strong>
                             <small>Add Story</small>
                         </div>
-                        <div class="card-body">
+<!--                        <div class="card-body">
                             <div class="col-sm-12 alert alert-success" id="image-count">
             No Images Selected
         </div>
@@ -361,7 +363,7 @@
                             <div class="col-xs-12 top-margin">
                                 <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
                             </div>
-                        </div>
+                        </div>-->
                         
                         
                     </div>
@@ -403,7 +405,26 @@
                         </div>
                     </div>
                     
-                    <div class="card section-3 hide section-breaker">
+                    <div class="card section-3 section-breaker">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Image Gallery  (* Click over an existing image to see its stories)</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    
+                                        <div class='col-xs-12' id="image-gallery-story" style="height:400px;overflow:auto;background-color:white;border:1px solid">
+
+                                        </div>
+                                    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card section-3 section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Stories</small>
@@ -411,12 +432,33 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div id='4' class='col-xs-12' style="display:none;margin-top:0px;padding-bottom:55px;">
+                                    <div id='4' class='col-xs-12' style="margin-top:0px;padding-bottom:55px;">
                                         <div class="col-xs-12 col-sm-3 pull-left" id="story-headers">
                                             
                                         </div>
                                         <div id='4-1' class='col-xs-12 col-sm-9 no-padding pull-right' style="position:relative;">
+                                            <div class="card-body">
+                                                <div class="col-sm-12 alert alert-success" id="image-count">
+                                                    No Images Selected
+                                                </div>
+                                                        <div class="col-sm-12 top-margin">
+                                                            <label class="col-xs-12">
+                                                                Story Title
+                                                            </label>
+                                                            <input type="text" class="form-control" id="cave_title"/>
+                                                        </div>
 
+                                                        <div class="col-sm-12 top-margin">
+                                                            <label class="col-xs-12">
+                                                                Description
+                                                            </label>
+                                                            <textarea class="form-control" id="cave_description"></textarea>
+                                                        </div>
+
+                                                        <div class="col-sm-12 top-margin">
+                                                            <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
+                                                        </div>
+                                                    </div>
                                         </div>
                                         <div class="dummy-area" style="z-index: 10;position:absolute;left:0;top:0">
 
@@ -426,6 +468,8 @@
                             </div>
                         </div>
                     </div>
+                    
+                    
                     
 <!--                    <div class="card section-4 hide section-breaker">
                         <div class="card-header">
@@ -453,7 +497,7 @@
                         </div>
                     </div>-->
 
-                    <div class="card section-5 hide section-breaker">
+<!--                    <div class="card section-5 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>General Stories List</small>
@@ -461,12 +505,19 @@
                         <div class="card-body" id="general-stories-list">
                             
                         </div>
-                    </div>
-                    
-                    <div class="card hide" id="section-loading">
+                    </div>-->
+                    <div class="card section-3 section-breaker hide">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Stories</small>
+                        </div>
                         <div class="card-body">
-                            <div class="row">
-                                <i class="fa fa-spin fa-spinner"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Processing Request......
+                            <div class="card " id="section-loading">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <i class="fa fa-spin fa-spinner"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Processing Request......
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -482,41 +533,155 @@
 <!-- Modal -->
 <div class="modal" id="storyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
   <div class="modal-dialog" role="document">
-    <div class="modal-content col-xs-12 no-padding">
-      <div class="modal-header col-xs-12 no-padding">
-        <h5 class="modal-title col-xs-6" id="exampleModalLabel">Add Story</h5>
-        <button type="button" class="close col-xs-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
+    <div class="modal-content col-sm-12 no-padding">
+      <div class="modal-header col-sm-12">
+        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Edit Story</h5>
+        <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-        
-      <div class="modal-body col-xs-12 no-padding">
-          <div class="col-xs-12">
-              <label class="col-xs-12 no-padding">Story Title</label>
+        <div class="modal-body" id="story-model-loading">
+            <i class="fa fa-spin fa-spinner"></i> Loading..... Please Wait.
+        </div>
+        <div class="modal-body col-sm-12 no-padding hide story-model" style="padding-top:0px">
+          <div class="error">
+              
+          </div>
+          <div class="col-sm-12">
+              <label class="col-xs-12 no-padding">Title</label>
               <div class="col-xs-12 no-padding">
-                  <input type="text" class="form-control" id="title"/>
+                  <input type="text" class="form-control" id="modal_story_title"/>
               </div>
           </div>
           
-          <div class="col-xs-12 ">
+          <div class="col-sm-12 ">
               <label class="col-xs-12 no-padding">Story Description</label>
                <div class="col-xs-12 no-padding">
-                   <textarea class="form-control" id="description" style="height:150px"></textarea>
+                   <textarea class="form-control" id="modal_story_description" style="height:150px"></textarea>
               </div>
           </div>
           <input type="hidden" value="" id="marking_id" />
           <input type="hidden" id="story_id" />
       </div>
-      <div class="modal-footer col-xs-12">
+      <div class="modal-footer col-xs-12 story-model">
         <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btn-save">Save changes</button>
+        <button type="button" class="btn btn-primary" id="btn-save-story">Save changes</button>
         <button type="button" class="btn btn-danger" id="btn-delete">Delete</button>
       </div>
     </div>
   </div>
 </div>
 
+<div class="modal" id="titleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
+    <div class="modal-dialog" role="document" style="max-width:800px;width:800px">
+    <div class="modal-content col-sm-12 no-padding">
+      <div class="modal-header col-sm-12">
+        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Add Title</h5>
+        <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        
+        <div class="modal-body col-sm-12 no-padding title-model" style="padding-top:0px">
+          <div class="title-error" id="title-error">
+              
+          </div>
+          <div class="col-sm-12">
+              <label class="col-xs-12 no-padding">Title</label>
+              <div class="col-xs-12 no-padding">
+                  <input type="text" class="form-control" id="modal_title_title"/>
+              </div>
+          </div>
+          
+          <div class="col-sm-12 ">
+              <label class="col-xs-12 no-padding">Title Description</label>
+               <div class="col-xs-12 no-padding">
+                   <textarea class="form-control" id="modal_title_description" style="height:150px"></textarea>
+              </div>
+          </div>
+          <input type="hidden" value="" id="marking_id" />
+          <input type="hidden" id="story_id" />
+      </div>
+      <div class="modal-footer col-xs-12 story-model">
+        <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-save-title">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="titleModalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
+    <div class="modal-dialog" role="document" style="max-width:800px;width:800px">
+    <div class="modal-content col-sm-12 no-padding">
+      <div class="modal-header col-sm-12">
+        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Update Title</h5>
+        <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body" id="title-model-loading">
+            <i class="fa fa-spin fa-spinner"></i> Loading..... Please Wait.
+        </div>
+        <div class="modal-body col-sm-12 no-padding title-model hide" style="padding-top:0px">
+          <div class="title-update-error" id="title-update-error">
+              
+          </div>
+          <div class="col-sm-12">
+              <label class="col-xs-12 no-padding">Title</label>
+              <div class="col-xs-12 no-padding">
+                  <input type="text" class="form-control" id="modal_title_title_update"/>
+              </div>
+          </div>
+          
+          <div class="col-sm-12 ">
+              <label class="col-xs-12 no-padding">Title Description</label>
+               <div class="col-xs-12 no-padding">
+                   <textarea class="form-control" id="modal_title_description_update" style="height:150px"></textarea>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer col-xs-12 story-model">
+        <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-update-title">Update changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="addMp3Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
+    <div class="modal-dialog" role="document" style="max-width:800px;width:800px">
+    <form class="modal-content col-sm-12 no-padding" method="post" enctype="multipart/form-data" id="mp3-form">
+      <div class="modal-header col-sm-12">
+        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Add Mp3</h5>
+        <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        
+        <div class="modal-body col-sm-12 no-padding title-model" style="padding-top:0px">
+          <div class="file-upload-error" id="file-upload-error">
+              
+          </div>
+          <div class="col-sm-12">
+              <label class="col-xs-12 no-padding">Update Mp3 File</label>
+              <div class="col-xs-12 no-padding">
+                  <input type="file" class="form-control" id="file" name="file"/>
+                  <input type="hidden" name="reference_task_id" id="reference_task_id" />
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer col-xs-12 story-model">
+        <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="btn-upload-title">Upload File</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
+CKEDITOR.replace( 'modal_title_description' );
+CKEDITOR.replace( 'modal_title_description_update');
 $(document).ready(function(){
     $('#story-save').click(function(){
         var caveID = $('#cave_numb').val();
@@ -541,8 +706,12 @@ $(document).ready(function(){
             $('#add-title').slideDown();
             
             $('#story-name').text('Story Name : ' +  $('#cave_title').val());
+            $(current).removeAttr('disabled', 'disabled').text('Save Story');
+            $('#cave_title').val('');
+            $('#cave_description').val('');
+            getAllStoriesList();
         },'json').fail( function(xhr, textStatus, errorThrown) {
-            alert(xhr.responseJSON);
+            alert(xhr.responseJSON.message);
             
             $(current).removeAttr('disabled', 'disabled').text('Save Story');
         },'json');
@@ -637,7 +806,7 @@ $(document).ready(function(){
                     function() 
                     {
                         formBuilder.actions.setData(formData);
-                        $('#section-loading').addClass('hide');
+                      //  $('#section-loading').addClass('hide');
                     },300);
                 }
 
@@ -669,7 +838,7 @@ $(document).ready(function(){
                         function() 
                         {
                             formBuilder.actions.setData(formData);
-                            $('#section-loading').addClass('hide');
+                           // $('#section-loading').addClass('hide');
                         },300);
                         
                         
@@ -784,7 +953,7 @@ $(document).ready(function(){
         $('.section-3').addClass('hide');
         $('#cave-info-li').trigger('click');
         
-        $('#4-1').html('');
+        //$('#4-1').html('');
         $('#dummy-area').html('');
         
         $('#dropzone').find('.dz-complete').remove();
@@ -862,7 +1031,7 @@ $(document).on('click', '.btn-close', function(){
 });
 
 $(document).on('change', '.div-toggle', function () {
-    $('#4-1').html('');
+   // $('#4-1').html('');
     $('#dropzone').find('.dz-complete').remove();
     $('#dropzone').removeClass('dz-started');
     //changing <div> according to the selected dropdown option
@@ -1042,49 +1211,71 @@ $(document).on('change', '.div-toggle', function () {
                 html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin image-each-container"><div class="col-xs-12 each-image-gallery" data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
             });
             $('#image-gallery').html(html);
+            $('#image-gallery-story').html(html);
         },'json').fail(function(xhr, textStatus, errorThrown) {
             $('#image-gallery').html('');
+             $('#image-gallery-story').html('');
         },'json');
     }
     
-    $(document).on('click', '.each-image-gallery', function(){
+    $(document).on('click', '#image-gallery-story .each-image-gallery', function(){
         var parent = $(this).parents('.image-each-container').first();
         
         $('.active-image').removeClass('active-image');
         $(parent).addClass('active-image');
         $('#image-count').text('1 Image Selected');
-//        $('#image-overlay-loading').remove();
-//        $('.marking').remove();
-//        var image = $(this).attr('data-image');
-//        var cave_image_id = $(this).attr('data-id');
-//        cave_image_id_global = cave_image_id;
-//        $('#4').show();
-//        $('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + cave_image_id + '" src="' + image + '"/>');
-//        window.location.href = '#3';
-//        var cave_num = cave_num_global;
-//        
-//        getAllCaveStories(cave_num, cave_image_id);
+        $('#image-overlay-loading').remove();
+        $('.marking').remove();
+        var image = $(this).attr('data-image');
+        var cave_image_id = $(this).attr('data-id');
+        cave_image_id_global = cave_image_id;
+        $('#4').show();
+        //$('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + cave_image_id + '" src="' + image + '"/>');
+        window.location.href = '#3';
+        var cave_num = cave_num_global;
+        
+        //getAllCaveStories(cave_num, cave_image_id);
+        getAllStoriesList();
         window.location.href = '#add-story';
     });
+    
     
     function getAllCaveStories(cave_num, cave_image_id)
     {
         var count1 = 0;
         $.get('/caves/getAllCaveStories', {cave_num:cave_num, cave_image_id:cave_image_id}, function(res){
-            $('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
-            var html = '';
-            var html1 = '<div id="story-container">';
+            //$('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
+            var html = '<div id="story-container">';
+            var html1 = '';
             $(res).each(function(i, value){
-                html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></a>';
-                html1+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</a>';
+//                html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></a>';
+//                html1+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</a>';
+                var image = '';
+                if(value.cave_image_id == 0)
+                {
+                    image = ' <b>- General Story</b>';
+                }
+                
+                html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + image + '</a>';
+                
+                html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '">';
+                
+                
+                html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
+                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success">Edit Story</button><button type="button" class="btn btn-primary" id="add-title">Add Title</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                
+                html1+= '</div>';
             });
             
-            html1+= '</div><button type="button" class="btn btn-success col-xs-12 col-sm-12" id="add-new-story">Add New Story</button>';
-            console.log(html);
-            $('#4-1').append(html);
-            $('#story-headers').html(html1);
+            html+= '</div>';
+            
+           // $('#4-1').append(html);
+            //$('#story-headers').html(html1);
+            $('#story-headers').html(html);
+            $('#section-loading .row').html(html1);
             $('#image-overlay-loading').remove();
             $('#cave-story-li').trigger('click');
+            fetchEachDescription();
         },'json').fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseJSON.message);
             $('.btn-close').removeAttr('disabled');
@@ -1097,7 +1288,7 @@ $(document).on('change', '.div-toggle', function () {
         var left = (e.pageX - offset.left) -5;
         var top = (e.pageY - offset.top) - 5;
         count = count + 1;
-        $('#4-1').append('<div class="marking" id="coordinate_' + count + '" data-x=' + left + ' data-y=' + top + ' style="left:' + left + 'px;top:' + top + 'px"></div>');
+        //$('#4-1').append('<div class="marking" id="coordinate_' + count + '" data-x=' + left + ' data-y=' + top + ' style="left:' + left + 'px;top:' + top + 'px"></div>');
         $('#title').val('');
         $('#description').val('');
         $('#marking_id').val('coordinate_' + count);
@@ -1105,60 +1296,57 @@ $(document).on('change', '.div-toggle', function () {
         $('#storyModal').modal('show');
     });
     
-    $(document).on('click', '#btn-save', function(){
-        $('.btn-close').attr('disabled', 'disabled');
+    $(document).on('click', '#btn-save-story', function(){
+        $('.error').html('<div class="alert alert-warning">Updating Story.....</div>');
+        $('#btn-save-story').attr('disabled', 'disabled');
         var data = new Object();
-        var title = data['title'] = $('#title').val();
-        var description = data['description'] = $('#description').val();
-        data['cave_image_id'] = $('.gallery-image-coordiate').attr('data-id');
-        data['cave_num'] = cave_num_global;
+        var title = data['title'] = $('#modal_story_title').val();
+        var description = data['description'] = $('#modal_story_description').val();
+       // data['cave_image_id'] = $('.gallery-image-coordiate').attr('data-id');
+        //data['cave_num'] = cave_num_global;
         
-        if($('#marking_id').val() != '')
-        {
-            var markingID = $('#marking_id').val();
-            data['x'] = $('#' + markingID).attr('data-x');
-            data['y'] = $('#' + markingID).attr('data-y');
-            data['window_width'] = document.getElementById('hash-4-image').clientWidth;
-            data['image_actual_width'] = document.getElementById('hash-4-image').naturalWidth;
-            data['window_height'] = document.getElementById('hash-4-image').clientHeight;
-            data['image_actual_height'] = document.getElementById('hash-4-image').naturalHeight;
-        }
-        if($('#story_id').val().trim() == '')
-        {
-            $.post('/caves/saveStory', {data:data}, function(res){
-                $('#' + markingID).attr('data-title', title);
-                $('#' + markingID).attr('data-description', description);
-                $('#' + markingID).attr('data-id', res.id);
-                $('#story_id').val(res.id);
-
-                alert("Story Saved Successfully");
-                
-                getAllCaveStories(cave_num_global, cave_image_id_global);
-                
-                $('#storyModal').modal('hide');
-                $('.btn-close').removeAttr('disabled');
-            },'json').fail( function(xhr, textStatus, errorThrown) {
-                alert(xhr.responseJSON.message);
-                $('.btn-close').removeAttr('disabled');
-            },'json');
-        }
-        else
-        {
+//        if($('#marking_id').val() != '')
+//        {
+//            var markingID = $('#marking_id').val();
+//            data['x'] = $('#' + markingID).attr('data-x');
+//            data['y'] = $('#' + markingID).attr('data-y');
+//            data['window_width'] = document.getElementById('hash-4-image').clientWidth;
+//            data['image_actual_width'] = document.getElementById('hash-4-image').naturalWidth;
+//            data['window_height'] = document.getElementById('hash-4-image').clientHeight;
+//            data['image_actual_height'] = document.getElementById('hash-4-image').naturalHeight;
+//        }
+//        if($('#story_id').val().trim() == '')
+//        {
+//            $.post('/caves/saveStory', {data:data}, function(res){
+//                $('#' + markingID).attr('data-title', title);
+//                $('#' + markingID).attr('data-description', description);
+//                $('#' + markingID).attr('data-id', res.id);
+//                $('#story_id').val(res.id);
+//
+//                alert("Story Saved Successfully");
+//                
+//                //getAllCaveStories(cave_num_global, cave_image_id_global);
+//                getAllStoriesList();
+//                
+//                $('#storyModal').modal('hide');
+//                $('.btn-close').removeAttr('disabled');
+//            },'json').fail( function(xhr, textStatus, errorThrown) {
+//                alert(xhr.responseJSON.message);
+//                $('.btn-close').removeAttr('disabled');
+//            },'json');
+//        }
+//        else
+//        {
             var storyID = $('#story_id').val();
             $.post('/caves/updateStory', {data:data, storyID:storyID}, function(res){
-                $('[data-id="' + storyID + '"]').attr('data-title', title);
-                $('[data-id="' + storyID + '"]').attr('data-description', description);
-                $('[data-id="' + storyID + '"]').attr('data-id', res.id);
-                $('#story_id').val(res.id);
-
-                alert("Story Saved Successfully");
-                $('#storyModal').modal('hide');
-                $('.btn-close').removeAttr('disabled');
+                $('.error').html('<div class="alert alert-success">Story Updated Successfully</div>');
+                $('#btn-save-story').removeAttr('disabled');
+                getAllStoriesList();
             },'json').fail( function(xhr, textStatus, errorThrown) {
-                alert(xhr.responseJSON.message);
-                $('.btn-close').removeAttr('disabled');
+                $('.error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+                $('#btn-save-story').removeAttr('disabled');
             },'json');
-        }
+  //      }
     });
     
     
@@ -1240,22 +1428,247 @@ $(document).on('change', '.div-toggle', function () {
     
     function getAllStoriesList()
     {
+        var cave_image_id = cave_image_id_global;
+        var count1 = 0;
          var caveNumb = $('#cave_numb').val();
-        $.post('/caves/allStories', {caveNumb:caveNumb}, function(res){
-           var html = '<table class="table table-bordered table-striped">';
+         
+         if(cave_image_id == 0)
+         {
+            $.post('/caves/allStories', {caveNumb:caveNumb}, function(res){
+                addToStoryLine(res);
+            },'json');
+        }
+        else
+        {
+            var count1 = 0;
+            $.get('/caves/getAllCaveStories', {cave_num:caveNumb, cave_image_id:cave_image_id}, function(res){
+                addToStoryLine(res);
+                $('#image-overlay-loading').remove();
+                $('#cave-story-li').trigger('click');
+                //$('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
+                
+            },'json').fail( function(xhr, textStatus, errorThrown) {
+                alert(xhr.responseJSON.message);
+                $('.btn-close').removeAttr('disabled');
+                $('#image-overlay-loading').remove();
+            },'json');
+        }
+        
+        
+//        html+= '<div class="col-xs-12 each-story-title-container">';
+//                html+= '<div class="each-story-title">' + value.name + '<i class="fa fa-chevron-down pull-right"></i></div>';
+//                html+= '<div class="each-story-title-description" style="display:none">' + value.description + '</div>';
+//                html+= '</div>';
+    }
+    
+    function fetchEachDescription()
+    {
+        $('.each-story-description').each(function(){
+            var id = $(this).attr('data-id');
+            getAllTitles(id);
+        });
+    }
+    
+    function addToStoryLine(res)
+    {
+        var html = '<div id="story-container">';
+                var html1 = '';
+                $(res).each(function(i, value){
+    //                html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="marking" id="new_' + count1++ + '" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + ' style="left:' + value.x + 'px;top:' + value.y + 'px"></a>';
+    //                html1+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + '</a>';
+                    var image = '';
+                    if(value.cave_image_id == 0)
+                    {
+                        image = ' <b>- General Story</b>';
+                    }
+
+                    html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + image + '</a>';
+
+                    html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '">';
+
+
+                    html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
+                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button">Edit Story</button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Title</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+
+                    html1+= '</div>';
+                });
+
+                html+= '</div>';
+
+               // $('#4-1').append(html);
+                //$('#story-headers').html(html1);
+                $('#story-headers').html(html);
+                $('#section-loading .row').html(html1);
+                
+                fetchEachDescription();
+    }
+    
+    function getAllTitles(id)
+    {
+        $.get('/title/all/' + id, function(res){
+            var html = '';
             $(res).each(function(i, value){
-                html+= '<tr><td><a href="/caves/story/' + value.id + '" target="_blank">' + value.title + '</a></td></tr>';
+                html+= '<div class="col-sm-12 each-story-title-container">';
+                html+= '<p class="each-story-title col-sm-12">Title : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
+                html+= '<div class="each-story-title-description col-sm-12" >' + value.description + '</div>';
+                html+= '<div class="col-sm-12 mp3-container"><div class="col-sm-12 btn btn-success mp3-area" data-id="' + value.id + '" style="cursor:pointer">See mp3 Files</div></div>';
+                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Title</button><button type="button" class="btn btn-danger col-sm-3" data-id="' + value.id + '">Delete Title</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
             });
-            html+= '</table>'
-            
-            $('#list-story .card-body').html(html);
+            $('[data-story-id="' + id + '"]').find('.each-story-description-main').html(html);
         },'json');
     }
+    
+    $(document).on('click', '.each-story', function(){
+        var parent = $(this).parents('.each-story-container').first();
+        $(parent).find('.each-story-description').slideToggle();
+    });
 </script>
 
 
 <script>
     $(document).ready(function(){
         $('#caves-li').addClass('active');
+    });
+    
+    $(document).on('click', '.edit-story-button', function(){
+        currentStoryGlobal = $(this).attr('data-id');
+        $('#storyModal').modal('show');
+        getCurrentStory();
+    });
+    
+    $(document).on('click', '.add-title', function(){
+        currentStoryGlobal = $(this).attr('data-id');
+        $('#titleModal').modal('show');
+    });
+    
+     $(document).on('click', '#btn-save-title', function(){
+        $(this).attr('disabled', 'disabled');
+        $('.title-error').html('<div class="alert alert-warning">Saving Title.....</div>');
+        var data = new Object();
+        data['name'] = $('#modal_title_title').val();
+        data['description'] = CKEDITOR.instances['modal_title_description'].getData();
+        saveTitle(data);
+    });
+    
+    $(document).on('click', '#btn-update-title', function(){
+        $(this).attr('disabled', 'disabled');
+        $('.title-error').html('<div class="alert alert-warning">Saving Title.....</div>');
+        var data = new Object();
+        data['name'] = $('#modal_title_title_update').val();
+        data['description'] = CKEDITOR.instances['modal_title_description_update'].getData();
+        updateTitle(data);
+    });
+    
+    $(document).on('click', '.btn-edit-title', function(){
+        currentTitleGlobal = $(this).attr('data-id');
+        $('#titleModalUpdate').modal('show');
+        getCurrentTitle();
+    });
+    
+    $(document).on('click', '.add-mp3', function(){
+        var title = $(this).attr('data-title');
+        var taskID = $(this).attr('data-id');
+        $('#addMp3Modal').modal('show');
+        $('#reference_task_id').val(taskID);
+    });
+    
+    $(document).on('submit', '#mp3-form', function(e){
+        e.preventDefault();    
+        $('#file-upload-error').html('<div class="alert alert-warning">Uplaoding In Progress. Please Wait....</div>');
+        $('#btn-upload-title').attr('disabled', 'disabled');
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '/title/file_upload/',
+            type: 'POST',
+            data: formData,
+            success: function (data) {
+                $('#btn-upload-title').removeAttr('disabled');
+                $('#file-upload-error').html('<div class="alert alert-success">File Uploaded Successfully</div>');
+                $('#file').val('');
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                $('#btn-upload-title').removeAttr('disabled'); 
+                $('#file-upload-error').html('<div class="alert alert-danger">' + XMLHttpRequest.responseText + '</div>');
+            }, 
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        
+        
+        
+        $('.title-error').html('<div class="alert alert-warning">Uploading File. PLease Wait....</div>');
+        var data = new Object();
+        data['name'] = $('#modal_title_title_update').val();
+        data['description'] = CKEDITOR.instances['modal_title_description_update'].getData();
+        updateTitle(data);
+    });
+    
+    function getCurrentStory()
+    {
+        $.get('/stories/current/' + currentStoryGlobal, function(res){
+            $('#modal_story_title').val(res.title);
+            $('#modal_story_description').val(res.description);
+            $('#story_id').val(res.id);
+            $('#story-model-loading').addClass('hide');
+            $('.story-model').removeClass('hide');
+        },'json');
+    }
+    
+    function getCurrentTitle()
+    {
+        $.get('/title/current/' + currentTitleGlobal, function(res){
+            $('#modal_title_title_update').val(res.name);
+            CKEDITOR.instances['modal_title_description_update'].setData(res.description);
+            $('#title-model-loading').addClass('hide');
+            $('.title-model').removeClass('hide');
+        },'json');
+    }
+    
+    function saveTitle(data)
+    {
+        $.post('/title/save/' + currentStoryGlobal, {data:data}, function(res){
+                $('.title-error').html('<div class="alert alert-success">Title Added Successfully</div>');
+                $('#btn-save-title').removeAttr('disabled');
+                window.location.href = '#title-error';
+                getAllStoriesList();
+            },'json').fail( function(xhr, textStatus, errorThrown) {
+                $('.title-error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+                $('#btn-save-title').removeAttr('disabled');
+                window.location.href = '#title-error';
+            },'json');
+    }
+    
+    function updateTitle(data)
+    {
+         $.post('/title/update/' + currentTitleGlobal, {data:data}, function(res){
+                $('.title-update-error').html('<div class="alert alert-success">Title Updated Successfully</div>');
+                $('#btn-update-title').removeAttr('disabled');
+                window.location.href = '#title-update-error';
+                getAllStoriesList();
+            },'json').fail( function(xhr, textStatus, errorThrown) {
+                $('.title-update-error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+                $('#btn-update-title').removeAttr('disabled');
+                window.location.href = '#title-update-error';
+            },'json');
+    }
+    
+    $(document).on('click', '.mp3-container', function(){
+        
+        var current = $(this);
+        var titleID = $(this).find('.mp3-area').attr('data-id');
+        $(this).attr('disabled', 'disabled').text('Loading Files...');
+        $.get('/title/mp3/' + titleID, function(res){
+            var html = '';
+            $(res).each(function(i, value){
+                html+= '<div class="col-sm-12"><audio controls><source src="/assets/uploads/mp3/' + value.location + '" type="audio/mp3"></audio></div>';
+            });
+            $(current).html(html);
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            $('.title-update-error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+            $('#btn-update-title').removeAttr('disabled');
+            window.location.href = '#title-update-error';
+        },'json');
     });
 </script>

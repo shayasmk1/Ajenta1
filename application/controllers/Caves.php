@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+require_once 'application/validation/StoryValidation.php';
 
 class Caves extends CI_Controller {
 
@@ -19,6 +20,8 @@ class Caves extends CI_Controller {
         $this->load->library('session');
         $this->lang->load('public_lang', 'english');
         $this->load->library('upload');
+        
+        $this->storValidation = new StoryValidation();
     }
 
     /*
@@ -369,12 +372,19 @@ class Caves extends CI_Controller {
                 if(!$cave)
                 {
                     header('HTTP/1.1 400 Created');
-                    echo json_encode(array('message' => 'Somehting went wrong'));
+                    echo json_encode(array('message' => 'Something went wrong'));
                     exit;
                 }
                 $data['cave_id'] = $cave->cave_id;
                 unset($data['cave_num']);
                 
+                $validation = $this->storValidation->saveStory($data);
+                if($validation)
+                {
+                    header('HTTP/1.1 400 Created');
+                    echo json_encode(array('message' => $validation));
+                    exit;
+                }
                 
                 $id = $this->Story_model->insert_data($data);
                 if(!$id)
@@ -403,6 +413,14 @@ class Caves extends CI_Controller {
                 {
                     header('HTTP/1.1 400 Created');
                     echo json_encode(array('Somehting went wrong'));
+                    exit;
+                }
+                
+                $validation = $this->storValidation->updateStory($data);
+                if($validation)
+                {
+                    header('HTTP/1.1 400 Created');
+                    echo json_encode(array('message' => $validation));
                     exit;
                 }
                 

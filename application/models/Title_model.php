@@ -16,10 +16,18 @@ class Title_model extends CI_Model {
             return $this->db->insert_id();
 	}
         
+        function updateData($data, $titleID){
+            return $this->db->set($data)->where('id', $titleID)->update($this->model);
+	}
+        
         function getMaxPosition($caveStoryID)
         {
              return $this->db->select_max('position')->where('cave_story_id', $caveStoryID)->get($this->model)->row();
         }
         
+        function getCurrentCaveStoryTitle($id)
+        {
+            return $this->db->where('id', $id)->get($this->model)->row();
+        }
 }
 ?>
