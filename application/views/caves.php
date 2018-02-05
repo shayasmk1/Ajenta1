@@ -371,7 +371,7 @@
                     <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-title" style="display:none">
                         <div class="card-header">
                             <strong>Caves</strong>
-                            <small>Add Title</small>
+                            <small>Add Chapter</small>
                         </div>
                     
                         <div class="card-body">
@@ -397,7 +397,7 @@
                                     Add Audio
                                 </div>
                                 <div class="col-sm-3 btn btn-danger no-padding pull-left">
-                                    Add More Titles
+                                    Add More Chapters
                                 </div>
                                 <div id="title-save" class="btn btn-success pull-left col-sm-3 no-padding">Save Title</div>
                             </div>
@@ -548,7 +548,7 @@
               
           </div>
           <div class="col-sm-12">
-              <label class="col-xs-12 no-padding">Title</label>
+              <label class="col-xs-12 no-padding">Story Title</label>
               <div class="col-xs-12 no-padding">
                   <input type="text" class="form-control" id="modal_story_title"/>
               </div>
@@ -576,7 +576,7 @@
     <div class="modal-dialog" role="document" style="max-width:800px;width:800px">
     <div class="modal-content col-sm-12 no-padding">
       <div class="modal-header col-sm-12">
-        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Add Title</h5>
+        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Add Chapter</h5>
         <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -587,14 +587,14 @@
               
           </div>
           <div class="col-sm-12">
-              <label class="col-xs-12 no-padding">Title</label>
+              <label class="col-xs-12 no-padding">Chapter</label>
               <div class="col-xs-12 no-padding">
                   <input type="text" class="form-control" id="modal_title_title"/>
               </div>
           </div>
           
           <div class="col-sm-12 ">
-              <label class="col-xs-12 no-padding">Title Description</label>
+              <label class="col-xs-12 no-padding">Chapter Description</label>
                <div class="col-xs-12 no-padding">
                    <textarea class="form-control" id="modal_title_description" style="height:150px"></textarea>
               </div>
@@ -615,7 +615,7 @@
     <div class="modal-dialog" role="document" style="max-width:800px;width:800px">
     <div class="modal-content col-sm-12 no-padding">
       <div class="modal-header col-sm-12">
-        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Update Title</h5>
+        <h5 class="modal-title col-sm-6" id="exampleModalLabel">Update Chapter</h5>
         <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -628,14 +628,14 @@
               
           </div>
           <div class="col-sm-12">
-              <label class="col-xs-12 no-padding">Title</label>
+              <label class="col-xs-12 no-padding">Chapter</label>
               <div class="col-xs-12 no-padding">
                   <input type="text" class="form-control" id="modal_title_title_update"/>
               </div>
           </div>
           
           <div class="col-sm-12 ">
-              <label class="col-xs-12 no-padding">Title Description</label>
+              <label class="col-xs-12 no-padding">Chapter Description</label>
                <div class="col-xs-12 no-padding">
                    <textarea class="form-control" id="modal_title_description_update" style="height:150px"></textarea>
               </div>
@@ -1262,7 +1262,7 @@ $(document).on('change', '.div-toggle', function () {
                 
                 
                 html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
-                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success">Edit Story</button><button type="button" class="btn btn-primary" id="add-title">Add Title</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success">Edit Story</button><button type="button" class="btn btn-primary" id="add-title">Add Chapter</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
                 
                 html1+= '</div>';
             });
@@ -1488,7 +1488,7 @@ $(document).on('change', '.div-toggle', function () {
 
 
                     html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
-                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button">Edit Story</button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Title</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button">Edit Story</button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Chapter</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
 
                     html1+= '</div>';
                 });
@@ -1512,7 +1512,7 @@ $(document).on('change', '.div-toggle', function () {
                 html+= '<p class="each-story-title col-sm-12">Title : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
                 html+= '<div class="each-story-title-description col-sm-12" >' + value.description + '</div>';
                 html+= '<div class="col-sm-12 mp3-container"><div class="col-sm-12 btn btn-success mp3-area" data-id="' + value.id + '" style="cursor:pointer">See mp3 Files</div></div>';
-                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Title</button><button type="button" class="btn btn-danger col-sm-3" data-id="' + value.id + '">Delete Title</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
+                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Chapter</button><button type="button" class="btn btn-danger col-sm-3" data-id="' + value.id + '">Delete Chapter</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
             });
             $('[data-story-id="' + id + '"]').find('.each-story-description-main').html(html);
         },'json');
