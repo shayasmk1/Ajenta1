@@ -1509,7 +1509,7 @@ $(document).on('change', '.div-toggle', function () {
             var html = '';
             $(res).each(function(i, value){
                 html+= '<div class="col-sm-12 each-story-title-container">';
-                html+= '<p class="each-story-title col-sm-12">Title : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
+                html+= '<p class="each-story-title col-sm-12">Chapter : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
                 html+= '<div class="each-story-title-description col-sm-12" >' + value.description + '</div>';
                 html+= '<div class="col-sm-12 mp3-container"><div class="col-sm-12 btn btn-success mp3-area" data-id="' + value.id + '" style="cursor:pointer">See mp3 Files</div></div>';
                 html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Chapter</button><button type="button" class="btn btn-danger col-sm-3" data-id="' + value.id + '">Delete Chapter</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
