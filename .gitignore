@@ -14,7 +14,7 @@ user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
 
-assets/uploads/mp3
+assets/uploads/mp3/*
 
 # IDE Files
 #-------------------------
