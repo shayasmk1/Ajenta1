@@ -213,7 +213,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card hide section-breaker" id="section-1">
+                    <div class="card section-breaker" id="section-1">
                         <div class="card-header">
                             <strong>Caves / Form</strong>
                             <small>Create / Edit</small>
@@ -247,12 +247,12 @@
                                                 <div class="setDataWrap" style="display:none">
                                                     <button id="setData" type="button">Set Data</button>
                                                   </div>
-                                            <div class="form-group">
+<!--                                            <div class="form-group">
                                                 <div class="col-xs-12 top-margin-big no-padding">
                                                     <label class="col-xs-12 pull-left" style="text-align:left">Add a name for this form</label>
                                                     <input type="text" class="form-control" id="form_name" placeholder="Add a name for form" />
                                                 </div>
-                                            </div>
+                                            </div>-->
                                                 <div id="build-wrap" class="col-xs-12 top-margin no-padding" ></div>
                                                 <button id="getJSON2" type="button" class="btn btn-success col-xs-12 getJSON top-margin">Save Form</button>
                                             
@@ -331,18 +331,26 @@
                         </div>
                     </div>
                     
-                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-left" id="list-story">
-                        <div class="card-body" style="height:363px;overflow:auto">
+                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-left" id="show-image">
+                        <div class="card-body" style="height:363px;" id="show-image-image">
                             
                         </div>
                     </div>
+                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-left" id="image-details">
+                        <div class="card-body" style="height:363px; " id="imgae-details-form">
+                            <textarea class="form-control" value="" placeholder="Info" id="info" name="info"></textarea>
+                            <button type="button" class="btn btn-success col-sm-6 pull-left" id="update-info">Update Info</button>
+                         <button type="button" class="btn btn-danger col-sm-6 pull-right" id="delete-image">Delete Image</button>
+                        </div>
+                        
+                    </div>
                     
-                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-story">
+<!--                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-story">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Add Story</small>
                         </div>
-<!--                        <div class="card-body">
+                        <div class="card-body">
                             <div class="col-sm-12 alert alert-success" id="image-count">
             No Images Selected
         </div>
@@ -363,12 +371,12 @@
                             <div class="col-xs-12 top-margin">
                                 <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
                             </div>
-                        </div>-->
+                        </div>
                         
                         
-                    </div>
+                    </div>-->
                     
-                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-title" style="display:none">
+<!--                    <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-right" id="add-title" style="display:none">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Add Chapter</small>
@@ -403,9 +411,9 @@
                             </div>
                             
                         </div>
-                    </div>
+                    </div>-->
                     
-                    <div class="card section-3 section-breaker">
+                    <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Image Gallery  (* Click over an existing image to see its stories)</small>
@@ -424,7 +432,7 @@
                         </div>
                     </div>
                     
-                    <div class="card section-3 section-breaker">
+                    <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Stories</small>
@@ -433,10 +441,10 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div id='4' class='col-xs-12' style="margin-top:0px;padding-bottom:55px;">
-                                        <div class="col-xs-12 col-sm-3 pull-left" id="story-headers">
+<!--                                        <div class="col-xs-12 col-sm-3 pull-left" id="story-headers">
                                             
-                                        </div>
-                                        <div id='4-1' class='col-xs-12 col-sm-9 no-padding pull-right' style="position:relative;">
+                                        </div>-->
+                                        <div id='4-1' class='col-xs-12 col-sm-12 no-padding pull-right' style="position:relative;">
                                             <div class="card-body">
                                                 <div class="col-sm-12 alert alert-success" id="image-count">
                                                     No Images Selected
@@ -982,6 +990,7 @@ $(document).ready(function(){
         getFormValues();
         $('#section-1').removeClass('hide');
         getAllStoriesList();
+        $('#image-count').text('No Images Selected');
     });
     
     $('#form-templte-select').change(function(){
@@ -1208,7 +1217,7 @@ $(document).on('change', '.div-toggle', function () {
             var html = '';
             $(res).each(function(i,value){
                 var bgImage = "'/assets/uploads/" + value.location + "'";
-                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin image-each-container"><div class="col-xs-12 each-image-gallery" data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
+                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin image-each-container"><div class="col-xs-12 each-image-gallery" data-info=' + value.info + ' data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
             });
             $('#image-gallery').html(html);
             $('#image-gallery-story').html(html);
@@ -1217,6 +1226,15 @@ $(document).on('change', '.div-toggle', function () {
              $('#image-gallery-story').html('');
         },'json');
     }
+    
+    $(document).on('click', '#image-gallery .each-image-gallery', function(){
+        $('.active-image-section-2').removeClass('active-image-section-2');
+        var parent = $(this).parents('.image-each-container').first();
+        $(parent).addClass('active-image-section-2');
+        var image = $(this).attr('data-image');
+        $('#show-image-image').attr('style', 'background-image:url("' + image + '")');
+        $('#info').val($(this).attr('data-info'));
+    });
     
     $(document).on('click', '#image-gallery-story .each-image-gallery', function(){
         var parent = $(this).parents('.image-each-container').first();
@@ -1231,12 +1249,12 @@ $(document).on('change', '.div-toggle', function () {
         cave_image_id_global = cave_image_id;
         $('#4').show();
         //$('#4-1').html('<img class="col-xs-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + cave_image_id + '" src="' + image + '"/>');
-        window.location.href = '#3';
+        //window.location.href = '#3';
         var cave_num = cave_num_global;
         
         //getAllCaveStories(cave_num, cave_image_id);
         getAllStoriesList();
-        window.location.href = '#add-story';
+        //window.location.href = '#add-story';
     });
     
     
@@ -1274,7 +1292,7 @@ $(document).on('change', '.div-toggle', function () {
             $('#story-headers').html(html);
             $('#section-loading .row').html(html1);
             $('#image-overlay-loading').remove();
-            $('#cave-story-li').trigger('click');
+            //$('#cave-story-li').trigger('click');
             fetchEachDescription();
         },'json').fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseJSON.message);
@@ -1444,7 +1462,7 @@ $(document).on('change', '.div-toggle', function () {
             $.get('/caves/getAllCaveStories', {cave_num:caveNumb, cave_image_id:cave_image_id}, function(res){
                 addToStoryLine(res);
                 $('#image-overlay-loading').remove();
-                $('#cave-story-li').trigger('click');
+                //$('#cave-story-li').trigger('click');
                 //$('#4-1').append('<div class="col-xs-12" id="image-overlay-loading" style="position:absolute;height:100vh;text-align:center;background-color: rgba(0, 0, 0, 0.5);color:white;padding-top:70px;font-size:21px;font-weight:bold">Loading Stories</div>')
                 
             },'json').fail( function(xhr, textStatus, errorThrown) {

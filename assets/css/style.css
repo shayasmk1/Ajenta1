@@ -9592,6 +9592,11 @@ hr.transparent {
     background-color: skyblue;
 }
 
+.active-image-section-2
+{
+    background-color: skyblue;
+}
+
 .active-image .each-image-gallery
 {
     opacity: .3;
@@ -9616,4 +9621,11 @@ hr.transparent {
     border-radius: 15px;
     padding: 15px;
     #F5F9F9
+}
+
+#show-image-image
+{
+    background-size : cover;
+    background-position : 50% 50%;
+    height:363px;
 }
