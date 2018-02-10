@@ -29,5 +29,10 @@ class Title_model extends CI_Model {
         {
             return $this->db->where('id', $id)->get($this->model)->row();
         }
+        
+        function deleteChapter($chapterID)
+        {
+            return $this->db->where('id', $chapterID)->delete($this->model);
+        }
 }
 ?>

@@ -213,7 +213,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="card section-breaker" id="section-1">
+                    <div class="card section-breaker hide" id="section-1">
                         <div class="card-header">
                             <strong>Caves / Form</strong>
                             <small>Create / Edit</small>
@@ -339,8 +339,9 @@
                     <div class="card section-2 hide section-breaker col-sm-6 no-padding pull-left" id="image-details">
                         <div class="card-body" style="height:363px; " id="imgae-details-form">
                             <textarea class="form-control" value="" placeholder="Info" id="info" name="info"></textarea>
-                            <button type="button" class="btn btn-success col-sm-6 pull-left" id="update-info">Update Info</button>
-                         <button type="button" class="btn btn-danger col-sm-6 pull-right" id="delete-image">Delete Image</button>
+                            <button type="button" class="btn btn-success col-sm-12 pull-left top-margin" id="update-info">Update Info</button>
+                            <button type="button" class="btn btn-danger col-sm-12 pull-right top-margin" id="delete-image">Delete Image</button>
+                            <button type="button" class="btn btn-primary col-sm-12 pull-right top-margin" id="add-story">Add Story</button>
                         </div>
                         
                     </div>
@@ -691,6 +692,34 @@
 CKEDITOR.replace( 'modal_title_description' );
 CKEDITOR.replace( 'modal_title_description_update');
 $(document).ready(function(){
+    $('#update-info').click(function(){
+        $('#update-info').attr('disabled', 'disabled').text('Updating Info');
+        var info = $('#info').val();
+        var id = $('.active-image-section-2').find('.each-image-gallery').attr('data-id');
+        $.post('/caves/images/' + id, {info:info}, function(res){
+            refreshGalllery();
+            $('#update-info').removeAttr('disabled').text('Update Info');
+            alert('Info Updated');
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            $('#update-info').removeAttr('disabled').text('Update Info');
+        },'json');
+    });
+    
+    $('#delete-image').click(function(){
+        $('#delete-imag').attr('disabled', 'disabled').text('Deleting Image');
+        var id = $('.active-image-section-2').find('.each-image-gallery').attr('data-id');
+        $.post('/caves/delete_image/' + id, function(res){
+            refreshGalllery();
+            $('#delete-imag').removeAttr('disabled').text('Delete Info');
+            alert('Image Deleted');
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            $('#delete-imag').removeAttr('disabled').text('Delete Info');
+        },'json');
+    });
+    
+    
     $('#story-save').click(function(){
         var caveID = $('#cave_numb').val();
         if(caveID.trim() == '')
@@ -765,13 +794,30 @@ $(document).ready(function(){
     });
     
     $('#cave-gallery-li').click(function(){
+        if($('#cave_numb').val() == '')
+        {
+            alert("Cave Not Selected");
+            return;
+        }
        $('.section-breaker').addClass('hide');
         $('.section-2').removeClass('hide');
         $('#cave-sub-menu li a').removeClass('active');
         $('#cave-gallery-li a').addClass('active');
+        
+        if(!$('.active-image-section-2').length)
+        {
+            $('#show-image').addClass('hide');
+            $('#image-details').addClass('hide');
+        }
+        
     });
     
     $('#cave-story-li').click(function(){
+        if($('#cave_numb').val() == '')
+        {
+            alert("Cave Not Selected");
+            return;
+        }
         $('.section-breaker').addClass('hide');
         $('.section-3').removeClass('hide');
         $('#cave-sub-menu li a').removeClass('active');
@@ -1212,12 +1258,16 @@ $(document).on('change', '.div-toggle', function () {
     
     function refreshGalllery()
     {
+        $('#info').val('');
+        $('#show-image').addClass('hide');
+        $('#image-details').addClass('hide');
+        
         $('#dropzone').find('.dz-default').html('<span>Drop files here to upload</span>');
         $.get('/caves/getImages', {'cave_num' : cave_num_global}, function(res){
             var html = '';
             $(res).each(function(i,value){
                 var bgImage = "'/assets/uploads/" + value.location + "'";
-                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin image-each-container"><div class="col-xs-12 each-image-gallery" data-info=' + value.info + ' data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
+                html+= '<div class="col-xs-12 col-sm-6 col-md-3 top-margin image-each-container"><div class="col-xs-12 each-image-gallery" data-info="' + value.info + '" data-id=' + value.id + ' data-image=' + bgImage + ' style="background-image:url(' + bgImage + ');"></div></div>';
             });
             $('#image-gallery').html(html);
             $('#image-gallery-story').html(html);
@@ -1233,7 +1283,16 @@ $(document).on('change', '.div-toggle', function () {
         $(parent).addClass('active-image-section-2');
         var image = $(this).attr('data-image');
         $('#show-image-image').attr('style', 'background-image:url("' + image + '")');
-        $('#info').val($(this).attr('data-info'));
+        if($(this).attr('data-info') != 'null')
+        {
+            $('#info').val($(this).attr('data-info'));
+        }
+        else
+        {
+            $('#info').val('');
+        }
+        $('#show-image').removeClass('hide');
+        $('#image-details').removeClass('hide');
     });
     
     $(document).on('click', '#image-gallery-story .each-image-gallery', function(){
@@ -1280,7 +1339,7 @@ $(document).on('change', '.div-toggle', function () {
                 
                 
                 html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
-                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success">Edit Story</button><button type="button" class="btn btn-primary" id="add-title">Add Chapter</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success">Edit Story</button><button type="button" class="btn btn-primary" id="add-title">Add Chapter</button><button type="button" class="btn btn-danger remove-story" data-id="' + value.id + '">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
                 
                 html1+= '</div>';
             });
@@ -1506,7 +1565,7 @@ $(document).on('change', '.div-toggle', function () {
 
 
                     html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
-                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button">Edit Story</button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Chapter</button><button type="button" class="btn btn-danger">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button">Edit Story</button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Chapter</button><button type="button" class="btn btn-danger remove-story" data-id="' + value.id + '">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
 
                     html1+= '</div>';
                 });
@@ -1529,8 +1588,8 @@ $(document).on('change', '.div-toggle', function () {
                 html+= '<div class="col-sm-12 each-story-title-container">';
                 html+= '<p class="each-story-title col-sm-12">Chapter : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
                 html+= '<div class="each-story-title-description col-sm-12" >' + value.description + '</div>';
-                html+= '<div class="col-sm-12 mp3-container"><div class="col-sm-12 btn btn-success mp3-area" data-id="' + value.id + '" style="cursor:pointer">See mp3 Files</div></div>';
-                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Chapter</button><button type="button" class="btn btn-danger col-sm-3" data-id="' + value.id + '">Delete Chapter</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
+                html+= '<div class="col-sm-12 mp3-container"><audio controls><source src="/assets/uploads/mp3/' + value.mp3 + '" type="audio/mp3"></audio></div>';
+                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Chapter</button><button type="button" class="btn btn-danger col-sm-3 delete-chapter" data-id="' + value.id + '">Delete Chapter</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
             });
             $('[data-story-id="' + id + '"]').find('.each-story-description-main').html(html);
         },'json');
@@ -1588,6 +1647,44 @@ $(document).on('change', '.div-toggle', function () {
         var taskID = $(this).attr('data-id');
         $('#addMp3Modal').modal('show');
         $('#reference_task_id').val(taskID);
+    });
+    
+    $(document).on('click', '.remove-story', function(){
+        var conf = confirm("Removing Story will remove all the associated titles. Are you sue you want to continue?");
+        if(!conf)
+        {
+            return;
+        }
+        $(this).attr('disabled', 'disabled');
+        var current = $(this);
+        var id = $(this).attr('data-id');
+        $.post('/stories/delete/' + id, function(){
+            getAllStoriesList();
+            alert('Story Deleted Successfully');
+            $(current).removeAttr('disabled');
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            $(current).removeAttr('disabled');
+        },'json');
+    });
+    
+    $(document).on('click', '.delete-chapter', function(){
+        var conf = confirm(" Are you sue you want to continue removing chapter?");
+        if(!conf)
+        {
+            return;
+        }
+        $(this).attr('disabled', 'disabled');
+        var current = $(this);
+        var id = $(this).attr('data-id');
+        $.post('/stories/delete_title/' + id, function(){
+            getAllStoriesList();
+            alert('Title Deleted Successfully');
+            $(current).removeAttr('disabled');
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            alert(xhr.responseJSON);
+            $(current).removeAttr('disabled');
+        },'json');
     });
     
     $(document).on('submit', '#mp3-form', function(e){
@@ -1688,5 +1785,14 @@ $(document).on('change', '.div-toggle', function () {
             $('#btn-update-title').removeAttr('disabled');
             window.location.href = '#title-update-error';
         },'json');
+    });
+    
+    $(document).on('click', '#add-story', function(){
+        var id = $('.active-image-section-2').find('.each-image-gallery').attr('data-id');
+        $('#cave-story-li').trigger('click');
+        var currentImage = $('#image-gallery-story').find('[data-id="' + id + '"]');
+        $(currentImage).parents('.image-each-container').first().addClass('active-image');
+        $(currentImage).trigger('click');
+        
     });
 </script>

@@ -178,11 +178,11 @@ class Title extends CI_Controller {
             }
             
             if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-                $fileData['reference'] = 'Task';
-                $fileData['reference_id'] = $_POST['reference_task_id'];
-                $fileData['location'] = $randName;
-                $fileData['created_at'] = $fileData['updated_at'] = date("Y-m-d H:i:s");
-                $res = $this->File_model->insertData($fileData);
+                //$fileData['reference'] = 'Task';
+                //$fileData['mp3'] = $_POST['reference_task_id'];
+                $fileData['mp3'] = $randName;
+                $fileData['updated_at'] = date("Y-m-d H:i:s");
+                $res = $this->Title_model->updateData($fileData, $_POST['reference_task_id']);
                 if(!$res)
                 {
                     header('HTTP/1.1 500 Created');

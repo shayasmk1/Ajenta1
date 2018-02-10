@@ -556,4 +556,48 @@ class Caves extends CI_Controller {
         echo json_encode($stories);
         exit;
     }
+    
+    public function images($imageID)
+    {
+        if($this->input->method() == 'post')
+        {
+            $info = $this->input->post('info');
+            if(!$info || trim($info) == '')
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode('Please Enter Info');
+                exit;
+            }
+            
+            $res = $this->CaveImage_model->updateInfo($info, $imageID);
+            if(!$res)
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode('Something Went Wrong While Updating Info');
+                exit;
+            }
+            
+            header('HTTP/1.1 200 Created');
+                echo json_encode('Updation Successful');
+                exit;
+        }
+    }
+    
+    public function delete_image($imageID)
+    {
+        if($this->input->method() == 'post')
+        {
+            $res = $this->CaveImage_model->deleteImage($imageID);
+            if(!$res)
+            {
+                header('HTTP/1.1 400 Created');
+                echo json_encode('Something Went Wrong While Deleting Image');
+                exit;
+            }
+            
+            header('HTTP/1.1 200 Created');
+            echo json_encode('Deletion Successful');
+            exit;
+        }
+    }
 }

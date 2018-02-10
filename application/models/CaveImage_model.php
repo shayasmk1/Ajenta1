@@ -32,5 +32,16 @@
             {
                 return $this->db->where('id', $caveImageID)->get($this->table)->row();
             }
+            
+            function updateInfo($info, $imageID)
+            {
+                $data['info'] = $info;
+                return $this->db->where('id', $imageID)->set($data)->update($this->table);
+            }
+            
+            function deleteImage($imageID)
+            {
+                return $this->db->where('id', $imageID)->delete($this->table);
+            }
         }
         ?>
