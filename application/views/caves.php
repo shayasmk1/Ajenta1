@@ -1339,7 +1339,7 @@ $(document).on('change', '.div-toggle', function () {
                 
                 
                 html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
-                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success">Edit Story</button><button type="button" class="btn btn-primary" id="add-title">Add Chapter</button><button type="button" class="btn btn-danger remove-story" data-id="' + value.id + '">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button><button type="button" class="btn btn-primary" id="add-title">Add Chapter</button><button type="button" class="btn btn-danger remove-story" data-id="' + value.id + '"><i class="fa fa-remove"></i></button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
                 
                 html1+= '</div>';
             });
@@ -1565,7 +1565,7 @@ $(document).on('change', '.div-toggle', function () {
 
 
                     html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
-                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button">Edit Story</button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Chapter</button><button type="button" class="btn btn-danger remove-story" data-id="' + value.id + '">Remove Story</button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
+                    html1+= '<div class="each-story-description" data-id="' + value.id + '" style="display:none"><div class="col-sm-12"><button data-id="' + value.id + '" type="button" class="btn btn-success edit-story-button"><i class="fa fa-edit"></i></button><button type="button" class="btn btn-primary add-title" data-id="' + value.id + '">Add Chapter</button><button type="button" class="btn btn-danger remove-story" data-id="' + value.id + '"><i class="fa fa-remove"></i></button></div><div class="col-sm-12"></div><div class="each-story-description-main col-sm-12"><i class="fa fa-spin fa-spinner"></i> Loading...</div></div>';
 
                     html1+= '</div>';
                 });
@@ -1588,8 +1588,11 @@ $(document).on('change', '.div-toggle', function () {
                 html+= '<div class="col-sm-12 each-story-title-container">';
                 html+= '<p class="each-story-title col-sm-12">Chapter : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
                 html+= '<div class="each-story-title-description col-sm-12" >' + value.description + '</div>';
-                html+= '<div class="col-sm-12 mp3-container"><audio controls><source src="/assets/uploads/mp3/' + value.mp3 + '" type="audio/mp3"></audio></div>';
-                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '">Edit Chapter</button><button type="button" class="btn btn-danger col-sm-3 delete-chapter" data-id="' + value.id + '">Delete Chapter</button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '">Add Marker</button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '">Add Mp3</button></div></div>';
+                if(value.mp3 != '' && value.mp3 != null)
+                {
+                    html+= '<div class="col-sm-12 mp3-container"><audio controls><source src="/assets/uploads/mp3/' + value.mp3 + '" type="audio/mp3"></audio></div>';
+                }
+                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '"><i class="fa fa-edit"></i></button><button type="button" class="btn btn-danger col-sm-3 delete-chapter" data-id="' + value.id + '"><i class="fa fa-remove"></i></button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '"><i class="fa fa-plus"></i></button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '"><i class="fa fa-music"></i></button></div></div>';
             });
             $('[data-story-id="' + id + '"]').find('.each-story-description-main').html(html);
         },'json');

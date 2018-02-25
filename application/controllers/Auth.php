@@ -14,12 +14,18 @@ class Auth extends CI_Controller {
         $this->load->model('Users_model');
         $this->authValidation = new AuthValidation();
     }
+    
+    function p()
+    {
+        echo md5('password');
+    }
 
     function register() {
         $this->load->view('register'); 
     }
     
     function login() {
+        
         $res['errorMessage'] = '';
         if($this->input->method() == 'post')
         {

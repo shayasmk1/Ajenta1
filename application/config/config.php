@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://localhost:8080/codi_my_bootstrap_admin/';
-$config['base_url'] = 'http://dev.codi.com';
+$config['base_url'] = 'http://dev.ajanta.com';
 
 /*
 |--------------------------------------------------------------------------
