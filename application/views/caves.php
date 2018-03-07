@@ -414,7 +414,7 @@
                         </div>
                     </div>-->
                     
-                    <div class="card section-3 hide section-breaker">
+<!--                    <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Image Gallery  (* Click over an existing image to see its stories)</small>
@@ -431,7 +431,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     
                     <div class="card section-3 hide section-breaker">
                         <div class="card-header">
