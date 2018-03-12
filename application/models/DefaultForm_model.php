@@ -131,7 +131,7 @@
             {
                 $this->db->trans_begin();
                 $count = 1;
-                $optionDelete = $this->db->set(array('deleted_at' => date("Y-m-d H:i:s")))->update($this->table);
+                $optionDelete = $this->db->where('default_form_container_id', $id)->set(array('deleted_at' => date("Y-m-d H:i:s")))->update($this->table);
                 if(!$optionDelete)
                 {
                     $this->db->rollback();
@@ -194,7 +194,7 @@
                             $value1['options'] = $value['value'];
                             $value1['default_form_id'] = $insertID;
                             
-                            $formOption = $this->db->where('label_name', $value1['label_name'])->where('form_id', $insertID)->get('form_options')->row();
+                            $formOption = $this->db->where('label_name', $value1['label_name'])->where('default_form_id', $insertID)->get('default_form_options')->row();
                             if(!$formOption)
                             {
                                 $this->db->set($value1)->insert('default_form_options');
@@ -244,8 +244,8 @@
                     $count = 0;
                     // Get an array of products images
                     // Assuming 'p_id' is the foreign_key in the images table
-                    $options = $this->db->where('form_id', $value['id'])->get('form_options')->result_array();
-
+                    $options = $this->db->where('default_form_id', $value['id'])->get('default_form_options')->result_array();
+                    
                     // Add the images array to the array entry for this product
                     if(!empty($options))
                     foreach($options AS $option)

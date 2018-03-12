@@ -127,7 +127,7 @@ class Form extends CI_Controller {
         if(empty($formDetails))
         {
             header('HTTP/1.1 201 Created');
-            echo json_encode(array('message' => 'Empty Array'));
+            echo json_encode(array('message' => 'Empty Array', 'formName' => $currentForm->name));
             exit;
         }
         
