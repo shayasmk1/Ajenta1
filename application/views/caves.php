@@ -414,7 +414,7 @@
                         </div>
                     </div>-->
                     
-<!--                    <div class="card section-3 hide section-breaker">
+                    <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Image Gallery  (* Click over an existing image to see its stories)</small>
@@ -431,24 +431,32 @@
                                 </div>
                             </div>
                         </div>
-                    </div>-->
+                    </div>
                     
                     <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Stories</small>
+                            <button class="pull-right btn btn-danger" id="new_story" style="display:none">New Story</button>
                         </div>
                         <div class="card-body">
                             <div class="row">
+                                
                                 <div class="col-sm-12">
-                                    <div id='4' class='col-xs-12' style="margin-top:0px;padding-bottom:55px;">
-<!--                                        <div class="col-xs-12 col-sm-3 pull-left" id="story-headers">
+                                    <div id='4' class='col-sm-12' style="margin-top:0px;padding-bottom:55px;">
+                                        <div class="col-sm-12 col-md-3 pull-left" id="story-headers">
                                             
-                                        </div>-->
-                                        <div id='4-1' class='col-xs-12 col-sm-12 no-padding pull-right' style="position:relative;">
+                                        </div>
+                                        <div id='4-1' class='col-sm-12 col-md-9 no-padding pull-right' style="position:relative;">
                                             <div class="card-body">
                                                 <div class="col-sm-12 alert alert-success" id="image-count">
                                                     No Images Selected
+                                                </div>
+                                                <div class="col-sm-12 alert alert-primary" id="story-count">
+                                                    No Stories Selected
+                                                </div>
+                                                <div class="story_error">
+                                                    
                                                 </div>
                                                         <div class="col-sm-12 top-margin">
                                                             <label class="col-xs-12">
@@ -466,6 +474,10 @@
 
                                                         <div class="col-sm-12 top-margin">
                                                             <button type="button" id="story-save" class="btn btn-success pull-right">Save Story</button>
+                                                            <button type="button" style="display:none;margin-left:5px" class="story-update-buttons btn btn-invert pull-right list-titles" id="list-title" title="List Chapters" style=""><i class="fa fa-list"></i></button>
+                                                            <button type="button" style="display:none;margin-left:5px" class="story-update-buttons btn btn-primary pull-right add-title" id="add-title" title="Add Chapter" style=""><i class="fa fa-plus"></i></button>
+                                                            <button type="button"  style="display:none;margin-left:5px" id="remove-story-button" class="story-update-buttons btn btn-danger pull-right remove-story" title="Delete Story"><i class="fa fa-remove"></i></button>&nbsp;
+                                                            <button type="button" id="story-update" style="display:none" class="story-update-buttons btn btn-success pull-right" title="Update Story"><i class="fa fa-edit"></i></button>
                                                         </div>
                                                     </div>
                                         </div>
@@ -688,6 +700,25 @@
   </div>
 </div>
 
+<div class="modal" id="listChapters" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top :50px">
+    <div class="modal-dialog" role="document" style="max-width:800px;width:800px">
+        <div class="modal-content col-sm-12 no-padding">
+            <div class="modal-header col-sm-12">
+                <h5 class="modal-title col-sm-6" id="exampleModalLabel">List All Chapters</h5>
+                <button type="button" class="close col-sm-6 pull-right btn-close" data-dismiss="modal" aria-label="Close" style="text-align: right;padding-right:15px">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body col-sm-12 no-padding" id="title-modal-list" style="padding-top:0px">
+                  Loading.....
+              </div>
+              <div class="modal-footer col-xs-12 story-model">
+                <button type="button" class="btn btn-secondary btn-close"  data-dismiss="modal">Close</button>
+              </div>
+        </div>
+    </div>
+</div>
+
 <script>
 CKEDITOR.replace( 'modal_title_description' );
 CKEDITOR.replace( 'modal_title_description_update');
@@ -739,6 +770,7 @@ $(document).ready(function(){
         $(current).attr('disabled', 'disabled').text('Saving.....');
         $.post('/caves/saveStory', {data:data}, function(res){
             alert(res.message);
+            $('.story_error').html('<div class="alert alert-success">' + res.message + '</div>');
             $('#add-story').slideUp();
             $('#add-title').slideDown();
             
@@ -1335,7 +1367,7 @@ $(document).on('change', '.div-toggle', function () {
                 
                 html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + image + '</a>';
                 
-                html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '">';
+                html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '" >';
                 
                 
                 html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
@@ -1415,7 +1447,39 @@ $(document).on('change', '.div-toggle', function () {
 //        else
 //        {
             var storyID = $('#story_id').val();
-            $.post('/caves/updateStory', {data:data, storyID:storyID}, function(res){
+            updateStory(data, storyID);
+  //      }
+    });
+    
+    $(document).on('click', '#story-update', function(){
+        $('.story_error').html('<div class="alert alert-warning">Updating Story.....</div>');
+        $('#btn-save-story').attr('disabled', 'disabled');
+        var data = new Object();
+        var title = data['title'] = $('#cave_title').val();
+        var description = data['description'] = $('#cave_description').val();
+        var storyID = $('.story-active').attr('data-id');
+        $.post('/caves/updateStory', {data:data, storyID:storyID}, function(res){
+                $('.story_error').html('<div class="alert alert-success">Story Updated Successfully</div>');
+                $('#btn-save-story').removeAttr('disabled');
+               
+                $('#story-count').text('No Story Selected');
+                $('.story-update-buttons').hide();
+                $('#story-save').show();
+                $('#new_story').hide();
+                
+                $('#cave_title').val('');
+                $('#cave_description').val('');
+                getAllStoriesList();
+            },'json').fail( function(xhr, textStatus, errorThrown) {
+                $('.story_error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+                $('#btn-save-story').removeAttr('disabled');
+            },'json');
+        
+    });
+    
+    function updateStory(data, storyID)
+    {
+        $.post('/caves/updateStory', {data:data, storyID:storyID}, function(res){
                 $('.error').html('<div class="alert alert-success">Story Updated Successfully</div>');
                 $('#btn-save-story').removeAttr('disabled');
                 getAllStoriesList();
@@ -1423,9 +1487,7 @@ $(document).on('change', '.div-toggle', function () {
                 $('.error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
                 $('#btn-save-story').removeAttr('disabled');
             },'json');
-  //      }
-    });
-    
+    }
     
     
 //    $(document).on('click', '.marking', function(){
@@ -1559,9 +1621,9 @@ $(document).on('change', '.div-toggle', function () {
                         image = ' <b>- General Story</b>';
                     }
 
-                    html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + image + '</a>';
+                    html+= '<div class="col-xs-12 each-story pull-left" data-id="' + value.id + '" data-title="' + value.title + '" data-description="' + value.description + '" data-x="' + value.x + '" data-y="' + value.y + '">' +  value.title + image + '</div>';
 
-                    html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '">';
+                    html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '" id="data-story-id-' + value.id + '">';
 
 
                     html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
@@ -1665,6 +1727,14 @@ $(document).on('change', '.div-toggle', function () {
             getAllStoriesList();
             alert('Story Deleted Successfully');
             $(current).removeAttr('disabled');
+            $('.story-active').removeClass('story-active');
+            $('#story-count').text('No Story Selected');
+            $('.story-update-buttons').hide();
+            $('#story-save').show();
+            $('#new_story').hide();
+
+            $('#cave_title').val('');
+            $('#cave_description').val('');
         },'json').fail( function(xhr, textStatus, errorThrown) {
             alert(xhr.responseJSON);
             $(current).removeAttr('disabled');
@@ -1797,5 +1867,68 @@ $(document).on('change', '.div-toggle', function () {
         $(currentImage).parents('.image-each-container').first().addClass('active-image');
         $(currentImage).trigger('click');
         
+    }); 
+    
+    $(document).on('click', '#story-container .each-story', function(){
+        $('#remove-story-button').attr('data-id', $(this).attr('data-id'));
+        $('#add-title').attr('data-id', $(this).attr('data-id'));
+        $('.story-active').removeClass('story-active');
+        $(this).addClass('story-active');
+        $('#story-count').text('1 Story Selected');
+        $('.story-update-buttons').show();
+        $('#story-save').hide();
+        $('#new_story').show();
+        var title = $(this).attr('data-title');
+        var desc = $(this).attr('data-description');
+        $('#cave_title').val(title);
+        $('#cave_description').val(desc);
+        currentStoryGlobal = $(this).attr('data-id');
     });
+    
+    $(document).on('click', '#list-title', function(){
+        console.log(currentStoryGlobal);
+        $('[data-story-id="' + currentStoryGlobal + '"]').find('.each-story-description').slideDown();
+        window.location.href = '#data-story-id-' + currentStoryGlobal;
+        //$('#listChapters').modal('show');
+        //getAllTitlesOfStory();
+    });
+    
+    function getAllTitlesOfStory()
+    {
+        $.get('/title/all/' + currentStoryGlobal, function(res){
+            var html = '';
+            $(res).each(function(i, value){
+                html+= '<div class="col-sm-12 each-story-title-container">';
+                html+= '<p class="each-story-title col-sm-12">Chapter : ' + value.name + '<i class="fa fa-chevron-down pull-right"></i></p>';
+                html+= '<div class="each-story-title-description col-sm-12" >' + value.description + '</div>';
+                if(value.mp3 != '' && value.mp3 != null)
+                {
+                    html+= '<div class="col-sm-12 mp3-container"><audio controls><source src="/assets/uploads/mp3/' + value.mp3 + '" type="audio/mp3"></audio></div>';
+                }
+                html+= '<div class="each-story-action-button col-sm-12 top-margin"><button type="button" class="btn btn-success col-sm-3 btn-edit-title" data-id="' + value.id + '"><i class="fa fa-edit"></i></button><button type="button" class="btn btn-danger col-sm-3 delete-chapter" data-id="' + value.id + '"><i class="fa fa-remove"></i></button><button type="button" class="btn btn-primary col-sm-3" data-id="' + value.id + '"><i class="fa fa-plus"></i></button><button type="button" class="btn btn-warning col-sm-3 add-mp3" data-title="' + value.name + '" data-id="' + value.id + '"><i class="fa fa-music"></i></button></div></div>';
+            });
+            $('#title-modal-list').html(html);
+            $(current).html(html);
+        },'json').fail( function(xhr, textStatus, errorThrown) {
+            $('.title-update-error').html('<div class="alert alert-danger">' + xhr.responseJSON.message + '</div>');
+            $('#btn-update-title').removeAttr('disabled');
+            window.location.href = '#title-update-error';
+        },'json');
+    }
+    
+    $(document).on('click', '#new_story', function(){
+        newStoryEnviournment();
+    });
+    
+    function newStoryEnviournment()
+    {
+        $('.story-active').removeClass('story-active');
+        $('#story-count').text('No Story Selected');
+            $('.story-update-buttons').hide();
+            $('#story-save').show();
+            $('#new_story').hide();
+
+            $('#cave_title').val('');
+            $('#cave_description').val('');
+    }
 </script>

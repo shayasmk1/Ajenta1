@@ -9610,7 +9610,7 @@ hr.transparent {
 
 #story-container
 {
-    height : 300px;
+    height : 360px;
     overflow:auto;
 }
 
@@ -9628,4 +9628,11 @@ hr.transparent {
     background-size : cover;
     background-position : 50% 50%;
     height:363px;
+}
+
+.story-active
+{
+    color : black;
+    border : 1px solid lightgray;
+    background-color: lightgray;
 }
