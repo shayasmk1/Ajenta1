@@ -414,7 +414,7 @@
                         </div>
                     </div>-->
                     
-                    <div class="card section-3 hide section-breaker">
+<!--                    <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Image Gallery  (* Click over an existing image to see its stories)</small>
@@ -431,7 +431,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     
                     <div class="card section-3 hide section-breaker">
                         <div class="card-header">
@@ -527,7 +527,7 @@
                             
                         </div>
                     </div>-->
-                    <div class="card section-3 section-breaker hide">
+                    <div class="card section-3 section-breaker hide cave-stories-bottom">
                         <div class="card-header">
                             <strong>Caves</strong>
                             <small>Stories</small>
@@ -1623,7 +1623,7 @@ $(document).on('change', '.div-toggle', function () {
 
                     html+= '<div class="col-xs-12 each-story pull-left" data-id="' + value.id + '" data-title="' + value.title + '" data-description="' + value.description + '" data-x="' + value.x + '" data-y="' + value.y + '">' +  value.title + image + '</div>';
 
-                    html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '" id="data-story-id-' + value.id + '">';
+                    html1+= '<div class="col-sm-12 each-story-container" style="display:none" data-story-id="' + value.id + '" id="data-story-id-' + value.id + '">';
 
 
                     html1+= '<div class="each-story" data-id="' + value.id + '">' + value.title + image + '<i class="fa fa-chevron-down pull-right"></i></div>';
@@ -1887,6 +1887,8 @@ $(document).on('change', '.div-toggle', function () {
     
     $(document).on('click', '#list-title', function(){
         console.log(currentStoryGlobal);
+        $('.each-story-container').hide();
+        $('[data-story-id="' + currentStoryGlobal + '"]').show();
         $('[data-story-id="' + currentStoryGlobal + '"]').find('.each-story-description').slideDown();
         window.location.href = '#data-story-id-' + currentStoryGlobal;
         //$('#listChapters').modal('show');
