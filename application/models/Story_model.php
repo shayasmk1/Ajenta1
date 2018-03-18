@@ -17,7 +17,7 @@ class Story_model extends CI_Model {
         
         function getAllCaveStories($caveID, $caveImageID)
         {
-            return $this->db->where('cave_id', $caveID)->where('cave_image_id', $caveImageID)->get($this->model)->result_array();
+            return $this->db->select('story.*, cave_image.location')->join('cave_image', 'story.cave_image_id = cave_image.id', 'left')->where('story.cave_id', $caveID)->where('cave_image_id', $caveImageID)->get($this->model)->result_array();
         }
         
         function getCurrentCaveStory($id)
@@ -37,7 +37,7 @@ class Story_model extends CI_Model {
         
         function getAllStories($caveID)
         {
-            return $this->db->where('cave_id', $caveID)->get($this->model)->result_array();
+            return $this->db->select('story.*,cave_image.location')->join('cave_image', 'story.cave_image_id = cave_image.id', 'left')->where('story.cave_id', $caveID)->get($this->model)->result_array();
         }
 }
 ?>

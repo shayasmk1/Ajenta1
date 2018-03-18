@@ -433,6 +433,17 @@
                         </div>
                     </div>-->
                     
+<!--                    <div class="card section-3 hide section-breaker">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Image</small>
+                            <button class="pull-right btn btn-danger" id="new_story" style="display:none">New Story</button>
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>-->
+
                     <div class="card section-3 hide section-breaker">
                         <div class="card-header">
                             <strong>Caves</strong>
@@ -489,7 +500,16 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="card section-3 hide section-breaker">
+                        <div class="card-header">
+                            <strong>Caves</strong>
+                            <small>Image</small>
+                            
+                        </div>
+                        <div class="card-body" id='cave-image-container'>
+                            No Image Selected
+                        </div>
+                    </div>
                     
                     
 <!--                    <div class="card section-4 hide section-breaker">
@@ -772,6 +792,7 @@ $(document).ready(function(){
             alert(res.message);
             $('.story_error').html('<div class="alert alert-success">' + res.message + '</div>');
             $('#add-story').slideUp();
+            
             $('#add-title').slideDown();
             
             $('#story-name').text('Story Name : ' +  $('#cave_title').val());
@@ -1365,7 +1386,7 @@ $(document).on('change', '.div-toggle', function () {
                     image = ' <b>- General Story</b>';
                 }
                 
-                html+= '<a href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + image + '</a>';
+                html+= '<a  href="/caves/story/' + value.id + '" target="_blank" class="col-xs-12 each-story pull-left" data-id=' + value.id + ' data-title=' + value.title + ' data-description=' + value.description + ' data-x=' + value.x + ' data-y=' + value.y + '>' +  value.title + image + '</a>';
                 
                 html1+= '<div class="col-sm-12 each-story-container" data-story-id="' + value.id + '" >';
                 
@@ -1397,7 +1418,7 @@ $(document).on('change', '.div-toggle', function () {
         var left = (e.pageX - offset.left) -5;
         var top = (e.pageY - offset.top) - 5;
         count = count + 1;
-        //$('#4-1').append('<div class="marking" id="coordinate_' + count + '" data-x=' + left + ' data-y=' + top + ' style="left:' + left + 'px;top:' + top + 'px"></div>');
+        $('#4-1').append('<div class="marking" id="coordinate_' + count + '" data-x=' + left + ' data-y=' + top + ' style="left:' + left + 'px;top:' + top + 'px"></div>');
         $('#title').val('');
         $('#description').val('');
         $('#marking_id').val('coordinate_' + count);
@@ -1621,7 +1642,7 @@ $(document).on('change', '.div-toggle', function () {
                         image = ' <b>- General Story</b>';
                     }
 
-                    html+= '<div class="col-xs-12 each-story pull-left" data-id="' + value.id + '" data-title="' + value.title + '" data-description="' + value.description + '" data-x="' + value.x + '" data-y="' + value.y + '">' +  value.title + image + '</div>';
+                    html+= '<div data-img="' + value.location + '" class="col-xs-12 each-story pull-left" data-id="' + value.id + '" data-title="' + value.title + '" data-description="' + value.description + '" data-x="' + value.x + '" data-y="' + value.y + '">' +  value.title + image + '</div>';
 
                     html1+= '<div class="col-sm-12 each-story-container" style="display:none" data-story-id="' + value.id + '" id="data-story-id-' + value.id + '">';
 
@@ -1663,6 +1684,7 @@ $(document).on('change', '.div-toggle', function () {
     $(document).on('click', '.each-story', function(){
         var parent = $(this).parents('.each-story-container').first();
         $(parent).find('.each-story-description').slideToggle();
+        
     });
 </script>
 
@@ -1862,11 +1884,14 @@ $(document).on('change', '.div-toggle', function () {
     
     $(document).on('click', '#add-story', function(){
         var id = $('.active-image-section-2').find('.each-image-gallery').attr('data-id');
+        var imageURL = $('.active-image-section-2').find('.each-image-gallery').attr('data-image');
         $('#cave-story-li').trigger('click');
         var currentImage = $('#image-gallery-story').find('[data-id="' + id + '"]');
         $(currentImage).parents('.image-each-container').first().addClass('active-image');
         $(currentImage).trigger('click');
+        $('#image-count').text('1 Image Selected');
         
+        $('#cave-image-container').html('<img class="col-sm-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="' + imageURL + '"/>')
     }); 
     
     $(document).on('click', '#story-container .each-story', function(){
@@ -1880,9 +1905,21 @@ $(document).on('change', '.div-toggle', function () {
         $('#new_story').show();
         var title = $(this).attr('data-title');
         var desc = $(this).attr('data-description');
+        var id = $(this).attr('data-id');
         $('#cave_title').val(title);
         $('#cave_description').val(desc);
         currentStoryGlobal = $(this).attr('data-id');
+        var image = $(this).attr('data-img');
+        if(image != 'null')
+        {
+            $('#image-count').text('1 Image Selected');
+            $('#cave-image-container').html('<img class="col-sm-12 gallery-image-coordiate no-padding" id="hash-4-image" data-id="' + id + '" src="/assets/uploads/' + image + '"/>');
+        }
+        else
+        {
+            $('#cave-image-container').html('No Image Selected');
+            $('#image-count').text('No Image Selected');
+        }
     });
     
     $(document).on('click', '#list-title', function(){
