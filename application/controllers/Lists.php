@@ -12,6 +12,9 @@
             $this->load->model('list_model');
             $this->load->model('listHeader_model');
             $this->load->model('listBody_model');
+            $this->load->library ( 'session' );
+            $this->load->helper(array('url', 'form'));
+            $this->lang->load('public_lang', 'english');
         }
         /*
          * Function to add list to table 'list'
@@ -171,6 +174,53 @@
             $data = $this->listBody_model->getBodyOfHeader($caveHeaderID);
             echo json_encode($data);
             exit;
+        }
+        
+        function create()
+        {
+            if($this->session->userdata('user_profile') != 'administrator')
+            {
+                redirect('home/index');
+            }
+            $this->load->view ('theme/header');
+            $this->load->view('list/create');
+            $this->load->view ('theme/footer');
+        }
+        
+        function ajax($type)
+        {
+            switch($type)
+            {
+                case 'create':
+                    if($this->input->method() != 'post')
+                    {
+                        http_response_code(404);
+                        echo json_encode('Not Found');
+                        exit;
+                    }
+                    $name  = $this->input->post('name');
+                    $this->addHeaderType($name);
+                    
+                    break;
+                
+                default:
+                    exit;
+            }
+        }
+        
+        private function addHeaderType($name)
+        {
+            $data['name'] = $name;
+            $result = $this->listHeader_model->insertData($data);
+            if(!$result){
+                http_response_code(500);
+                echo json_encode('Something Went Wrong');
+                exit;
+            }else{
+                http_response_code(200);
+                echo json_encode('List Header Added Successfully');
+                exit;
+            }
         }
     }
     

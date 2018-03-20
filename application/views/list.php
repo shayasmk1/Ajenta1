@@ -74,13 +74,14 @@
     $(document).ready(function(){
        $('#header_id').change(function(){
           var id = $(this).val();
+          $('#list-body-container').append('Loading....');
           $.get('/lists/body/' + id, function(res){
               var html = '<table class="table table-bordered">';
               $(res).each(function(i, value){
                   html+= '<tr><td>' + value.name + '</td><td><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button></td></tr>'
               });
               html+= '</table>';
-              $('#list-body-container').append(html);
+              $('#list-body-container').html(html);
           },'json');
        });
     });
