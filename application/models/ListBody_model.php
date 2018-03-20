@@ -23,5 +23,10 @@
             {
                 return $this->db->set($data)->insert($this->table);
             }
+            
+            function getBodyOfHeader($listHeaderID)
+            {
+                return $this->db->where('list_header_id', $listHeaderID)->get($this->table)->result_array();
+            }
         }
         ?>

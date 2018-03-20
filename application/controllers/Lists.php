@@ -165,5 +165,14 @@
             echo json_encode('Deleted');
             exit;
         }
+        
+        function body($caveHeaderID)
+        {
+            $data = $this->listBody_model->getBodyOfHeader($caveHeaderID);
+            echo json_encode($data);
+            exit;
+        }
     }
+    
+    
 

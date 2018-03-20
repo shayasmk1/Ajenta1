@@ -126,6 +126,9 @@
                 <li class="nav-item">
                   <a class="nav-link" id="caves-li" href="<?php echo site_url('home/index/caves'); ?>"><i class="fa fa-plus"></i> Caves </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="caves-li" href="<?php echo site_url('home/index/list'); ?>"><i class="fa fa-plus"></i> List </a>
+                </li>
                 <li class="nav-item ">
                   <a class="nav-link" id="rest-li" href="<?php echo site_url('home/index/rest'); ?>"><i class="fa fa-code"></i> Check REST</a>
 

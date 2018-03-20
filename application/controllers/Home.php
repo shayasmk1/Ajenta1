@@ -33,7 +33,7 @@ class Home extends CI_Controller {
                         $data['list'] = array();
                         if($page == 'list')
                         {
-                            $data['list'] = $this->listHeader_model->getList();
+                            $data['lists'] = $this->listHeader_model->getList();
                         }
                         if($page == 'caves')
                         {
