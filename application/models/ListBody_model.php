@@ -28,5 +28,15 @@
             {
                 return $this->db->where('list_header_id', $listHeaderID)->get($this->table)->result_array();
             }
+            
+            function addNewRows($data, $headerID)
+            {
+                foreach($data AS $each)
+                {
+                    $insert = array();
+                    $insert = $each;
+                    //$insert['']
+                }
+            }
         }
         ?>

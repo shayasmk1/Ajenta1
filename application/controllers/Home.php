@@ -7,10 +7,10 @@ class Home extends CI_Controller {
 	function __construct() {
 		parent::__construct ();
 		$this->load->helper ( array ('url','form' ) );
-		$this->load->library ( 'session' );
 		$this->lang->load('public_lang', 'english');
                 $this->load->model('cave_model');
                 $this->load->model('listHeader_model');
+                $this->load->model('listBody_model');
                 $this->load->model('CaveHeader_model');
                 $this->load->model('form_model');
                 $this->load->model('DefaultFormContainer_model');
@@ -72,93 +72,51 @@ class Home extends CI_Controller {
 		
 	}
 	
-        /*
-         * Function for Validating Credentials of User
-         */
-	
-	function validate_credentials() {
-		$this->load->model('Users_model');
-	
-		$user_name = $this->input->post('user_name');
-		$password = $this->__encrip_password($this->input->post('password'));
-		$user_profile = 'moderator';
-		$is_valid = $this->Users_model->validate($user_name, $password); //function which return if its validated
-		
-		if ($is_valid) {
-			$data = array(
-                            'user_name' => $user_name,
-                            'user_profile'=> $is_valid['user_profile'],
-                            'is_logged_in' => true
-			);
-			$this->session->set_userdata($data); //set the session
-			redirect('home/index');
-		} else {
-			
-			$data['is_logged_in'] = FALSE;
-			$this->load->view('login'); 
-		}
-	}
-	
-	
-	/*
-         * Function for Enccrypting Password
-         */
-	function __encrip_password($password) {
-		return md5($password);
-	}
-	
-	
-	/*
-         * Function for Managing LogOut
-         */
+        function create()
+        {
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/create');
+            $this->load->view ('theme/test/footer');
+        }
         
-	function logout() {
-		$this->session->sess_destroy();
-		$this->load->view('login');
-	}
-        
-        
-        function caves($action)
+        function select()
         {
             
-            switch($action)
+            $res1['message'] = '';
+            if($this->input->method() == 'post')
             {
-                case 'save':
-                    if($this->input->method() == 'post')
-                    {
-                        $data = $this->input->post();
-                        $data = $data['data'];
-                        $caveNum = $this->input->post('caveNum');
-                        if(empty($data) || $caveNum == null)
-                        {
-                            header('HTTP/1.1 400 Created');
-                            echo json_encode($data);
-                            exit;
-                        }
-                        $cave = $this->db->where('cave_numb', $caveNum)->get('caves')->row();
-                        if(!$cave)
-                        {
-                            header('HTTP/1.1 400 Created');
-                            echo json_encode($data);
-                            exit;
-                        }
-                        $this->db->where('cave_id', $cave->cave_id)->delete('cave_header');
-                        $insertArray = array();
-                        foreach($data AS $each)
-                        {
-                            $insertArray['name'] = $each['title'];
-                            $insertArray['body'] = $each['body'];
-                            $insertArray['column_order'] = $each['column_order'];
-                            $insertArray['cave_id'] = $cave->cave_id;
-                            $insertArray['column_show'] = $each['column_show'];
-                            $this->CaveHeader_model->insertData($insertArray); 
-                        }
-                    }
-                    
-                    header('HTTP/1.1 200 Created');
-                            echo json_encode($data);
-                            exit;
+                $data = $this->input->post();
+                $res1['message'] = 'Added Successfully';
+                $res = $this->listHeader_model->insertData($data);
+                if(!$res)
+                {
+                    $data['message'] = 'Something Went Wrong';
+                }
             }
-                
+            $res1['headers'] = $this->listHeader_model->getList();
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/select', $res1);
+            $this->load->view ('theme/test/footer');
+        }
+        
+        function body($headerID)
+        {
+            
+            $res1['message'] = '';
+            if($this->input->method() == 'post')
+            {
+                $data = $this->input->post();
+                $res1['message'] = 'Added Successfully';
+                $data['list_header_id'] = $headerID;
+                $res = $this->listBody_model->insertData($data);
+                if(!$res)
+                {
+                    $data['message'] = 'Something Went Wrong';
+                }
+            }
+            $res1['headers'] = $this->listBody_model->getBodyOfHeader($headerID);
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/list_body_create', $res1);
+            $this->load->view ('theme/test/footer');
         }
 }

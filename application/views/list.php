@@ -80,16 +80,35 @@
               $(res).each(function(i, value){
                   html+= '<tr><td>' + value.name + '</td><td><button type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button></td></tr>';
               });
-              html+= '<tr><td><span class="col-sm-12 editable-text-border pull-left"></span></td><td><button type="button" class="btn btn-danger btn-add btn-sm"><i class="fa fa-plus"></i></button></td></tr>';
+              html+= '<tr><td><span class="col-sm-12 editable-text-border pull-left data-name"></span></td><td><button type="button" class="btn btn-danger btn-add btn-sm"><i class="fa fa-plus"></i></button></td></tr>';
               
-            html+= '</tbody><tfoot><tr><td colspan="2"><button type="button" class="btn btn-success">Add New Rows</button></td></tr></tfoot></table>';
+            html+= '</tbody><tfoot><tr><td colspan="2"><button type="button" class="btn btn-success" id="add-new-rows">Add New Rows</button></td></tr></tfoot></table>';
               $('#list-body-container').html(html);
           },'json');
        });
     });
     
     $(document).on('click', '.btn-add', function(){
-        var html = '<tr><td><span class="col-sm-12 editable-text-border pull-left"></span></td><td><button type="button" class="btn btn-danger btn-add btn-sm"><i class="fa fa-plus"></i></button></td></tr>';
+        var html = '<tr><td><span class="col-sm-12 editable-text-border pull-left data-name"></span></td><td><button type="button" class="btn btn-danger btn-add btn-sm"><i class="fa fa-plus"></i></button></td></tr>';
         $('#body-table tbody').append(html);
     });
+    
+    $(document).on('click', '#add-new-rows', function(){
+       var data = new Object();
+       var count = 0;
+       $('#body-table tbody tr').each(function(i, value){
+           data[count]['name'] = $(value).attr('data-name');
+           count++;
+       });
+       
+       saveAllRows(data);
+    });
+    
+    function saveAllRows(data)
+    {
+        var id = $('#header_id').val();
+        $.post('/lists/save_body', {data:data, id:id}, function(){
+            
+        });
+    }
 </script>
