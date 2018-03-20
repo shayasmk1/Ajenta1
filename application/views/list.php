@@ -76,13 +76,20 @@
           var id = $(this).val();
           $('#list-body-container').append('Loading....');
           $.get('/lists/body/' + id, function(res){
-              var html = '<table class="table table-bordered">';
+              var html = '<table class="table table-bordered" id="body-table"><tbody>';
               $(res).each(function(i, value){
-                  html+= '<tr><td>' + value.name + '</td><td><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button></td></tr>'
+                  html+= '<tr><td>' + value.name + '</td><td><button type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button></td></tr>';
               });
-              html+= '</table>';
+              html+= '<tr><td><span class="col-sm-12 editable-text-border pull-left"></span></td><td><button type="button" class="btn btn-danger btn-add btn-sm"><i class="fa fa-plus"></i></button></td></tr>';
+              
+            html+= '</tbody><tfoot><tr><td colspan="2"><button type="button" class="btn btn-success">Add New Rows</button></td></tr></tfoot></table>';
               $('#list-body-container').html(html);
           },'json');
        });
+    });
+    
+    $(document).on('click', '.btn-add', function(){
+        var html = '<tr><td><span class="col-sm-12 editable-text-border pull-left"></span></td><td><button type="button" class="btn btn-danger btn-add btn-sm"><i class="fa fa-plus"></i></button></td></tr>';
+        $('#body-table tbody').append(html);
     });
 </script>
