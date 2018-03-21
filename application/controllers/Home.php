@@ -119,4 +119,18 @@ class Home extends CI_Controller {
             $this->load->view('theme/test/list_body_create', $res1);
             $this->load->view ('theme/test/footer');
         }
+        
+        function builder()
+        {
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/builder');
+            $this->load->view ('theme/test/footer');
+        }
+        
+        function drag()
+        {
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/drag');
+            $this->load->view ('theme/test/footer');
+        }
 }

@@ -74,6 +74,12 @@
                 <li class="nav-item">
                   <a class="nav-link" id="select-li" href="<?php echo site_url('home/select'); ?>"><i class="fa fa-plus"></i> Select Box </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="select-li" href="<?php echo site_url('home/builder'); ?>"><i class="fa fa-plus"></i> Form Builder </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="select-li" href="<?php echo site_url('home/drag'); ?>"><i class="fa fa-plus"></i> Drag & Drop</a>
+                </li>
 
             </ul>
         </nav>
