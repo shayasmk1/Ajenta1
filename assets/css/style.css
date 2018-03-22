@@ -107,3 +107,65 @@ footer
     padding: 10px;
     border: 1px solid black;
 }
+
+.select-area-left
+{
+    float : left;
+    width : 25%;
+    background-color: lightgray;
+    min-height : 200px;
+}
+
+.select-container-right
+{
+    float : right;
+    width : 75%;
+    background-color: lightcyan;
+    min-height : 200px;
+}
+
+.text-area-c
+{
+    width : 92%;
+    margin : 2%;
+    border : 1px solid black;
+    padding : 2%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hcenter
+{
+    text-align: center;
+}
+
+.full-width
+{
+    width : 96%;
+    margin : 5px 2%;
+    height : 40px;
+    float : left;
+}
+
+.col-xs-9
+{
+    width : 75%;
+    float:left;
+}
+
+.col-xs-3
+{
+    width : 25%;
+    float:left;
+}
+
+.col-xs-12
+{
+    width : 100%;
+    float:left;
+}
+
+.top-margin
+{
+    margin-top :5px;
+}

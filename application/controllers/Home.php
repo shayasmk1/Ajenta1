@@ -133,4 +133,11 @@ class Home extends CI_Controller {
             $this->load->view('theme/test/drag');
             $this->load->view ('theme/test/footer');
         }
+        
+        function buildercustom()
+        {
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/buildercustom');
+            $this->load->view ('theme/test/footer');
+        }
 }

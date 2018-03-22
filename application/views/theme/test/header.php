@@ -80,7 +80,9 @@
                 <li class="nav-item">
                   <a class="nav-link" id="select-li" href="<?php echo site_url('home/drag'); ?>"><i class="fa fa-plus"></i> Drag & Drop</a>
                 </li>
-
+                <li class="nav-item">
+                  <a class="nav-link" id="select-li" href="<?php echo site_url('home/buildercustom'); ?>"><i class="fa fa-plus"></i> Form Builder Custome</a>
+                </li>
             </ul>
         </nav>
       
