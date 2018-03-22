@@ -65,10 +65,10 @@
         
     </div>
 
-    <div class="sidebar">
+<!--    <div class="sidebar">
         <nav class="sidebar-nav">
             <ul class="nav">
-<!--                <li class="nav-item">
+                <li class="nav-item">
                   <a class="nav-link" id="textbox-li" href="<?php echo site_url('home/create'); ?>"><i class="fa fa-plus"></i> Textbox </a>
                 </li>
                 <li class="nav-item">
@@ -79,11 +79,11 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" id="select-li" href="<?php echo site_url('home/drag'); ?>"><i class="fa fa-plus"></i> Drag & Drop</a>
-                </li>-->
+                </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="select-li" href="<?php echo site_url('home/buildercustom'); ?>"><i class="fa fa-plus"></i> Form Builder Custome</a>
+                  <a class="nav-link" id="select-li" href="<?php echo site_url('home/buildercustom'); ?>"><i class="fa fa-plus"></i> Form Builder Custom</a>
                 </li>
             </ul>
         </nav>
       
-    </div>
+    </div>-->

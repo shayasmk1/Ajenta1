@@ -68,7 +68,8 @@ footer
 .create-area
 {
     float : right;
-    width : 85%;
+    width : 100%;
+    min-height: 90vh;
 }
 
 .new-textarea
@@ -114,6 +115,7 @@ footer
     width : 25%;
     background-color: lightgray;
     min-height : 200px;
+    min-height: 90vh;
 }
 
 .select-container-right
@@ -122,6 +124,7 @@ footer
     width : 75%;
     background-color: lightcyan;
     min-height : 200px;
+    min-height: 90vh;
 }
 
 .text-area-c
