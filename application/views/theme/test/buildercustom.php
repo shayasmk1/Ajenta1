@@ -46,8 +46,26 @@ var count = 0;
             {
                 var src = ev.dataTransfer.getData("Text");
                 var id = ev.target.id;
+                dropCommon(id, ev, src);
+                
+            }
+            else
+            {
+                $('.draggable-content').each(function(i, value){
+                    var src = ev.dataTransfer.getData("Text_" + $(value).attr('id'));
+                    var id = ev.target.id;
+                    dropCommon(id, ev, src);
 
-                if(id == 'container-fields')
+                });
+            }
+            ev.stopPropagation();
+            $('.draggable-content').removeClass('draggable-content');
+            return false;
+         }
+         
+         function dropCommon(id, ev, src)
+         {
+             if(id == 'container-fields')
                 {
                     if(src == 'text-area-container')
                     {
@@ -95,66 +113,6 @@ var count = 0;
                     }
 
                 }
-            }
-            else
-            {
-                $('.draggable-content').each(function(i, value){
-                    var src = ev.dataTransfer.getData("Text_" + $(value).attr('id'));
-                    var id = ev.target.id;
-
-                    if(id == 'container-fields')
-                    {
-                        if(src == 'text-area-container')
-                        {
-                            $('#' + id).append(addText());
-                        }
-                        else if(src == 'select-container')
-                        {
-                            $('#' + id).append(addSelect());
-                        }
-                        else
-                        {
-                            if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER')
-                            {
-                                ev.target.after(document.getElementById(src));
-                            }
-                            else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT')
-                            {
-                               var parent = $('#' + id).parents('.main-inside-container').first();
-                                $(parent).after(document.getElementById(src));
-                            }
-
-                        }
-                    }
-                    else
-                    {
-                        if(src == 'text-area-container')
-                        {
-                            $('#' + id).parents('.main-text-area-continer').first().after(addText());
-                        }
-                        else if(src == 'select-container')
-                        {
-                            $('#' + id).parents('.main-text-area-continer').first().after(addSelect());
-                        }
-                        else
-                        {
-                            if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER')
-                            {
-                                ev.target.after(document.getElementById(src));
-                            }
-                            else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT')
-                            {
-                                var parent = $('#' + id).parents('.main-inside-container').first();
-                                $(parent).after(document.getElementById(src));
-                            }
-                        }
-
-                    }
-                });
-            }
-            ev.stopPropagation();
-            $('.draggable-content').removeClass('draggable-content');
-            return false;
          }
 </script>
 
