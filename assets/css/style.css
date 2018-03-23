@@ -172,3 +172,22 @@ footer
 {
     margin-top :5px;
 }
+
+.inBetween
+{
+    border : 1px solid black;
+    margin-top : 10px;
+    margin-bottom: 10px;
+}
+
+.main-inside-container
+{
+    background-color : lightblue;
+    padding:15px;
+    cursor: pointer;
+}
+
+.draggable-content
+{
+    background-color : black !important;
+}
