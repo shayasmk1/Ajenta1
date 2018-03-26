@@ -122,7 +122,9 @@ var count = 0;
          {
              var positionCount = 1;
             $('main-inside-container').each(function(i, value){
-               $(value).attr('data-positon', positionCount++);
+               $(value).attr('data-positon', positionCount);
+               $(value).find('.position_count').text('Position:' + positionCount);
+               positionCount++;
             });
          }
 </script>
@@ -178,11 +180,11 @@ var count = 0;
     
     function addSelect()
     {
-        return '<main-inside-container draggable="true" ondragstart="return dragStart(event)" id="count_' + count++ + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><main-inside-container-inside class="col-xs-9"><select data-type="select" id="textarea_' + count++ + '" class="col-xs-12"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></main-inside-container>';
+        return '<main-inside-container draggable="true" ondragstart="return dragStart(event)" id="container_' + count++ + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12"></span><main-inside-container-inside class="col-xs-9"><select data-type="select" id="textarea_' + count++ + '" class="col-xs-12"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></main-inside-container>';
     }
     
     function addText()
     {
-        return '<main-inside-container draggable="true" ondragstart="return dragStart(event)" id="container_' + count++ + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><main-inside-container-inside class="col-xs-9"><textarea data-type="textarea" id="textarea_' + count++ + '" class="col-xs-12"></textarea></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></main-inside-container>';
+        return '<main-inside-container draggable="true" ondragstart="return dragStart(event)" id="container_' + count++ + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12"></span><main-inside-container-inside class="col-xs-9"><textarea data-type="textarea" id="textarea_' + count++ + '" class="col-xs-12"></textarea></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></main-inside-container>';
     }
 </script>
