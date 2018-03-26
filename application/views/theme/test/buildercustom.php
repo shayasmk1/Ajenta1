@@ -25,6 +25,7 @@ var count = 0;
          function dragEnter(ev) {
             ev.preventDefault();
             var id = ev.target.id;
+            
             if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER'  || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE')
             {
                 $('#' + id).parents('.main-text-area-continer').first().after('<div class="col-xs-12 inBetween" ></div>');
@@ -61,6 +62,7 @@ var count = 0;
             ev.stopPropagation();
             $('.draggable-content').removeClass('draggable-content');
             setAllPositions();
+            $('.inBetween').remove();
             return false;
          }
          
