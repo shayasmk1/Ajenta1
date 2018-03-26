@@ -60,6 +60,7 @@ var count = 0;
             }
             ev.stopPropagation();
             $('.draggable-content').removeClass('draggable-content');
+            setAllPositions();
             return false;
          }
          
@@ -113,6 +114,14 @@ var count = 0;
                     }
 
                 }
+         }
+         
+         function setAllPositions()
+         {
+             var positionCount = 1;
+            $('main-inside-container').each(function(i, value){
+               $(value).attr('data-positon', positionCount++);
+            });
          }
 </script>
 
