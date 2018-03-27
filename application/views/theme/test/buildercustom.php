@@ -1,8 +1,12 @@
 <script>
 var count = 1;
- function dragStart(ev) {
+var trs = document.getElementById('select-container-right-inside');
+
+    
+    
+    function dragStart(ev) {
             var id =  ev.target.getAttribute('id');
-            console.log(ev.target.getAttribute('class'));
+            //console.log(ev.target.getAttribute('class'));
             ev.dataTransfer.effectAllowed='move';
             if(!$('#' + id).hasClass('draggable-content'))
             {
@@ -40,7 +44,7 @@ var count = 1;
          function dragOver(ev) {
             if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'ELEMENT-NAME'  || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE')
             {
-                $('.inBetween').slideUp('slow');
+                //$('.inBetween').slideUp('slow');
             }
             return false;
          }
@@ -93,7 +97,7 @@ var count = 1;
                             }
                             else
                             {
-                                console.log(currentID);
+                                //console.log(currentID);
                                 $('#' + currentID).after(document.getElementById(src));
                             }
                         }
@@ -106,7 +110,7 @@ var count = 1;
                             }
                             else
                             {
-                                console.log(currentID);
+                                //console.log(currentID);
                                 $('#' + currentID).after(document.getElementById(src));
                             }
                             
@@ -135,7 +139,7 @@ var count = 1;
                             }
                             else
                             {
-                                console.log(currentID);
+                                //console.log(currentID);
                                 $('#' + currentID).after(document.getElementById(src));
                             }
                         }
@@ -148,7 +152,7 @@ var count = 1;
                             }
                             else
                             {
-                                console.log(currentID);
+                                //console.log(currentID);
                                 $('#' + currentID).after(document.getElementById(src));
                             }
                         }
@@ -159,7 +163,7 @@ var count = 1;
          
          function setAllPositions()
          {
-             var positionCount = 1;
+            var positionCount = 1;
             $('element-name').each(function(i, value){
                $(value).attr('data-positon', positionCount);
                
@@ -168,6 +172,18 @@ var count = 1;
                positionCount++;
             });
          }
+         
+         function selectRowsBetweenIndexes(indexes){
+            indexes.sort(function(a, b) {
+            return a - b;
+        });
+
+        for (var i = indexes[0]; i <= indexes[1]; i++) {
+        trs[i-1].className = 'draggable-content';
+    }
+}
+
+         
 </script>
 
 
@@ -179,7 +195,7 @@ var count = 1;
         </div>
         <div class="text-area-c hcenter" id="select-container" draggable="true"
                         ondragstart="return dragStart(event)">
-            Select <button type="button" id="add-select" class="add-button">+</button>
+            ListBox <button type="button" id="add-select" class="add-button">+</button>
         </div>
     </div>
     <div class="select-container-right" id="container-fields" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)"  ondragover="return dragOver(event)">
@@ -226,6 +242,14 @@ var count = 1;
             $('.draggable-content').removeClass('draggable-content');
             $(this).addClass('draggable-content');
         }
+        
+        if(e.shiftKey){
+            var startpos= $(this).attr('data-positon');
+            var endpos = $(this).attr('data-positon');
+            console.log(""+startpos+" "+endpos);
+            //selectRowsBetweenIndexes(startpos, endpos);
+        }
+        
     });
     
      $(document).on('click', '#container-fields', function(e){
@@ -235,10 +259,9 @@ var count = 1;
      $(document).on('mouseup', 'body', function(e)
     {
         var subject = $("#select-container-right-inside"); 
-        console.log(e.target);
+        //console.log(e.target);
         if(e.target.id != subject.attr('id') && !subject.has(e.target).length)
         {
-            console.log("a");
             $('.draggable-content').removeClass('draggable-content');
         }
     });
@@ -246,7 +269,6 @@ var count = 1;
    
     
     $(document).on('click', '.select-area-left', function(e){
-        
         $('.draggable-content').removeClass('draggable-content');
     });
     
@@ -259,7 +281,7 @@ var count = 1;
     
     function addText()
     {
-        var ret =  '<element-name draggable="true" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12"></span><main-inside-container-inside class="col-xs-9"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12"></textarea></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
+        var ret =  '<element-name draggable="true" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12"></span><main-inside-container-inside class="col-xs-9"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
