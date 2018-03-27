@@ -50,16 +50,18 @@ var count = 1;
             {
                 var src = ev.dataTransfer.getData("Text");
                 var id = ev.target.id;
-                dropCommon(id, ev, src);
+                dropCommon(id, ev, src, 0);
                 
             }
             else
             {
+                var currentID = 0;
                 $('.draggable-content').each(function(i, value){
                     var src = ev.dataTransfer.getData("Text_" + $(value).attr('id'));
                     var id = ev.target.id;
-                    dropCommon(id, ev, src);
-
+                    
+                    dropCommon(id, ev, src, currentID);
+                    currentID = $(value).attr('id');
                 });
             }
             ev.stopPropagation();
@@ -69,7 +71,7 @@ var count = 1;
             return false;
          }
          
-         function dropCommon(id, ev, src)
+         function dropCommon(id, ev, src, currentID)
          {
              if(id == 'container-fields')
                 {
@@ -85,12 +87,30 @@ var count = 1;
                     {
                         if(ev.target.nodeName == 'ELEMENT-NAME')
                         {
-                            ev.target.after(document.getElementById(src));
+                            if(currentID == 0)
+                            {
+                                ev.target.after(document.getElementById(src));
+                            }
+                            else
+                            {
+                                console.log(currentID);
+                                $('#' + currentID).after(document.getElementById(src));
+                            }
                         }
                         else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT')
                         {
-                           var parent = $('#' + id).parents('.main-inside-container').first();
-                            $(parent).after(document.getElementById(src));
+                            if(currentID == 0)
+                            {
+                                var parent = $('#' + id).parents('.main-inside-container').first();
+                                $(parent).after(document.getElementById(src));
+                            }
+                            else
+                            {
+                                console.log(currentID);
+                                $('#' + currentID).after(document.getElementById(src));
+                            }
+                            
+                            
                         }
 
                     }
@@ -109,12 +129,28 @@ var count = 1;
                     {
                         if(ev.target.nodeName == 'ELEMENT-NAME')
                         {
-                            ev.target.after(document.getElementById(src));
+                            if(currentID == 0)
+                            {
+                                ev.target.after(document.getElementById(src));
+                            }
+                            else
+                            {
+                                console.log(currentID);
+                                $('#' + currentID).after(document.getElementById(src));
+                            }
                         }
                         else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT')
                         {
-                            var parent = $('#' + id).parents('.main-inside-container').first();
-                            $(parent).after(document.getElementById(src));
+                            if(currentID == 0)
+                            {
+                                var parent = $('#' + id).parents('.main-inside-container').first();
+                                $(parent).after(document.getElementById(src));
+                            }
+                            else
+                            {
+                                console.log(currentID);
+                                $('#' + currentID).after(document.getElementById(src));
+                            }
                         }
                     }
 
