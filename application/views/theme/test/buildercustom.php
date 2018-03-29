@@ -1,91 +1,118 @@
 <script>
 var count = 1;
 var trs = document.getElementById('select-container-right-inside');
+var clickedPosition = 'NA';
+var lastElementID = 0;
+var currentPosition = 'NA';
+    
+function dragStart(ev) {
+    var id =  ev.target.getAttribute('id');
+    //console.log(ev.target.getAttribute('class'));
+    ev.dataTransfer.effectAllowed='move';
+    if(!$('#' + id).hasClass('draggable-content'))
+    {
+        $('.draggable-content').removeClass('draggable-content');
+    }
+    if($('.draggable-content').length == 0)
+    {
+        ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+    }
+    else
+    {
+        $('.draggable-content').each(function(i, value){
+            ev.dataTransfer.setData("Text_" + $(value).attr('id'), $(value).attr('id'));
+        });
+    }
 
-    
-    
-    function dragStart(ev) {
-            var id =  ev.target.getAttribute('id');
-            //console.log(ev.target.getAttribute('class'));
-            ev.dataTransfer.effectAllowed='move';
-            if(!$('#' + id).hasClass('draggable-content'))
-            {
-                $('.draggable-content').removeClass('draggable-content');
-            }
-            if($('.draggable-content').length == 0)
-            {
-                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-            }
-            else
-            {
-                $('.draggable-content').each(function(i, value){
-                    ev.dataTransfer.setData("Text_" + $(value).attr('id'), $(value).attr('id'));
-                });
-            }
-            
-            //ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-         //   ev.dataTransfer.setDragImage(ev.target,0,0);
-            
-            return true;
-         }
+    //ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+ //   ev.dataTransfer.setDragImage(ev.target,0,0);
+
+    return true;
+}
          
-         function dragEnter(ev) {
-            ev.preventDefault();
+function dragEnter(ev) {
+    ev.preventDefault();
+    var id = ev.target.id;
+
+    if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'ELEMENT-NAME'  || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE')
+    {
+        $('#' + id).parents('.main-text-area-continer').first().addClass('element-name-hover');
+        $('#' + id).after('<div class="inBetween"></div>')
+    }
+    var tar = ev.target.innerHTML;
+    return true;
+}
+         
+function dragOver(ev) {
+    if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'ELEMENT-NAME'  || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE')
+    {
+        $('.main-text-area-continer').removeClass('element-name-hover');
+        $('.inBetween').slideUp('slow');
+    }
+    return false;
+}
+         
+function dragDrop(ev) {
+    console.log("A");
+    if($('.draggable-content').length == 0)
+    {
+        var src = ev.dataTransfer.getData("Text");
+        var id = ev.target.id;
+        dropCommon(id, ev, src, 0);
+
+    }
+    else
+    {
+        var currentID = 0;
+        $('.draggable-content').each(function(i, value){
+            var src = ev.dataTransfer.getData("Text_" + $(value).attr('id'));
             var id = ev.target.id;
-            
-            if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'ELEMENT-NAME'  || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE')
-            {
-                $('#' + id).parents('.main-text-area-continer').first().after('<div class="col-xs-12 inBetween" ></div>');
-            }
-            var tar = ev.target.innerHTML;
-            return true;
-         }
-         
-         function dragOver(ev) {
-            if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'ELEMENT-NAME'  || ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE')
-            {
-                //$('.inBetween').slideUp('slow');
-            }
-            return false;
-         }
-         
-         function dragDrop(ev) {
-            if($('.draggable-content').length == 0)
-            {
-                var src = ev.dataTransfer.getData("Text");
-                var id = ev.target.id;
-                dropCommon(id, ev, src, 0);
-                
-            }
-            else
-            {
-                var currentID = 0;
-                $('.draggable-content').each(function(i, value){
-                    var src = ev.dataTransfer.getData("Text_" + $(value).attr('id'));
-                    var id = ev.target.id;
-                    
-                    dropCommon(id, ev, src, currentID);
-                    currentID = $(value).attr('id');
-                });
-            }
-            ev.stopPropagation();
-            $('.draggable-content').removeClass('draggable-content');
-            setAllPositions();
-            $('.inBetween').remove();
-            return false;
-         }
+
+            dropCommon(id, ev, src, currentID);
+            currentID = $(value).attr('id');
+        });
+    }
+    ev.stopPropagation();
+    $('.draggable-content').removeClass('draggable-content');
+    setAllPositions();
+    $('.inBetween').remove();
+    currentPosition = 'NA';
+    resetTable();
+    return false;
+ }
+ 
+ function resetTable()
+ {
+     var html = '';
+     var elementCount = 0;
+     
+     $('element-name').each(function(i, value){
+         html+= '<tr>';
+            html+= "<td>" + $(value).attr('data-count') + "</td>";
+            html+= "<td>" + $(value).attr('data-position') + "</td>";
+         html+= '</tr>';
+         elementCount++;
+     });
+     html+= "<tr><td colspan='2'>Total Elements : " + elementCount + "</td></tr>";
+     html+= "<tr><td colspan='2'>Last Element ID : " + lastElementID + "</td></tr>";
+     html+= "<tr><td colspan='2'>Current Position : " + currentPosition + "</td></tr>";
+     $('#element-table tbody').html(html);
+ }
          
          function dropCommon(id, ev, src, currentID)
          {
              if(id == 'container-fields')
                 {
+                    console.log("1");
                     if(src == 'text-area-container')
                     {
                         $('#select-container-right-inside').append(addText());
+                        lastElementID = count - 1;
                     }
                     else if(src == 'select-container')
                     {
                         $('#select-container-right-inside').append(addSelect());
+                        lastElementID = count - 1;
                     }
                     else
                     {
@@ -101,7 +128,7 @@ var trs = document.getElementById('select-container-right-inside');
                                 $('#' + currentID).after(document.getElementById(src));
                             }
                         }
-                        else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT')
+                        else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'SPAN')
                         {
                             if(currentID == 0)
                             {
@@ -118,19 +145,27 @@ var trs = document.getElementById('select-container-right-inside');
                         }
 
                     }
+                    
+                    
                 }
                 else
                 {
+                    console.log("2");
                     if(src == 'text-area-container')
                     {
+                        console.log("3");
                         $('#' + id).parents('.main-text-area-continer').first().after(addText());
+                        lastElementID = count - 1;
                     }
                     else if(src == 'select-container')
                     {
+                        console.log("4");
                         $('#' + id).parents('.main-text-area-continer').first().after(addSelect());
+                        lastElementID = count - 1;
                     }
                     else
                     {
+                        console.log("5");
                         if(ev.target.nodeName == 'ELEMENT-NAME')
                         {
                             if(currentID == 0)
@@ -143,7 +178,7 @@ var trs = document.getElementById('select-container-right-inside');
                                 $('#' + currentID).after(document.getElementById(src));
                             }
                         }
-                        else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT')
+                        else if(ev.target.nodeName == 'MAIN-INSIDE-CONTAINER-INSIDE' || ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'SELECT' || ev.target.nodeName == 'SPAN')
                         {
                             if(currentID == 0)
                             {
@@ -165,7 +200,7 @@ var trs = document.getElementById('select-container-right-inside');
          {
             var positionCount = 1;
             $('element-name').each(function(i, value){
-               $(value).attr('data-positon', positionCount);
+               $(value).attr('data-position', positionCount);
                
                var currentCount = $(value).attr('data-count');
                $(value).find('.position_count').text('Element ID is : ' + currentCount + ' and Form Position is ' + positionCount);
@@ -197,8 +232,23 @@ var trs = document.getElementById('select-container-right-inside');
                         ondragstart="return dragStart(event)">
             ListBox <button type="button" id="add-select" class="add-button">+</button>
         </div>
+        <table class="col-xs-12" border="1" style="border-collapse:collapse" id="element-table">
+            <thead>
+                <tr>
+                    <th>
+                        Element ID
+                    </th>
+                    <th>
+                        Posiiton ID
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
     </div>
-    <div class="select-container-right" id="container-fields" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)"  ondragover="return dragOver(event)">
+    <div class="select-container-right" id="container-fields"  ondragenter="return dragEnter(event)" ondragover="return dragOver(event)"  ondrop="return dragDrop(event)"  >
         <div class='col-xs-12' id='select-container-right-inside'>
             
         </div>
@@ -244,12 +294,13 @@ var trs = document.getElementById('select-container-right-inside');
         }
         
         if(e.shiftKey){
-            var startpos= $(this).attr('data-positon');
-            var endpos = $(this).attr('data-positon');
+            var startpos= $(this).attr('data-position');
+            var endpos = $(this).attr('data-position');
             console.log(""+startpos+" "+endpos);
             //selectRowsBetweenIndexes(startpos, endpos);
         }
-        
+        currentPosition = $(this).attr('data-position');
+        resetTable();
     });
     
      $(document).on('click', '#container-fields', function(e){
@@ -274,14 +325,14 @@ var trs = document.getElementById('select-container-right-inside');
     
     function addSelect()
     {
-        var ret = '<element-name draggable="true" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12"></span><main-inside-container-inside class="col-xs-9"><select data-type="select" id="textarea_' + count + '" class="col-xs-12"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
+        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '"><select data-type="select" id="textarea_' + count + '" class="col-xs-12"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
     
     function addText()
     {
-        var ret =  '<element-name draggable="true" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12"></span><main-inside-container-inside class="col-xs-9"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
+        var ret =  '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
