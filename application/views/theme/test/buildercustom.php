@@ -259,12 +259,18 @@ function dragDrop(ev) {
     $(document).ready(function(){
         $('#add-text').click(function(){
             $('#select-container-right-inside').append(addText());
+            lastElementID = count - 1;
             setAllPositions();
+            resetTable();
+            
         });
         
         $('#add-select').click(function(){
             $('#select-container-right-inside').append(addSelect());
+            lastElementID = count - 1;
             setAllPositions();
+            resetTable();
+            
         });
         
         $('#container-fields').click(function(){
