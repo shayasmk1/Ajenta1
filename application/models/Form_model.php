@@ -19,6 +19,57 @@
                 return $this->db->where('id', $listID)->delete($this->table);
             }
             
+            function insertCustomBuilder($data)
+            {
+                $this->db->trans_begin();
+                $count = 1;
+                
+                $data1['name'] = $data['name'];
+                //$caveInsert = array('form_name' => $formName);
+                $caveInsert = $this->db->set($data1)->insert($this->table);
+                $formID = $this->db->insert_id();
+                if(!$formID)
+                {
+                    $this->db->rollback();
+                    return 0;
+                    exit;
+                }
+                
+                if(!$caveInsert)
+                {
+                    $this->db->rollback();
+                    return 0;
+                    exit;
+                }
+                
+                $items = $data['items'];
+                foreach($items AS $item)
+                {
+                    $values = array();
+                    $data2 = $item;
+                    $data2['form_id'] = $formID;
+                    $this->db->set($data2)->insert('form_type');
+                    $insertID = $this->db->insert_id();
+                    
+                    if(!$insertID)
+                    {
+                        $this->db->rollback();
+                        return 0;
+                        exit;
+                    }
+                }
+                
+                if($this->db->trans_status() === FALSE)
+                {
+                    $this->db->rollback();
+                    return 0;
+                    exit;
+                }
+                $this->db->trans_commit();
+                return 1;
+                exit;
+            }
+            
             function insertData($data, $caveID, $formName = null)
             {
                 $this->db->trans_begin();

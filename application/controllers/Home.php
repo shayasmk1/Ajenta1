@@ -140,4 +140,36 @@ class Home extends CI_Controller {
             $this->load->view('theme/test/buildercustom');
             $this->load->view ('theme/test/footer');
         }
+        
+        function buildercutomsave()
+        {
+            if($this->input->method() == 'post')
+            {
+                $data = $this->input->post('data');
+                if($data['name'] == '')
+                {
+                    http_response_code(400);
+                    echo json_encode('Please enter form name');
+                    exit;
+                }
+                
+                if(empty($data['items']))
+                {
+                    http_response_code(400);
+                    echo json_encode('PLease add atlease one item in container');
+                    exit;
+                }
+                $res = $this->form_model->insertCustomBuilder($data);
+                if(!$res)
+                {
+                    http_response_code(500);
+                    echo json_encode('Something Went Wrong');
+                    exit;
+                }
+                
+                http_response_code(200);
+                echo json_encode('Saved Successfully');
+                exit;
+            }
+        }
 }

@@ -249,6 +249,9 @@ function dragDrop(ev) {
         </table>
     </div>
     <div class="select-container-right" id="container-fields"  ondragenter="return dragEnter(event)" ondragover="return dragOver(event)"  ondrop="return dragDrop(event)"  >
+        <div class="col-xs-12" style="background-color:black;height:30px;padding:20px">
+            <input type="text" placeholder="Name of Form" id="name" class="form-control" style="padding:5px;float:left"/> <button type="button" style="padding :5px;float:right;margin-right: 35px;" id="btn-save">Save</button>
+        </div>
         <div class='col-xs-12' id='select-container-right-inside'>
             
         </div>
@@ -329,18 +332,50 @@ function dragDrop(ev) {
         $('.draggable-content').removeClass('draggable-content');
     });
     
+    $(document).on('click', '#btn-save', function(res){
+        var data = new Object();
+        var count = 0;
+        data['name'] = $('#name').val();
+        data['items'] = new Object();
+        $('#select-container-right-inside element-name').each(function(i, value){
+            
+            data['items'][count] = new Object();
+            data['items'][count]['type'] = $(value).find('main-inside-container-inside').attr('data-type');
+            data['items'][count]['value'] = $(value).find('.content-type').val();
+            data['items'][count]['position'] = $(value).attr('data-position');
+            count++;
+        });
+        
+        saveForm(data);
+    });
+    
     function addSelect()
     {
-        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '"><select data-type="select" id="textarea_' + count + '" class="col-xs-12"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
+        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="select"><select data-type="select" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
     
     function addText()
     {
-        var ret =  '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
+        var ret =  '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="textarea"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12 content-type"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
     
+    function saveForm(data)
+    {
+        $.post('/home/buildercutomsave', {data:data}, function(res){
+            alert('Form Added Successfully. Reloading Page.....');
+            location.reload();
+        },'json').fail(function(xhr) {
+            var html = '';
+            var res = xhr.responseJSON;
+          
+            alert(res);
+            $('#btn-save').removeAttr('disabled');
+            window.location.href = '#body';
+        },'json');;
+    }
+   
 </script>
