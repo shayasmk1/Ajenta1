@@ -290,10 +290,11 @@ function dragDrop(ev) {
                 $(res).each(function(i, value){
                     html+= '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container">';
                     html+= '   <span class="position_count col-xs-12" id="span_' + count + '"></span>';
+                    html+= '   <p contenteditable="true" class="label-p"></p>';
                     html+= '    <main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="' + value.type + '">';
                     if(value.type == 'select')
                     {
-                        html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">Option 1</option></select>';
+                        html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">---Please Select---</option><option value="">Add New Option</option></select>';
                     }
                     else
                     {
@@ -410,14 +411,14 @@ function dragDrop(ev) {
     
     function addSelect()
     {
-        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="select"><select data-type="select" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">Option 1</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
+        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><p contenteditable="true" class="label-p"></p><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="select"><select data-type="select" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">---Please Select---</option><option value="">Add New Option</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
     
     function addText()
     {
-        var ret =  '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="textarea"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12 content-type"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
+        var ret =  '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="textbox_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><p contenteditable="true" class="label-p"></p><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="textarea"><div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12 content-type"></textarea></div></main-inside-container-inside><div class="col-xs-3 "><button type="button" class="btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }

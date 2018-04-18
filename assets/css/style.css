@@ -226,3 +226,11 @@ textarea
 {
     border : 1px solid black;
 }
+
+.label-p
+{
+    height : 30px;
+    border : 1px solid gray;
+    width : 100%;
+    margin-top : 25px;
+}
