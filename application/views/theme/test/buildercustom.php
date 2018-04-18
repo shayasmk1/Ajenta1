@@ -280,6 +280,8 @@ function dragDrop(ev) {
             count = 1;
             if(id == '')
             {
+                setAllPositions();
+                resetTable();
                 return;
             }
             $.get('/home/findForm', {id:id}, function(res){
@@ -304,6 +306,8 @@ function dragDrop(ev) {
                 });
                 
                 $('#select-container-right-inside').html(html);
+                setAllPositions();
+                resetTable();
             },'json').fail(function(xhr) {
 //                var html = '';
 //                var res = xhr.responseJSON;
