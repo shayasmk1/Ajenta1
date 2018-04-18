@@ -13,6 +13,7 @@ class Home extends CI_Controller {
                 $this->load->model('listBody_model');
                 $this->load->model('CaveHeader_model');
                 $this->load->model('form_model');
+                $this->load->model('formType_model');
                 $this->load->model('DefaultFormContainer_model');
                 $this->load->model('Story_model');
 	}
@@ -136,8 +137,16 @@ class Home extends CI_Controller {
         
         function buildercustom()
         {
+            $res['forms'] = $this->form_model->getAllForms();
             $this->load->view('theme/test/header');
-            $this->load->view('theme/test/buildercustom');
+            $this->load->view('theme/test/buildercustom', $res);
+            $this->load->view ('theme/test/footer');
+        }
+        
+        function buildercustomList()
+        {
+            $this->load->view('theme/test/header');
+            $this->load->view('theme/test/buildercustomlist', $res);
             $this->load->view ('theme/test/footer');
         }
         
@@ -169,6 +178,18 @@ class Home extends CI_Controller {
                 
                 http_response_code(200);
                 echo json_encode('Saved Successfully');
+                exit;
+            }
+        }
+        
+        function findForm()
+        {
+            if($this->input->method() == 'get')
+            {
+                $id = $this->input->get('id');
+                $form = $this->formType_model->getCurrentForm($id);
+                http_response_code(200);
+                echo json_encode($form);
                 exit;
             }
         }

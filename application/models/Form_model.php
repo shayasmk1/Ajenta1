@@ -212,5 +212,10 @@
                 
                 return 1;
             }
+            
+            public function getAllForms()
+            {
+                return $this->db->get($this->table)->result_array();
+            }
         }
         ?>

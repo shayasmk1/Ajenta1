@@ -249,7 +249,21 @@ function dragDrop(ev) {
         </table>
     </div>
     <div class="select-container-right" id="container-fields"  ondragenter="return dragEnter(event)" ondragover="return dragOver(event)"  ondrop="return dragDrop(event)"  >
-        <div class="col-xs-12" style="background-color:black;height:30px;padding:20px">
+        <div class="col-xs-12" style="background-color:black;height:80px;padding:20px">
+            <select class="col-xs-12" id="form-select" style="padding:5px;margin-bottom:10px">
+                <option value="">---Select Form---</option>
+                <?php
+                if(!empty($forms))
+                {
+                    foreach($forms AS $form)
+                    {
+                        ?>
+                        <option value="<?php echo $form['id'] ?>"><?php echo $form['name'] ?></option>
+                        <?php
+                    }
+                }
+                ?>
+            </select>
             <input type="text" placeholder="Name of Form" id="name" class="form-control" style="padding:5px;float:left"/> <button type="button" style="padding :5px;float:right;margin-right: 35px;" id="btn-save">Save</button>
         </div>
         <div class='col-xs-12' id='select-container-right-inside'>
@@ -260,6 +274,47 @@ function dragDrop(ev) {
 <script>
     
     $(document).ready(function(){
+        $('#form-select').change(function(){
+            $('#select-container-right-inside').text('');
+            var id = $(this).val();
+            count = 1;
+            if(id == '')
+            {
+                return;
+            }
+            $.get('/home/findForm', {id:id}, function(res){
+                console.log(res);
+                var html = '';
+                $(res).each(function(i, value){
+                    html+= '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container">';
+                    html+= '   <span class="position_count col-xs-12" id="span_' + count + '"></span>';
+                    html+= '    <main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="' + value.type + '">';
+                    if(value.type == 'select')
+                    {
+                        html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">Option 1</option></select>';
+                    }
+                    else
+                    {
+                        html+= '        <div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12 content-type">' + value.value + '</textarea></div>';
+                    }
+                    
+                    html+= '    </main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div>';
+                    html+= '</element-name>';
+                    count++;
+                });
+                
+                $('#select-container-right-inside').html(html);
+            },'json').fail(function(xhr) {
+//                var html = '';
+//                var res = xhr.responseJSON;
+//
+//                alert(res);
+//                $('#btn-save').removeAttr('disabled');
+//                window.location.href = '#body';
+            },'json');;
+        });
+        
+        
         $('#add-text').click(function(){
             $('#select-container-right-inside').append(addText());
             lastElementID = count - 1;
