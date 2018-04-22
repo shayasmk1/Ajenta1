@@ -47,15 +47,45 @@
                 {
                     $values = array();
                     $data2 = $item;
+                    unset($data2['options']);
                     $data2['form_id'] = $formID;
                     $this->db->set($data2)->insert('form_type');
-                    $insertID = $this->db->insert_id();
                     
+                    $insertID = $this->db->insert_id();
                     if(!$insertID)
                     {
                         $this->db->rollback();
                         return 0;
                         exit;
+                    }
+                    
+                    if($item['type'] == 'select')
+                    {
+                        if(isset($item['options']))
+                        {
+                            foreach($item['options'] AS $option)
+                            {
+                                $data3 = array();
+                                $data3['form_type_id'] = $insertID;
+                                $data3['name'] = $option;
+                                if($item['value'] == $option)
+                                {
+                                    $data3['selected'] = 1;
+                                }
+                                else {
+                                    $data3['selected'] = 0;
+                                }
+                                $this->db->set($data3)->insert('form_option');
+                                
+                                $optionID = $this->db->insert_id();
+                                if(!$optionID)
+                                {
+                                    $this->db->rollback();
+                                    return 0;
+                                    exit;
+                                }
+                            }
+                        }
                     }
                 }
                 

@@ -9,6 +9,6 @@
             
             function getCurrentForm($id)
             {
-                return $this->db->where('form_id', $id)->get($this->table)->result_array();
+                return $this->db->select('form_type.*, form_option.name, form_option.selected, form_option.id AS form_option_id')->join('form_option', 'form_option.form_type_id=form_type.id', 'left')->where('form_id', $id)->order_by('form_type.id')->get($this->table)->result_array();
             }
         }

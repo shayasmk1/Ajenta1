@@ -155,6 +155,7 @@ class Home extends CI_Controller {
             if($this->input->method() == 'post')
             {
                 $data = $this->input->post('data');
+                
                 if($data['name'] == '')
                 {
                     http_response_code(400);

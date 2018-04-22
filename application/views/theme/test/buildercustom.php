@@ -247,6 +247,11 @@ function dragDrop(ev) {
                 
             </tbody>
         </table>
+        
+        <div class="select-option top-margin col-xs-12 hide" style="margin-top:15px">
+            <input type="text" class="col-xs-12" id="option-name" placeholder="Option Name"/>
+            <button type="button" id="add-option" style="float:right">Add Option</button>
+        </div>
     </div>
     <div class="select-container-right" id="container-fields"  ondragenter="return dragEnter(event)" ondragover="return dragOver(event)"  ondrop="return dragDrop(event)"  >
         <div class="col-xs-12" style="background-color:black;height:80px;padding:20px">
@@ -271,8 +276,27 @@ function dragDrop(ev) {
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<!--<div class="modal fade" id="optionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Option</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="add_option" class="form-control" placeholder="Add Option"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn-save-option">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>-->
 <script>
-    
+    var selectID = 0;
     $(document).ready(function(){
         $('#form-select').change(function(){
             $('#select-container-right-inside').text('');
@@ -285,28 +309,59 @@ function dragDrop(ev) {
                 return;
             }
             $.get('/home/findForm', {id:id}, function(res){
-                console.log(res);
                 var html = '';
+                var currentSelectID = 0;
+                var lastID = 0;
+                $('#select-container-right-inside').html('');
                 $(res).each(function(i, value){
-                    html+= '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container">';
-                    html+= '   <span class="position_count col-xs-12" id="span_' + count + '"></span>';
-                    html+= '   <p contenteditable="true" class="label-p"></p>';
-                    html+= '    <main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="' + value.type + '">';
-                    if(value.type == 'select')
+                    html = '';
+                    if(value.id != currentSelectID)
                     {
-                        html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">---Please Select---</option><option value="">Add New Option</option></select>';
+                        currentSelectID = value.id;
+                        console.log(currentSelectID);
+                        html+= '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container">';
+                        html+= '   <span class="position_count col-xs-12" id="span_' + count + '"></span>';
+                        html+= '   <p contenteditable="true" class="label-p"></p>';
+                        html+= '    <main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="' + value.type + '">';
+                        if(value.type == 'select')
+                        {
+                            html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type select-type"><option value="">---Please Select---</option><option value="New">Add New Option</option>';
+                                if(value.selected == '1')
+                                {
+                                    html+= '<option value="' + value.form_option_id + '" selected>' + value.name + '</option>';
+                                }
+                                else
+                                {
+                                    html+= '<option value="' + value.form_option_id + '">' + value.name + '</option>';
+                                }
+                            html+= '        </select>';
+                        }
+                        else
+                        {
+                            html+= '        <div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12 content-type">' + value.value + '</textarea></div>';
+                        }
+
+                        html+= '    </main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div>';
+                        html+= '</element-name>';
+                        $('#select-container-right-inside').append(html);
+                        lastID = 'textarea_' + count;
                     }
                     else
                     {
-                        html+= '        <div class="card"><textarea data-type="textarea" id="textarea_' + count + '" class="col-xs-12 content-type">' + value.value + '</textarea></div>';
+                        if(value.selected == '1')
+                        {
+                            $('#' + lastID).append('<option value="' + value.form_option_id + '" selected>' + value.name + '</option>');
+                        }
+                        else
+                        {
+                            $('#' + lastID).append('<option value="' + value.form_option_id + '">' + value.name + '</option>');
+                        }
                     }
                     
-                    html+= '    </main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div>';
-                    html+= '</element-name>';
                     count++;
                 });
                 
-                $('#select-container-right-inside').html(html);
+                
                 setAllPositions();
                 resetTable();
             },'json').fail(function(xhr) {
@@ -401,6 +456,20 @@ function dragDrop(ev) {
             
             data['items'][count] = new Object();
             data['items'][count]['type'] = $(value).find('main-inside-container-inside').attr('data-type');
+            if($(value).find('main-inside-container-inside').attr('data-type') == 'select')
+            {
+                data['items'][count]['options'] = new Object();
+                var id = $(value).find('.select-type').attr('id');
+                var count1 = 0;
+                $("#" + id + " > option").each(function(i, value1) {
+                    if($(value1).val() != 'New' && $(value1).val() != '')
+                    {
+                        data['items'][count]['options'][count1] = $(value1).val();
+                        count1++;
+                    }
+                    
+                });
+            }
             data['items'][count]['value'] = $(value).find('.content-type').val();
             data['items'][count]['position'] = $(value).attr('data-position');
             count++;
@@ -409,9 +478,16 @@ function dragDrop(ev) {
         saveForm(data);
     });
     
+    
+    
+    $(document).on('click', '#btn-save-option', function(res){
+        var option = $('#add_option').val();
+        $('#' + selectID).html('<option value="' + option + '">' + option + '</option>');
+    });
+    
     function addSelect()
     {
-        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><p contenteditable="true" class="label-p"></p><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="select"><select data-type="select" id="textarea_' + count + '" class="col-xs-12 content-type"><option value="">---Please Select---</option><option value="">Add New Option</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
+        var ret = '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container"><span class="position_count col-xs-12" id="span_' + count + '"></span><p contenteditable="true" class="label-p"></p><main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="select"><select data-type="select"  id="textarea_' + count + '" class="col-xs-12 content-type select-type"><option value="">---Please Select---</option><option value="New">Add New Option</option></select></main-inside-container-inside><div class="col-xs-3 "><button type="button" class=" btn-delete">Delete</button></div></element-name>';
         count++;
         return ret;
     }
@@ -437,5 +513,30 @@ function dragDrop(ev) {
             window.location.href = '#body';
         },'json');;
     }
+    
+    $(document).on('change', '.select-type', function(){
+        selectID = $(this).attr('id')
+        if($(this).val() == 'New')
+        {
+            $('.select-option').removeClass('hide');
+        }
+        else
+        {
+            $('.select-option').addClass('hide');
+        }
+    });
+    
+    $(document).on('click', '#add-option', function(){
+        var name = $('#option-name').val();
+        if(name.trim() == '')
+        {
+            alert("Name is required");
+            return;
+        }
+        $('#' + selectID).append('<option value="' + name + '">' + name + '</option>');
+        $('.select-option').addClass('hide');
+        $('#' + selectID).val(name);
+        $('#option-name').val('');
+    });
    
 </script>
