@@ -335,6 +335,11 @@ function dragDrop(ev) {
                                     html+= '<option value="' + value.form_option_id + '">' + value.name + '</option>';
                                 }
                             html+= '        </select>';
+                            
+                            html+= '<table border="1" style="width:100%" class="table-sub-menu">';
+                            html+= '    <thead><tr><th>Sub Menu</th><th></th></tr></thead>';
+                            html+= '    <tbody><tr><td><input type="text" class="col-xs-12"/></td><td><button type="button" class="btn-sub-menu-add">Add</button></td></tr></tbody>';
+                            html+= '</table>';
                         }
                         else
                         {
@@ -539,4 +544,18 @@ function dragDrop(ev) {
         $('#option-name').val('');
     });
    
+   $(document).on('click', '.btn-sub-menu-add', function(){
+       var parent = $(this).parents('table').first();
+       $(parent).find('tbody').append('<tr><td><input type="text" class="col-xs-12"/></td><td><button type="button" class="btn-sub-menu-add">Add</button><button type="button" class="btn-sub-menu-delete">Delete</button></td></tr>');
+   });
+   
+   $(document).on('click', '.btn-sub-menu-delete', function(){
+       var conf = confirm("Are you sure you want to delete?");
+       if(!conf)
+       {
+           return;
+       }
+       var parent = $(this).parents('tr').first();
+       $(parent).remove();
+   })
 </script>
