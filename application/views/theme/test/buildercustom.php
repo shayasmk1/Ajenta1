@@ -318,14 +318,14 @@ function dragDrop(ev) {
                     if(value.id != currentSelectID)
                     {
                         currentSelectID = value.id;
-                        console.log(currentSelectID);
+                        
                         html+= '<element-name draggable="true" ondragenter="return dragEnter(event)" ondragover="return dragOver(event)" ondragstart="return dragStart(event)" data-count="' + count + '" id="select_' + count + '" class="col-xs-12 top-margin main-text-area-continer main-inside-container">';
                         html+= '   <span class="position_count col-xs-12" id="span_' + count + '"></span>';
                         html+= '   <p contenteditable="true" class="label-p"></p>';
                         html+= '    <main-inside-container-inside class="col-xs-9" id="main_inside_container_inside_' + count + '" data-type="' + value.type + '">';
                         if(value.type == 'select')
                         {
-                            html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type select-type"><option value="">---Please Select---</option><option value="New">Add New Option</option>';
+                            html+= '        <select data-type="' + value.type + '" id="textarea_' + count + '" class="col-xs-12 content-type select-type select-type-update"><option value="">---Please Select---</option><option value="New">Add New Option</option>';
                                 if(value.selected == '1')
                                 {
                                     html+= '<option value="' + value.form_option_id + '" selected>' + value.name + '</option>';
@@ -336,7 +336,9 @@ function dragDrop(ev) {
                                 }
                             html+= '        </select>';
                             
-                            html+= '<table border="1" style="width:100%" class="table-sub-menu">';
+                            
+                            
+                            html+= '<table border="1" style="width:100%" class="table-sub-menu hide" >';
                             html+= '    <thead><tr><th>Sub Menu</th><th></th></tr></thead>';
                             html+= '    <tbody><tr><td><input type="text" class="col-xs-12"/></td><td><button type="button" class="btn-sub-menu-add">Add</button></td></tr></tbody>';
                             html+= '</table>';
@@ -350,6 +352,8 @@ function dragDrop(ev) {
                         html+= '</element-name>';
                         $('#select-container-right-inside').append(html);
                         lastID = 'textarea_' + count;
+                        
+                        
                     }
                     else
                     {
@@ -361,6 +365,12 @@ function dragDrop(ev) {
                         {
                             $('#' + lastID).append('<option value="' + value.form_option_id + '">' + value.name + '</option>');
                         }
+                    }
+                    var parent = $('#' + lastID).parents('main-inside-container-inside').first();
+                    console.log(value.selected);
+                    if(value.selected == '1')
+                    {
+                        $(parent).find('.table-sub-menu').removeClass('hide');
                     }
                     
                     count++;
@@ -557,5 +567,17 @@ function dragDrop(ev) {
        }
        var parent = $(this).parents('tr').first();
        $(parent).remove();
-   })
+   });
+   
+   $(document).on('change', '.select-type-update', function(){
+       var parent = $(this).parents('main-inside-container-inside').first();
+       if($(this).val() == '' || $(this).val() == 'New')
+       {
+           $(parent).find('.table-sub-menu').addClass('hide');
+       }
+       else
+       {
+           $(parent).find('.table-sub-menu').removeClass('hide');
+       }
+   });
 </script>
